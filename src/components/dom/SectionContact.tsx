@@ -148,7 +148,7 @@ export const SectionContact: React.FC = () => {
             404 REBELS.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-mono text-[#3A4258] dark:text-[#B8BED0] max-w-xl leading-relaxed">
+        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-xl leading-relaxed">
           Open for full-stack engineering, web applications, UI/UX design, and ambitious collaborative projects.
         </p>
       </div>

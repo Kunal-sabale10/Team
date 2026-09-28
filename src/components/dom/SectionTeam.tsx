@@ -30,7 +30,7 @@ export const SectionTeam: React.FC = () => {
             SPECIALISTS.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-mono text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
+        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
           Three dedicated developers and designers collaborating across full-stack engineering, product strategy, and modern frontend user experiences.
         </p>
       </div>
@@ -80,7 +80,7 @@ export const SectionTeam: React.FC = () => {
               </div>
 
               {/* Short Bio */}
-              <p className="text-xs sm:text-sm text-[#3A4258] dark:text-[#B8BED0] leading-relaxed bg-theme-surface-subtle p-4 rounded-lg border border-theme-border-subtle dark:border-white/10">
+              <p className="text-xs sm:text-sm font-sans text-[#3A4258] dark:text-[#B8BED0] leading-relaxed bg-theme-surface-subtle p-4 rounded-lg border border-theme-border-subtle dark:border-white/10">
                 {member.bio}
               </p>
 

@@ -66,7 +66,7 @@ export const SectionSkills: React.FC = () => {
             CAPABILITIES.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-mono text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
+        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
           Technologies, frameworks, and tools used by our team across full-stack engineering, interactive 3D graphics, and modern UI/UX design.
         </p>
       </div>

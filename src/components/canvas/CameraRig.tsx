@@ -5,7 +5,7 @@ import { useScrollEngine } from '../../context/ScrollContext';
 
 export const CameraRig: React.FC = () => {
   const { camera } = useThree();
-  const { scrollProgress, mousePos, isUnlocked } = useScrollEngine();
+  const { scrollStore, isUnlocked } = useScrollEngine();
 
   // Create a CatmullRom spline curve for camera path across the 5 beats
   const curve = useMemo(() => {
@@ -33,31 +33,37 @@ export const CameraRig: React.FC = () => {
     return new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.5);
   }, []);
 
+  // Pre-allocated reusable Vector3 instances to completely eliminate per-frame GC allocations
+  const splinePosRef = useRef(new THREE.Vector3());
+  const splineLookAtRef = useRef(new THREE.Vector3());
+  const targetPosRef = useRef(new THREE.Vector3());
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
 
   useFrame((state, delta) => {
+    const { scrollProgress, mousePos } = scrollStore.current;
+
     // If not unlocked yet (Beat 0), idle hover
     const t = isUnlocked ? Math.min(0.999, Math.max(0, scrollProgress)) : 0;
 
-    // Get interpolated target position on the 3D spline
-    const splinePos = curve.getPoint(t);
-    const splineLookAt = lookAtCurve.getPoint(t);
+    // Zero-allocation curve point sampling into pre-allocated refs
+    curve.getPoint(t, splinePosRef.current);
+    lookAtCurve.getPoint(t, splineLookAtRef.current);
 
     // Apply subtle mouse parallax to camera position
     const mouseInfluenceX = mousePos.normX * 0.75;
     const mouseInfluenceY = mousePos.normY * 0.55;
 
-    const targetPos = new THREE.Vector3(
-      splinePos.x + mouseInfluenceX,
-      splinePos.y + mouseInfluenceY,
-      splinePos.z
+    targetPosRef.current.set(
+      splinePosRef.current.x + mouseInfluenceX,
+      splinePosRef.current.y + mouseInfluenceY,
+      splinePosRef.current.z
     );
 
     // Framerate-independent damping (smooth on 60Hz, 120Hz, 144Hz displays)
     const damping = 1 - Math.exp(-4.2 * Math.min(delta, 0.1));
 
-    camera.position.lerp(targetPos, damping);
-    currentLookAt.current.lerp(splineLookAt, damping);
+    camera.position.lerp(targetPosRef.current, damping);
+    currentLookAt.current.lerp(splineLookAtRef.current, damping);
     camera.lookAt(currentLookAt.current);
   });
 

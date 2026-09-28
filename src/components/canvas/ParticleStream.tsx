@@ -9,18 +9,16 @@ interface ParticleStreamProps {
 }
 
 export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 2400 }) => {
-  const { scrollProgress, velocity, mousePos, fps, currentSection } = useScrollEngine();
+  const { scrollStore, currentSection } = useScrollEngine();
   const { isDark } = useTheme();
   const pointsRef = useRef<THREE.Points>(null);
 
-  // Generate particle coordinate buffers
-  const [positions, colors, scales, initialZ] = useMemo(() => {
-    // Drop particle count if FPS drops or on low performance
-    const count = fps < 45 ? Math.floor(particleCount * 0.4) : particleCount;
+  // Generate particle coordinate buffers once per theme/count without thrashing WebGL VBOs
+  const [positions, colors, scales] = useMemo(() => {
+    const count = particleCount;
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
     const sc = new Float32Array(count);
-    const initZ = new Float32Array(count);
 
     const color1 = isDark ? new THREE.Color('#1E40AF') : new THREE.Color('#1E3A8A');
     const color2 = isDark ? new THREE.Color('#38BDF8') : new THREE.Color('#1D4ED8');
@@ -35,7 +33,6 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
       pos[i * 3] = Math.cos(angle) * radius;
       pos[i * 3 + 1] = Math.sin(angle) * radius;
       pos[i * 3 + 2] = z;
-      initZ[i] = z;
 
       // Color selection
       const rand = Math.random();
@@ -47,11 +44,12 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
       sc[i] = isDark ? (0.8 + Math.random() * 1.2) : (0.7 + Math.random() * 0.8);
     }
 
-    return [pos, col, sc, initZ];
-  }, [particleCount, fps, isDark]);
+    return [pos, col, sc];
+  }, [particleCount, isDark]);
 
   useFrame((state, delta) => {
     if (!pointsRef.current) return;
+    const { velocity, mousePos } = scrollStore.current;
     const geom = pointsRef.current.geometry;
     const posAttr = geom.attributes.position;
     const posArray = posAttr.array as Float32Array;
@@ -76,13 +74,21 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
       const angleDelta = 0.003 * (i % 2 === 0 ? 1 : -1);
       posArray[idx] = currentX * Math.cos(angleDelta) - currentY * Math.sin(angleDelta);
       posArray[idx + 1] = currentX * Math.sin(angleDelta) + currentY * Math.cos(angleDelta);
-
-      // Subtle mouse cursor deflection
-      posArray[idx] += mousePos.normX * 0.015;
-      posArray[idx + 1] += mousePos.normY * 0.015;
     }
 
     posAttr.needsUpdate = true;
+
+    // Apply smooth bounded mouse deflection to the mesh position itself rather than mutating 2400 vertex coordinates
+    pointsRef.current.position.x = THREE.MathUtils.lerp(
+      pointsRef.current.position.x,
+      mousePos.normX * 0.35,
+      0.05
+    );
+    pointsRef.current.position.y = THREE.MathUtils.lerp(
+      pointsRef.current.position.y,
+      mousePos.normY * 0.25,
+      0.05
+    );
   });
 
   return (

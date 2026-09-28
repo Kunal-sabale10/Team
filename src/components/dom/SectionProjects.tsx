@@ -44,7 +44,7 @@ export const SectionProjects: React.FC = () => {
             PROJECTS.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-mono text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
+        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
           Production web applications engineered and delivered by the 404 Rebels team — organized project-wise by lead developer and designer.
         </p>
 
@@ -113,7 +113,7 @@ export const SectionProjects: React.FC = () => {
                 <h3 className="text-2xl sm:text-3xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] group-hover:text-[#0B4DFF] dark:group-hover:text-cherenkov-glow transition-colors">
                   {specimen.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-[#3A4258] dark:text-[#B8BED0] line-clamp-3 leading-relaxed pt-1">
+                <p className="text-xs sm:text-sm font-sans text-[#3A4258] dark:text-[#B8BED0] line-clamp-3 leading-relaxed pt-1">
                   {specimen.description}
                 </p>
               </div>

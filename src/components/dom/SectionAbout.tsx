@@ -40,7 +40,7 @@ export const SectionAbout: React.FC = () => {
             HOW WE WORK.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-mono text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
+        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
           A dedicated three-member web development and design team. We create modern, fast, and scalable web applications, combining robust full-stack engineering with clean, accessible design.
         </p>
       </div>
@@ -66,7 +66,7 @@ export const SectionAbout: React.FC = () => {
               {pillar.title}
             </h3>
 
-            <p className="text-xs sm:text-sm font-mono text-[#3A4258] dark:text-[#B8BED0] leading-relaxed">
+            <p className="text-xs sm:text-sm font-sans text-[#3A4258] dark:text-[#B8BED0] leading-relaxed">
               {pillar.desc}
             </p>
           </div>

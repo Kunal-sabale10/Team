@@ -7,9 +7,22 @@ import { useTheme } from './ThemeContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface ScrollContextType {
+export interface ScrollStore {
   scrollProgress: number; // 0.0 to 1.0
   velocity: number;
+  mousePos: { x: number; y: number; normX: number; normY: number };
+  fps: number;
+  drawCalls: number;
+}
+
+export type TelemetryListener = (store: ScrollStore) => void;
+
+interface ScrollContextType {
+  // High-frequency mutable store & listener subscription
+  scrollStore: React.MutableRefObject<ScrollStore>;
+  subscribeTelemetry: (listener: TelemetryListener) => () => void;
+
+  // Low-frequency React state
   currentSection: number; // 1 to 6
   currentBeat: number; // Compatibility alias
   isUnlocked: boolean;
@@ -19,16 +32,20 @@ interface ScrollContextType {
   lenisInstance: Lenis | null;
   activeSpecimenId: string | null;
   setActiveSpecimenId: (id: string | null) => void;
-  fps: number;
-  setFps: (fps: number) => void;
-  drawCalls: number;
-  setDrawCalls: (calls: number) => void;
-  mousePos: { x: number; y: number; normX: number; normY: number };
   isAudioMuted: boolean;
   toggleAudio: () => void;
   isReducedMotion: boolean;
   isMobile: boolean;
   isWebGLAvailable: boolean;
+
+  // Compatibility getters/setters for legacy callers
+  scrollProgress: number;
+  velocity: number;
+  mousePos: { x: number; y: number; normX: number; normY: number };
+  fps: number;
+  setFps: (fps: number) => void;
+  drawCalls: number;
+  setDrawCalls: (calls: number) => void;
 }
 
 const ScrollContext = createContext<ScrollContextType | null>(null);
@@ -44,15 +61,43 @@ const SECTION_IDS = [
 
 export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { toggleTheme } = useTheme();
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [velocity, setVelocity] = useState(0);
+
+  // High-frequency data stored in mutable ref (NO React re-renders on scroll/mouse/telemetry)
+  const scrollStoreRef = useRef<ScrollStore>({
+    scrollProgress: 0,
+    velocity: 0,
+    mousePos: { x: 0, y: 0, normX: 0, normY: 0 },
+    fps: 60,
+    drawCalls: 18,
+  });
+
+  const listenersRef = useRef<Set<TelemetryListener>>(new Set());
+
+  const subscribeTelemetry = useCallback((listener: TelemetryListener) => {
+    listenersRef.current.add(listener);
+    // Provide immediate snapshot
+    listener(scrollStoreRef.current);
+    return () => {
+      listenersRef.current.delete(listener);
+    };
+  }, []);
+
+  const notifyTelemetry = useCallback(() => {
+    const store = scrollStoreRef.current;
+    listenersRef.current.forEach((fn) => {
+      try {
+        fn(store);
+      } catch (err) {
+        console.error('Error in telemetry listener:', err);
+      }
+    });
+  }, []);
+
+  // Low-frequency application state
   const [currentSection, setCurrentSection] = useState(1);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [activeSpecimenId, setActiveSpecimenId] = useState<string | null>(null);
-  const [fps, setFps] = useState(60);
-  const [drawCalls, setDrawCalls] = useState(18);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0, normX: 0, normY: 0 });
 
   const [isReducedMotion, setIsReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -91,12 +136,12 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     };
   }, []);
 
-  // Mouse tracking & spatial audio panning
+  // Mouse tracking & spatial audio panning - mutates store ref directly, NO re-renders
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const normX = (e.clientX / window.innerWidth) * 2 - 1;
       const normY = -(e.clientY / window.innerHeight) * 2 + 1;
-      setMousePos({ x: e.clientX, y: e.clientY, normX, normY });
+      scrollStoreRef.current.mousePos = { x: e.clientX, y: e.clientY, normX, normY };
       soundEngine.updateCursorPan(normX);
     };
 
@@ -104,20 +149,47 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Determine active section dynamically from DOM elements
-  const detectActiveSection = useCallback(() => {
-    const triggerThreshold = window.innerHeight * 0.42;
-    for (let i = SECTION_IDS.length - 1; i >= 0; i--) {
-      const el = document.getElementById(SECTION_IDS[i]);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= triggerThreshold) {
-          return i + 1; // 1-indexed (1 to 6)
+  // Section Detection via IntersectionObserver (replaces getBoundingClientRect layout thrashing)
+  useEffect(() => {
+    if (!isUnlocked) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let bestEntry: IntersectionObserverEntry | null = null;
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            if (!bestEntry || entry.intersectionRatio > bestEntry.intersectionRatio) {
+              bestEntry = entry;
+            }
+          }
         }
+
+        if (bestEntry) {
+          const sectionIdx = SECTION_IDS.indexOf(bestEntry.target.id);
+          if (sectionIdx !== -1) {
+            const activeSec = sectionIdx + 1;
+            if (activeSec !== lastSectionRef.current) {
+              lastSectionRef.current = activeSec;
+              setCurrentSection(activeSec);
+              soundEngine.playSectionTick();
+            }
+          }
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-25% 0px -35% 0px',
+        threshold: [0.1, 0.3, 0.6],
       }
-    }
-    return 1;
-  }, []);
+    );
+
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [isUnlocked]);
 
   // Initialize Lenis & synchronize with GSAP ScrollTrigger
   useEffect(() => {
@@ -133,17 +205,19 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     lenisRef.current = lenis;
 
+    let lastScrollNotify = 0;
     lenis.on('scroll', (e: { progress: number; velocity: number }) => {
       ScrollTrigger.update();
-      setScrollProgress(Math.max(0, Math.min(1, e.progress)));
-      setVelocity(e.velocity);
+      const progress = Math.max(0, Math.min(1, e.progress));
+      scrollStoreRef.current.scrollProgress = progress;
+      scrollStoreRef.current.velocity = e.velocity;
       soundEngine.updateScrollVelocity(e.velocity);
 
-      const activeSec = detectActiveSection();
-      if (activeSec !== lastSectionRef.current) {
-        lastSectionRef.current = activeSec;
-        setCurrentSection(activeSec);
-        soundEngine.playSectionTick();
+      // Throttled notification (~12Hz / 80ms) for subscribers like the HUD progress bar
+      const now = performance.now();
+      if (now - lastScrollNotify >= 80) {
+        lastScrollNotify = now;
+        notifyTelemetry();
       }
     });
 
@@ -159,7 +233,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       lenis.destroy();
       lenisRef.current = null;
     };
-  }, [detectActiveSection, isReducedMotion]);
+  }, [isReducedMotion, notifyTelemetry]);
 
   // Ensure the page always starts cleanly at the top (scrollY = 0)
   useEffect(() => {
@@ -206,11 +280,21 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setIsAudioMuted(muted);
   }, []);
 
+  // Telemetry setters (mutate store and notify subscribers without triggering React re-renders)
+  const setFps = useCallback((val: number) => {
+    scrollStoreRef.current.fps = val;
+    notifyTelemetry();
+  }, [notifyTelemetry]);
+
+  const setDrawCalls = useCallback((calls: number) => {
+    scrollStoreRef.current.drawCalls = calls;
+    notifyTelemetry();
+  }, [notifyTelemetry]);
+
   // Demo Mode Keyboard Shortcuts:
   // 1-6 to jump to sections, T to toggle theme, M to toggle sound
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore if user is currently typing in an input or textarea
       const target = e.target as HTMLElement | null;
       if (
         target?.tagName === 'INPUT' ||
@@ -222,7 +306,6 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
       const key = e.key.toUpperCase();
 
-      // Number keys 1-6 jump to corresponding sections
       if (['1', '2', '3', '4', '5', '6'].includes(key)) {
         e.preventDefault();
         const sec = parseInt(key, 10);
@@ -244,8 +327,8 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   return (
     <ScrollContext.Provider
       value={{
-        scrollProgress,
-        velocity,
+        scrollStore: scrollStoreRef,
+        subscribeTelemetry,
         currentSection,
         currentBeat: currentSection,
         isUnlocked,
@@ -255,16 +338,30 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         lenisInstance: lenisRef.current,
         activeSpecimenId,
         setActiveSpecimenId,
-        fps,
-        setFps,
-        drawCalls,
-        setDrawCalls,
-        mousePos,
         isAudioMuted,
         toggleAudio,
         isReducedMotion,
         isMobile,
         isWebGLAvailable,
+
+        // Backwards compatibility properties (read directly from store ref)
+        get scrollProgress() {
+          return scrollStoreRef.current.scrollProgress;
+        },
+        get velocity() {
+          return scrollStoreRef.current.velocity;
+        },
+        get mousePos() {
+          return scrollStoreRef.current.mousePos;
+        },
+        get fps() {
+          return scrollStoreRef.current.fps;
+        },
+        get drawCalls() {
+          return scrollStoreRef.current.drawCalls;
+        },
+        setFps,
+        setDrawCalls,
       }}
     >
       {children}
@@ -278,4 +375,25 @@ export const useScrollEngine = () => {
     throw new Error('useScrollEngine must be used within a ScrollProvider');
   }
   return context;
+};
+
+// Custom hook for subscribing to throttled telemetry without re-rendering high-frequency loops
+export const useScrollTelemetry = () => {
+  const { scrollStore, subscribeTelemetry } = useScrollEngine();
+  const [telemetry, setTelemetry] = useState<ScrollStore>(() => ({ ...scrollStore.current }));
+
+  useEffect(() => {
+    let lastUpdate = 0;
+    const unsubscribe = subscribeTelemetry((store) => {
+      const now = performance.now();
+      // Cap telemetry updates to ~12Hz (every 80ms)
+      if (now - lastUpdate >= 80) {
+        lastUpdate = now;
+        setTelemetry({ ...store });
+      }
+    });
+    return unsubscribe;
+  }, [subscribeTelemetry, scrollStore]);
+
+  return telemetry;
 };

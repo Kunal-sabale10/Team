@@ -81,7 +81,7 @@ const AcceleratorBeamShader = {
 };
 
 export const AcceleratorCore: React.FC = () => {
-  const { scrollProgress, velocity, currentBeat, mousePos, currentSection } = useScrollEngine();
+  const { scrollStore, currentBeat, currentSection } = useScrollEngine();
   const { isDark } = useTheme();
   const beamMaterialRef = useRef<THREE.ShaderMaterial>(null);
   const coreGroupRef = useRef<THREE.Group>(null);
@@ -94,13 +94,16 @@ export const AcceleratorCore: React.FC = () => {
   const tempPosition = useMemo(() => new THREE.Vector3(), []);
   const tempRotation = useMemo(() => new THREE.Euler(), []);
   const tempScale = useMemo(() => new THREE.Vector3(), []);
+  const tempQuaternion = useMemo(() => new THREE.Quaternion(), []);
+  const tempTargetScale = useMemo(() => new THREE.Vector3(), []);
 
-  // Initialize ring matrices
-  useMemo(() => {
-    // Rings will be positioned along Z from +20 to -60
-  }, []);
+  // Pre-allocated reusable colors to eliminate ~1800 per-second GC allocations
+  const targetColorA = useMemo(() => new THREE.Color(), []);
+  const targetColorB = useMemo(() => new THREE.Color(), []);
+  const targetBg = useMemo(() => new THREE.Color(), []);
 
   useFrame((state, delta) => {
+    const { scrollProgress, velocity, mousePos } = scrollStore.current;
     const time = state.clock.getElapsedTime();
     const damping = 1 - Math.exp(-5.5 * Math.min(delta, 0.1));
     const isHero = currentSection <= 1;
@@ -109,13 +112,9 @@ export const AcceleratorCore: React.FC = () => {
     if (beamMaterialRef.current) {
       // Modulate beam brightness: full in Hero, dimmed in content sections 2-6
       const colorIntensity = isDark ? (isHero ? 1.0 : 0.6) : (isHero ? 0.9 : 0.6);
-      const targetColorA = isDark
-        ? new THREE.Color('#1D4ED8').multiplyScalar(colorIntensity)
-        : new THREE.Color('#1D4ED8').multiplyScalar(colorIntensity);
-      const targetColorB = isDark
-        ? new THREE.Color('#38BDF8').multiplyScalar(colorIntensity)
-        : new THREE.Color('#60A5FA').multiplyScalar(colorIntensity);
-      const targetBg = isDark ? new THREE.Color('#0C0D14') : new THREE.Color('#F4F1EA');
+      targetColorA.set('#1D4ED8').multiplyScalar(colorIntensity);
+      targetColorB.set(isDark ? '#38BDF8' : '#60A5FA').multiplyScalar(colorIntensity);
+      targetBg.set(isDark ? '#0C0D14' : '#F4F1EA');
 
       beamMaterialRef.current.uniforms.uTime.value = time;
       beamMaterialRef.current.uniforms.uProgress.value = scrollProgress;
@@ -164,8 +163,9 @@ export const AcceleratorCore: React.FC = () => {
         );
         tempRotation.set(0, 0, currentRotZ);
         tempScale.set(scaleMod, scaleMod, 1);
+        tempQuaternion.setFromEuler(tempRotation);
 
-        tempMatrix.compose(tempPosition, new THREE.Quaternion().setFromEuler(tempRotation), tempScale);
+        tempMatrix.compose(tempPosition, tempQuaternion, tempScale);
         instancedRingsRef.current.setMatrixAt(i, tempMatrix);
       }
       instancedRingsRef.current.instanceMatrix.needsUpdate = true;
@@ -178,10 +178,8 @@ export const AcceleratorCore: React.FC = () => {
 
       // Pulse larger during Beat 2 (Collision events)
       const targetScale = currentBeat === 2 ? 1.4 : 1.0;
-      focalSingularityRef.current.scale.lerp(
-        new THREE.Vector3(targetScale, targetScale, targetScale),
-        0.08
-      );
+      tempTargetScale.set(targetScale, targetScale, targetScale);
+      focalSingularityRef.current.scale.lerp(tempTargetScale, 0.08);
     }
   });
 

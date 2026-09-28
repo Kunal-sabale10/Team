@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useScrollEngine } from '../../context/ScrollContext';
+import { useScrollEngine, useScrollTelemetry } from '../../context/ScrollContext';
 import { useTheme } from '../../context/ThemeContext';
 import { Volume2, VolumeX, Activity, Sun, Moon, Disc3, Menu, X } from 'lucide-react';
 import { soundEngine } from '../../audio/SoundEngine';
@@ -13,13 +13,11 @@ export const HudOverlay: React.FC = () => {
     return false;
   });
 
+  const telemetry = useScrollTelemetry();
   const {
-    scrollProgress,
     currentSection,
     scrollToSection,
     lenisInstance,
-    fps,
-    drawCalls,
     isAudioMuted,
     toggleAudio,
     isUnlocked,
@@ -110,10 +108,10 @@ export const HudOverlay: React.FC = () => {
             <div className="hidden lg:flex items-center space-x-2.5 bg-theme-surface backdrop-blur-md px-3 py-2 rounded-lg border border-theme-border-subtle text-[11px] text-theme-text-muted shadow-ambient animate-fade-in">
               <span className="flex items-center gap-1.5 text-emerald-600 dark:text-isotope font-semibold">
                 <Activity className="w-3.5 h-3.5" />
-                {fps} FPS
+                {telemetry.fps} FPS
               </span>
               <span className="text-theme-border-subtle">|</span>
-              <span className="text-theme-accent dark:text-cherenkov-glow font-bold">{drawCalls} DC</span>
+              <span className="text-theme-accent dark:text-cherenkov-glow font-bold">{telemetry.drawCalls} DC</span>
             </div>
           )}
 
@@ -234,7 +232,7 @@ export const HudOverlay: React.FC = () => {
         {/* Telemetry Readout (Only visible in debug mode) */}
         {isDebug ? (
           <div className="pointer-events-auto bg-theme-surface backdrop-blur-md px-3.5 py-2 rounded-lg border border-theme-border-subtle text-[10px] sm:text-[11px] text-theme-text-muted space-y-0.5 shadow-ambient">
-            <div>PROGRESS: <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold">{(scrollProgress * 100).toFixed(1)}%</span></div>
+            <div>PROGRESS: <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold">{(telemetry.scrollProgress * 100).toFixed(1)}%</span></div>
             <div className="hidden sm:block">SHORTCUTS: <span className="text-theme-accent dark:text-cherenkov-glow font-semibold">[1-6] JUMP • [T] THEME • [M] AUDIO • [D] HUD</span></div>
           </div>
         ) : (
@@ -251,7 +249,7 @@ export const HudOverlay: React.FC = () => {
           <div className="w-full h-1 group-hover:h-2 bg-slate-300 dark:bg-white/10 rounded-full overflow-hidden transition-all duration-200 shadow-inner">
             <div
               className="h-full bg-gradient-to-r from-[#0B4DFF] via-indigo-600 to-blue-500 dark:from-cherenkov-blue dark:via-isotope dark:to-cherenkov-glow transition-all duration-100"
-              style={{ width: `${Math.max(2, scrollProgress * 100)}%` }}
+              style={{ width: `${Math.max(2, telemetry.scrollProgress * 100)}%` }}
             />
           </div>
         </div>

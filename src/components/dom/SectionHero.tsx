@@ -41,7 +41,7 @@ export const SectionHero: React.FC = () => {
               DELIVER.
             </span>
           </h1>
-          <p className="text-base sm:text-xl md:text-2xl font-mono text-[#3A4258] dark:text-[#B8BED0] max-w-3xl pt-2 leading-relaxed">
+          <p className="text-base sm:text-xl md:text-2xl font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-3xl pt-2 leading-relaxed">
             We are 404 Rebels — a focused web development and design team. We combine full-stack engineering, clean UI/UX design, and modern interactive technologies to build fast, reliable, and user-centric web applications.
           </p>
         </div>

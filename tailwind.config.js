@@ -48,6 +48,7 @@ export default {
         'elevated': 'var(--shadow-elevated)',
       },
       fontFamily: {
+        sans: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['"JetBrains Mono"', '"Space Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
         display: ['"Space Grotesk"', '"Syne"', 'Inter', 'system-ui', 'sans-serif'],
       },
