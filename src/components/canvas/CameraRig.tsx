@@ -5,7 +5,7 @@ import { useScrollEngine } from '../../context/ScrollContext';
 
 export const CameraRig: React.FC = () => {
   const { camera } = useThree();
-  const { scrollStore, isUnlocked, isDueling } = useScrollEngine();
+  const { scrollStore, isUnlocked } = useScrollEngine();
 
   // Create a CatmullRom spline curve for camera path across the 5 beats
   const curve = useMemo(() => {
@@ -40,11 +40,6 @@ export const CameraRig: React.FC = () => {
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
 
   useFrame((state, delta) => {
-    // If in 3D Duel mode or initial landing lockscreen, let DuelScene manage the cinematic combat camera
-    if (!isUnlocked || isDueling) {
-      return;
-    }
-
     const { scrollProgress, mousePos } = scrollStore.current;
 
     // If not unlocked yet (Beat 0), idle hover
