@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useScrollEngine } from '../../context/ScrollContext';
 import { useTheme } from '../../context/ThemeContext';
-import { Volume2, VolumeX, Activity, Sun, Moon, Disc3 } from 'lucide-react';
+import { Volume2, VolumeX, Activity, Sun, Moon, Disc3, Menu, X } from 'lucide-react';
 import { soundEngine } from '../../audio/SoundEngine';
 
 export const HudOverlay: React.FC = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const {
     scrollProgress,
     currentSection,
@@ -122,8 +123,82 @@ export const HudOverlay: React.FC = () => {
             )}
             <span className="text-[10px] text-slate-500 dark:text-titanium hidden sm:inline">[M]</span>
           </button>
+
+          {/* Mobile Hamburger Menu Toggle */}
+          <button
+            onClick={() => {
+              soundEngine.playClickBeep();
+              setIsMobileMenuOpen(!isMobileMenuOpen);
+            }}
+            onMouseEnter={() => soundEngine.playHoverBlip(1600)}
+            className="md:hidden flex items-center justify-center p-2 rounded-lg bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-2.5 py-2 border border-slate-200 dark:border-graphite-800 text-slate-800 dark:text-offwhite cursor-pointer shadow-sm"
+            aria-label="Toggle Navigation Menu"
+            title="Menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-4 h-4 text-blue-600 dark:text-cherenkov-glow" />
+            ) : (
+              <Menu className="w-4 h-4" />
+            )}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Drawer Menu Modal */}
+      {isMobileMenuOpen && (
+        <div className="pointer-events-auto md:hidden absolute top-16 left-3 right-3 z-50 bg-white/95 dark:bg-graphite-950/95 backdrop-blur-xl border border-slate-200 dark:border-graphite-800 rounded-2xl p-5 shadow-2xl space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-graphite-800 text-[11px] text-slate-500 dark:text-titanium">
+            <span className="font-bold text-slate-900 dark:text-offwhite">HADRON TRIAD // WAYPOINTS</span>
+            <span className="text-[10px] bg-blue-50 dark:bg-graphite-900 px-2 py-0.5 rounded text-blue-600 dark:text-cherenkov-glow font-bold">6 SECTIONS</span>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-2">
+            {waypoints.map((wp) => {
+              const isActive = currentSection === wp.index;
+              return (
+                <button
+                  key={wp.index}
+                  onClick={() => {
+                    soundEngine.playClickBeep();
+                    scrollToSection(wp.index);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`p-3 rounded-xl text-left text-xs tracking-wider transition-all cursor-pointer flex flex-col justify-between ${
+                    isActive
+                      ? 'bg-blue-600 dark:bg-cherenkov-blue text-white font-bold shadow-md shadow-blue-500/30'
+                      : 'bg-slate-100/90 dark:bg-graphite-900/90 text-slate-700 dark:text-titanium hover:bg-slate-200 dark:hover:bg-graphite-850'
+                  }`}
+                >
+                  <span className="text-[10px] opacity-75 font-mono">0{wp.index} //</span>
+                  <span className="font-bold font-mono text-[12px]">{wp.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Quick Mobile Controls */}
+          <div className="pt-3 border-t border-slate-200 dark:border-graphite-800 flex items-center justify-between text-xs">
+            <button
+              onClick={() => {
+                soundEngine.playClickBeep();
+                toggleTheme();
+              }}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100 dark:bg-graphite-900 text-slate-800 dark:text-offwhite cursor-pointer"
+            >
+              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-indigo-600" />}
+              <span className="text-[11px] font-mono">{isDark ? 'LIGHT MODE' : 'DARK MODE'}</span>
+            </button>
+
+            <button
+              onClick={toggleAudio}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100 dark:bg-graphite-900 text-slate-800 dark:text-offwhite cursor-pointer"
+            >
+              {isAudioMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-cherenkov-glow" />}
+              <span className="text-[11px] font-mono">{isAudioMuted ? 'MUTED' : 'AUDIO ON'}</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Bottom Telemetry & Interactive Progress Gauge */}
       <div className="flex items-end justify-between w-full">

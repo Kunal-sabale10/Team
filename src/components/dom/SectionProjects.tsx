@@ -83,14 +83,35 @@ export const SectionProjects: React.FC = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Tech Stack Tags */}
+              <div className="flex flex-wrap gap-1 pt-1">
+                {specimen.techStack.slice(0, 4).map((tech, tIdx) => (
+                  <span
+                    key={tIdx}
+                    className="text-[9px] px-2 py-0.5 rounded bg-blue-50/80 dark:bg-graphite-950/80 border border-blue-200/60 dark:border-graphite-800 text-blue-700 dark:text-cherenkov-glow font-medium"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Bottom Actions & Link */}
+            {/* Bottom Actions & Direct GitHub Link */}
             <div className="relative z-10 pt-4 mt-4 border-t border-slate-200 dark:border-graphite-800/80 text-xs flex items-center justify-between">
-              <div className="flex items-center space-x-1.5 overflow-hidden text-slate-600 dark:text-titanium text-[10px]">
+              <a
+                href={specimen.repoUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                onMouseEnter={() => soundEngine.playHoverBlip(1600)}
+                className="flex items-center space-x-1.5 overflow-hidden text-slate-600 dark:text-titanium hover:text-blue-600 dark:hover:text-cherenkov-glow text-[10px] transition-colors p-1 -m-1 rounded hover:bg-slate-100 dark:hover:bg-graphite-800"
+                title={`Open ${specimen.repoName} on GitHub`}
+              >
                 <Github className="w-3.5 h-3.5 text-blue-600 dark:text-cherenkov-glow shrink-0" />
-                <span className="truncate">{specimen.repoName}</span>
-              </div>
+                <span className="truncate underline font-bold">{specimen.repoName}</span>
+                <ExternalLink className="w-3 h-3 opacity-70" />
+              </a>
 
               <div className="flex items-center space-x-1 text-blue-600 dark:text-cherenkov-glow font-bold group-hover:translate-x-1 transition-transform text-[11px]">
                 <span>VIEW SPECS</span>

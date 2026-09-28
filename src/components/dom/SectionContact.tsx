@@ -110,7 +110,7 @@ export const SectionContact: React.FC = () => {
 
   const handleCopyEmail = () => {
     soundEngine.playClickBeep();
-    navigator.clipboard.writeText('kunal.sabale@gmail.com');
+    navigator.clipboard.writeText('kunalsabale10@gmail.com');
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2500);
   };
@@ -276,16 +276,29 @@ export const SectionContact: React.FC = () => {
             )}
           </div>
 
-          {/* Social Conduits & Email Copy */}
+          {/* Social Conduits, Direct Mailto & Email Copy */}
           <div className="pt-3 border-t border-slate-200 dark:border-graphite-800 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <button
-              onClick={handleCopyEmail}
-              onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-              className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-graphite-950 hover:bg-slate-200 dark:hover:bg-graphite-800 text-slate-700 dark:text-titanium hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer border border-slate-200 dark:border-graphite-800"
-            >
-              {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Mail className="w-3.5 h-3.5 text-blue-600 dark:text-cherenkov-glow" />}
-              <span>{isCopied ? 'EMAIL COPIED!' : 'kunal.sabale@gmail.com'}</span>
-            </button>
+            <div className="flex items-center space-x-2">
+              <a
+                href="mailto:kunalsabale10@gmail.com?subject=Collaboration%20with%20Hadron%20Triad"
+                onMouseEnter={() => soundEngine.playHoverBlip(1400)}
+                className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-md bg-blue-50 dark:bg-graphite-950 hover:bg-blue-100 dark:hover:bg-graphite-800 text-blue-700 dark:text-cherenkov-glow hover:underline transition-colors border border-blue-200 dark:border-graphite-800 font-bold"
+                title="Send Email via Mail client"
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>kunalsabale10@gmail.com</span>
+              </a>
+
+              <button
+                onClick={handleCopyEmail}
+                onMouseEnter={() => soundEngine.playHoverBlip(1400)}
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md bg-slate-100 dark:bg-graphite-950 hover:bg-slate-200 dark:hover:bg-graphite-800 text-slate-700 dark:text-titanium hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer border border-slate-200 dark:border-graphite-800 text-[11px]"
+                title="Copy email to clipboard"
+              >
+                {isCopied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
+                <span>{isCopied ? 'COPIED!' : 'COPY'}</span>
+              </button>
+            </div>
 
             <div className="flex items-center space-x-2">
               <a
