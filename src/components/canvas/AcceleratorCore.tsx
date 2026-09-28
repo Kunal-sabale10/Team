@@ -10,8 +10,10 @@ const AcceleratorBeamShader = {
     uTime: { value: 0 },
     uProgress: { value: 0 },
     uVelocity: { value: 0 },
-    uColorCore: { value: new THREE.Color('#0055ff') },
-    uColorGlow: { value: new THREE.Color('#00f0ff') },
+    uColorA: { value: new THREE.Color('#0055ff') },
+    uColorB: { value: new THREE.Color('#00f0ff') },
+    uBackground: { value: new THREE.Color('#07080a') },
+    uIsDark: { value: 1.0 },
   },
   vertexShader: `
     uniform float uTime;
@@ -41,8 +43,10 @@ const AcceleratorBeamShader = {
   fragmentShader: `
     uniform float uTime;
     uniform float uProgress;
-    uniform vec3 uColorCore;
-    uniform vec3 uColorGlow;
+    uniform vec3 uColorA;
+    uniform vec3 uColorB;
+    uniform vec3 uBackground;
+    uniform float uIsDark;
     varying vec2 vUv;
     varying vec3 vNormal;
     varying vec3 vPosition;
@@ -60,12 +64,18 @@ const AcceleratorBeamShader = {
       // Cherenkov radiation energy pulse
       float energyPulse = sin(vPosition.z * 0.4 - uTime * 4.0 - uProgress * 20.0) * 0.5 + 0.5;
       
-      vec3 finalColor = mix(uColorCore, uColorGlow, fresnel + energyPulse * 0.6);
+      vec3 finalColor = mix(uColorA, uColorB, fresnel + energyPulse * 0.6);
       
-      // Intense emission for postprocessing bloom threshold (> 1.2)
-      float alpha = clamp(fresnel * 1.8 + grid * 1.2 + energyPulse * 0.4, 0.05, 0.95);
-
-      gl_FragColor = vec4(finalColor * (1.6 + fresnel * 2.0), alpha);
+      if (uIsDark > 0.5) {
+        // Dark mode: High emission for bloom
+        float alpha = clamp(fresnel * 1.8 + grid * 1.2 + energyPulse * 0.4, 0.05, 0.95);
+        gl_FragColor = vec4(finalColor * (1.6 + fresnel * 2.0), alpha);
+      } else {
+        // Light mode: High contrast, rich saturated core, non-additive blend
+        float alpha = clamp(fresnel * 1.2 + grid * 1.0 + energyPulse * 0.4, 0.15, 0.9);
+        vec3 surfaceColor = mix(finalColor, uColorB * 0.8, grid * 0.4);
+        gl_FragColor = vec4(surfaceColor, alpha);
+      }
     }
   `,
 };
@@ -92,12 +102,26 @@ export const AcceleratorCore: React.FC = () => {
 
   useFrame((state, delta) => {
     const time = state.clock.getElapsedTime();
+    const damping = 1 - Math.exp(-5.5 * Math.min(delta, 0.1));
 
-    // Update custom shader uniforms
+    // Update custom shader uniforms with smooth theme lerp
     if (beamMaterialRef.current) {
+      const targetColorA = isDark ? new THREE.Color('#0055ff') : new THREE.Color('#003299');
+      const targetColorB = isDark ? new THREE.Color('#00f0ff') : new THREE.Color('#0047D4');
+      const targetBg = isDark ? new THREE.Color('#07080a') : new THREE.Color('#F7F5F0');
+
       beamMaterialRef.current.uniforms.uTime.value = time;
       beamMaterialRef.current.uniforms.uProgress.value = scrollProgress;
       beamMaterialRef.current.uniforms.uVelocity.value = velocity;
+      beamMaterialRef.current.uniforms.uColorA.value.lerp(targetColorA, damping);
+      beamMaterialRef.current.uniforms.uColorB.value.lerp(targetColorB, damping);
+      beamMaterialRef.current.uniforms.uBackground.value.lerp(targetBg, damping);
+      beamMaterialRef.current.uniforms.uIsDark.value = THREE.MathUtils.lerp(
+        beamMaterialRef.current.uniforms.uIsDark.value,
+        isDark ? 1.0 : 0.0,
+        damping
+      );
+      beamMaterialRef.current.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
     }
 
     // Subtle parallax tilt of core with mouse coordinates
@@ -164,7 +188,7 @@ export const AcceleratorCore: React.FC = () => {
           transparent: true,
           side: THREE.DoubleSide,
           depthWrite: false,
-          blending: THREE.AdditiveBlending,
+          blending: isDark ? THREE.AdditiveBlending : THREE.NormalBlending,
         })} ref={beamMaterialRef} attach="material" />
       </mesh>
 
@@ -175,11 +199,11 @@ export const AcceleratorCore: React.FC = () => {
       >
         <torusGeometry args={[3.2, 0.08, 12, 8]} />
         <meshStandardMaterial
-          color={isDark ? '#181a20' : '#cdd3df'}
-          emissive={isDark ? '#0055ff' : '#0044dd'}
-          emissiveIntensity={isDark ? 1.8 : 1.2}
-          roughness={0.25}
-          metalness={0.85}
+          color={isDark ? '#181a20' : '#1c222e'}
+          emissive={isDark ? '#0055ff' : '#003ecb'}
+          emissiveIntensity={isDark ? 1.8 : 0.8}
+          roughness={0.2}
+          metalness={0.9}
           toneMapped={false}
         />
       </instancedMesh>
@@ -189,9 +213,9 @@ export const AcceleratorCore: React.FC = () => {
         <mesh ref={focalSingularityRef}>
           <octahedronGeometry args={[1.2, 2]} />
           <meshStandardMaterial
-            color="#ffffff"
-            emissive="#00f0ff"
-            emissiveIntensity={3.2}
+            color={isDark ? "#ffffff" : "#003299"}
+            emissive={isDark ? "#00f0ff" : "#0047D4"}
+            emissiveIntensity={isDark ? 3.2 : 1.4}
             roughness={0.1}
             metalness={0.95}
             wireframe
@@ -203,15 +227,15 @@ export const AcceleratorCore: React.FC = () => {
         <mesh>
           <sphereGeometry args={[0.7, 24, 24]} />
           <meshBasicMaterial
-            color="#0055ff"
+            color={isDark ? "#0055ff" : "#0047D4"}
             wireframe={false}
             toneMapped={false}
           />
         </mesh>
 
         <pointLight
-          color="#00f0ff"
-          intensity={8.0}
+          color={isDark ? "#00f0ff" : "#0047D4"}
+          intensity={isDark ? 8.0 : 3.5}
           distance={15}
           decay={2}
         />
@@ -220,11 +244,11 @@ export const AcceleratorCore: React.FC = () => {
       {/* Auxiliary Structural Trusses (Left & Right Rails) */}
       <mesh position={[-4.5, 0, -20]}>
         <boxGeometry args={[0.15, 0.4, 85]} />
-        <meshStandardMaterial color="#232630" metalness={0.8} roughness={0.3} />
+        <meshStandardMaterial color={isDark ? "#232630" : "#2a313d"} metalness={0.8} roughness={0.3} />
       </mesh>
       <mesh position={[4.5, 0, -20]}>
         <boxGeometry args={[0.15, 0.4, 85]} />
-        <meshStandardMaterial color="#232630" metalness={0.8} roughness={0.3} />
+        <meshStandardMaterial color={isDark ? "#232630" : "#2a313d"} metalness={0.8} roughness={0.3} />
       </mesh>
     </group>
   );

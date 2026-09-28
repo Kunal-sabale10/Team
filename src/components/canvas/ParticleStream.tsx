@@ -22,9 +22,9 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
     const sc = new Float32Array(count);
     const initZ = new Float32Array(count);
 
-    const color1 = isDark ? new THREE.Color('#0055ff') : new THREE.Color('#0044cc');
+    const color1 = isDark ? new THREE.Color('#0055ff') : new THREE.Color('#003ecb');
     const color2 = isDark ? new THREE.Color('#00f0ff') : new THREE.Color('#0284c7');
-    const color3 = isDark ? new THREE.Color('#ffffff') : new THREE.Color('#4338ca');
+    const color3 = isDark ? new THREE.Color('#ffffff') : new THREE.Color('#1e1b4b');
 
     for (let i = 0; i < count; i++) {
       // Cylinder distribution along beam axis
@@ -48,7 +48,7 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
     }
 
     return [pos, col, sc, initZ];
-  }, [particleCount, fps]);
+  }, [particleCount, fps, isDark]);
 
   useFrame((state, delta) => {
     if (!pointsRef.current) return;

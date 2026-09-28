@@ -17,8 +17,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('hadron_theme_preference');
+          var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+          var root = document.documentElement;
+          root.classList.remove('light', 'dark');
+          root.classList.add(theme);
+          root.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body class="bg-slate-100 dark:bg-graphite-950 text-slate-900 dark:text-offwhite overflow-x-hidden font-mono transition-colors duration-300">
+  <body class="bg-theme-base text-theme-text-main overflow-x-hidden font-mono transition-colors duration-400">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

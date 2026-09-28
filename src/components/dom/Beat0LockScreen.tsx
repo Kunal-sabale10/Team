@@ -50,15 +50,15 @@ export const Beat0LockScreen: React.FC = () => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col justify-between p-6 sm:p-12 transition-all duration-1000 bg-slate-100/95 dark:bg-graphite-950/95 backdrop-blur-2xl text-slate-900 dark:text-offwhite ${
+      className={`fixed inset-0 z-50 flex flex-col justify-between p-6 sm:p-12 transition-all duration-1000 bg-theme-base/95 backdrop-blur-2xl text-theme-text-main ${
         isFadingOut ? 'opacity-0 pointer-events-none scale-105' : 'opacity-100'
       }`}
     >
       {/* Top Protocol Telemetry Header */}
-      <div className="flex items-center justify-between border-b border-slate-300 dark:border-graphite-800/80 pb-4 font-mono text-xs text-slate-600 dark:text-titanium">
+      <div className="flex items-center justify-between border-b border-theme-border-subtle pb-4 font-mono text-xs text-theme-text-muted">
         <div className="flex items-center space-x-3">
-          <div className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cherenkov-glow animate-ping" />
-          <span className="text-slate-900 dark:text-offwhite font-bold tracking-widest">HADRON TRIAD // COLLECTIVE PROTOCOL</span>
+          <div className="w-2.5 h-2.5 rounded-full bg-theme-accent dark:bg-cherenkov-glow animate-ping" />
+          <span className="text-theme-text-main font-bold tracking-widest">HADRON TRIAD // COLLECTIVE PROTOCOL</span>
         </div>
         
         <div className="flex items-center space-x-4">
@@ -77,71 +77,71 @@ export const Beat0LockScreen: React.FC = () => {
               toggleTheme();
             }}
             onMouseEnter={() => soundEngine.playHoverBlip(1800)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white/90 dark:bg-graphite-900/90 border border-slate-300 dark:border-graphite-700 text-slate-800 dark:text-offwhite hover:border-blue-500 dark:hover:border-cherenkov-glow text-xs cursor-pointer shadow-sm transition-all"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-theme-surface border border-theme-border-subtle text-theme-text-main hover:border-theme-accent text-xs cursor-pointer shadow-ambient transition-all"
             title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode (Shortcut: T)`}
           >
-            {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-indigo-600" />}
+            {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-theme-accent" />}
             <span className="font-bold text-[11px]">{isDark ? 'LIGHT MODE' : 'DARK MODE'}</span>
-            <span className="text-[10px] text-slate-400 dark:text-titanium">[T]</span>
+            <span className="text-[10px] text-theme-text-dim">[T]</span>
           </button>
         </div>
       </div>
 
       {/* Center Initialization Terminal */}
       <div className="max-w-2xl mx-auto my-auto w-full text-center space-y-8 py-8">
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded border border-cherenkov-blue/40 bg-cherenkov-blue/10 text-cherenkov-glow text-xs font-mono tracking-widest uppercase">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded border border-theme-accent/30 bg-theme-surface-subtle text-theme-accent dark:border-cherenkov-blue/40 dark:bg-cherenkov-blue/10 dark:text-cherenkov-glow text-xs font-mono tracking-widest uppercase">
           <Users className="w-3.5 h-3.5" />
           <span>Triad Collective Engineering Standby</span>
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-tight text-slate-900 dark:text-offwhite leading-none">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-tight text-theme-text-main leading-none">
             HADRON<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cherenkov-glow dark:via-white dark:to-cherenkov-blue">
               COLLECTIVE
             </span>
           </h1>
-          <p className="text-slate-600 dark:text-titanium text-sm sm:text-base max-w-md mx-auto font-mono leading-relaxed">
+          <p className="text-theme-text-muted text-sm sm:text-base max-w-md mx-auto font-mono leading-relaxed">
             The collaborative creative engineering matrix of Kunal Sabale, Animesh Dabhade &amp; Rajani Mourya.
           </p>
         </div>
 
         {/* 3 Node Micro Matrix */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto text-left font-mono">
-          <div className="p-2.5 rounded bg-white/85 dark:bg-graphite-900/80 border border-slate-200 dark:border-graphite-800 space-y-1 shadow-sm">
-            <div className="flex items-center space-x-1.5 text-blue-600 dark:text-cherenkov-glow text-[10px]">
+          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle space-y-1 shadow-ambient">
+            <div className="flex items-center space-x-1.5 text-theme-accent dark:text-cherenkov-glow text-[10px]">
               <Cpu className="w-3 h-3" />
               <span className="font-bold">KUNAL SABALE</span>
             </div>
-            <div className="text-[10px] text-slate-500 dark:text-titanium">THE BUILD // ARCHITECT</div>
+            <div className="text-[10px] text-theme-text-dim">THE BUILD // ARCHITECT</div>
           </div>
 
-          <div className="p-2.5 rounded bg-white/85 dark:bg-graphite-900/80 border border-slate-200 dark:border-graphite-800 space-y-1 shadow-sm">
+          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle space-y-1 shadow-ambient">
             <div className="flex items-center space-x-1.5 text-emerald-600 dark:text-isotope text-[10px]">
               <Sparkles className="w-3 h-3" />
               <span className="font-bold">ANIMESH DABHADE</span>
             </div>
-            <div className="text-[10px] text-slate-500 dark:text-titanium">THE IDEA // STRATEGY</div>
+            <div className="text-[10px] text-theme-text-dim">THE IDEA // STRATEGY</div>
           </div>
 
-          <div className="p-2.5 rounded bg-white/85 dark:bg-graphite-900/80 border border-slate-200 dark:border-graphite-800 space-y-1 shadow-sm">
-            <div className="flex items-center space-x-1.5 text-blue-600 dark:text-cherenkov-glow text-[10px]">
+          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle space-y-1 shadow-ambient">
+            <div className="flex items-center space-x-1.5 text-theme-accent dark:text-cherenkov-glow text-[10px]">
               <Palette className="w-3 h-3" />
               <span className="font-bold">RAJANI MOURYA</span>
             </div>
-            <div className="text-[10px] text-slate-500 dark:text-titanium">PRESENTATION &amp; DEV</div>
+            <div className="text-[10px] text-theme-text-dim">PRESENTATION &amp; DEV</div>
           </div>
         </div>
 
         {/* Calibration Progress Bar */}
         <div className="w-full max-w-xs mx-auto space-y-2">
-          <div className="flex justify-between text-[11px] font-mono text-slate-500 dark:text-titanium">
+          <div className="flex justify-between text-[11px] font-mono text-theme-text-dim">
             <span>TRIAD SYNCHRONIZATION</span>
-            <span className="text-blue-600 dark:text-cherenkov-glow font-bold">{Math.min(100, calibrationProgress)}%</span>
+            <span className="text-theme-accent dark:text-cherenkov-glow font-bold">{Math.min(100, calibrationProgress)}%</span>
           </div>
-          <div className="w-full h-1 bg-slate-200 dark:bg-graphite-800 rounded overflow-hidden">
+          <div className="w-full h-1 bg-theme-border-subtle rounded overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cherenkov-blue dark:via-isotope dark:to-cherenkov-glow transition-all duration-200"
+              className="h-full bg-gradient-to-r from-theme-accent via-indigo-600 to-sky-500 dark:from-cherenkov-blue dark:via-isotope dark:to-cherenkov-glow transition-all duration-200"
               style={{ width: `${Math.min(100, calibrationProgress)}%` }}
             />
           </div>
@@ -152,7 +152,7 @@ export const Beat0LockScreen: React.FC = () => {
           <button
             onClick={handleEngage}
             onMouseEnter={() => soundEngine.playHoverBlip(1600)}
-            className="group relative inline-flex items-center space-x-4 px-8 py-4 bg-blue-600 hover:bg-blue-700 dark:bg-cherenkov-blue dark:hover:bg-cherenkov-glow text-white dark:hover:text-graphite-950 font-mono text-sm tracking-widest uppercase font-semibold transition-all duration-300 rounded shadow-lg shadow-blue-500/25 dark:shadow-cherenkov-blue/30 cursor-pointer overflow-hidden"
+            className="group relative inline-flex items-center space-x-4 px-8 py-4 bg-theme-accent hover:opacity-95 dark:bg-cherenkov-blue dark:hover:bg-cherenkov-glow text-white dark:hover:text-graphite-950 font-mono text-sm tracking-widest uppercase font-semibold transition-all duration-300 rounded shadow-lg shadow-blue-500/25 dark:shadow-cherenkov-blue/30 cursor-pointer overflow-hidden"
           >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <Volume2 className="w-4 h-4" />
@@ -161,14 +161,14 @@ export const Beat0LockScreen: React.FC = () => {
           </button>
         </div>
 
-        <p className="text-[11px] font-mono text-slate-500 dark:text-titanium/80 flex items-center justify-center gap-1.5">
-          <ShieldAlert className="w-3.5 h-3.5 text-blue-600 dark:text-cherenkov-glow" />
+        <p className="text-[11px] font-mono text-theme-text-dim flex items-center justify-center gap-1.5">
+          <ShieldAlert className="w-3.5 h-3.5 text-theme-accent dark:text-cherenkov-glow" />
           Press [ENTER] or click to unlock collective 3D shader engine &amp; audio
         </p>
       </div>
 
       {/* Bottom Telemetry Footer */}
-      <div className="flex items-center justify-between border-t border-slate-300 dark:border-graphite-800/80 pt-4 font-mono text-xs text-slate-500 dark:text-titanium">
+      <div className="flex items-center justify-between border-t border-theme-border-subtle pt-4 font-mono text-xs text-theme-text-dim">
         <span>COLLECTIVE: KUNAL • ANIMESH • RAJANI</span>
         <span className="hidden sm:inline">60 / 120 FPS SYNCHRONIZED TIER</span>
         <span>LATENCY: 0.12MS</span>

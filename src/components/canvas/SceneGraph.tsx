@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useMemo } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 import { AcceleratorCore } from './AcceleratorCore';
 import { ParticleStream } from './ParticleStream';
 import { CameraRig } from './CameraRig';
@@ -29,6 +30,109 @@ const WebGLTelemetryTracker: React.FC = () => {
   return null;
 };
 
+// Smooth 3D Scene Theme Synchronizer (Lerps background, fog, and exposure)
+const SceneThemeSynchronizer: React.FC = () => {
+  const { scene, gl } = useThree();
+  const { isDark } = useTheme();
+
+  const targetBg = useMemo(
+    () => new THREE.Color(isDark ? '#07080a' : '#F7F5F0'),
+    [isDark]
+  );
+
+  useFrame((_, delta) => {
+    // 0.5 - 0.8s smooth interpolation
+    const damping = 1 - Math.exp(-5.5 * Math.min(delta, 0.1));
+
+    // 1. Lerp scene.background to eliminate any box or seam
+    if (scene.background && scene.background instanceof THREE.Color) {
+      scene.background.lerp(targetBg, damping);
+    } else {
+      scene.background = targetBg.clone();
+    }
+
+    // 2. Lerp scene.fog color to match exactly
+    if (scene.fog && 'color' in scene.fog && (scene.fog as THREE.Fog).color) {
+      (scene.fog as THREE.Fog).color.lerp(targetBg, damping);
+    }
+
+    // 3. Adjust tone mapping exposure so light mode is never blown out
+    const targetExposure = isDark ? 1.05 : 0.88;
+    gl.toneMappingExposure = THREE.MathUtils.lerp(gl.toneMappingExposure, targetExposure, damping);
+  });
+
+  return null;
+};
+
+// Theme-Aware Daylight & Cyber Lights with smooth frame-by-frame interpolation
+const SceneLights: React.FC = () => {
+  const { isDark } = useTheme();
+  const ambientRef = useRef<THREE.AmbientLight>(null);
+  const keyLightRef = useRef<THREE.DirectionalLight>(null);
+  const rimLightRef = useRef<THREE.DirectionalLight>(null);
+  const pointLightRef = useRef<THREE.PointLight>(null);
+
+  const targetColors = useMemo(() => ({
+    ambient: new THREE.Color(isDark ? '#ffffff' : '#FAF7F2'),
+    key: new THREE.Color(isDark ? '#ffffff' : '#FFFDF9'),
+    rim: new THREE.Color(isDark ? '#0055ff' : '#003eb8'),
+    point: new THREE.Color(isDark ? '#00f0ff' : '#0047D4'),
+  }), [isDark]);
+
+  useFrame((_, delta) => {
+    const damping = 1 - Math.exp(-5.5 * Math.min(delta, 0.1));
+
+    if (ambientRef.current) {
+      const targetIntensity = isDark ? 0.35 : 0.95;
+      ambientRef.current.intensity = THREE.MathUtils.lerp(ambientRef.current.intensity, targetIntensity, damping);
+      ambientRef.current.color.lerp(targetColors.ambient, damping);
+    }
+
+    if (keyLightRef.current) {
+      const targetIntensity = isDark ? 1.8 : 2.4;
+      keyLightRef.current.intensity = THREE.MathUtils.lerp(keyLightRef.current.intensity, targetIntensity, damping);
+      keyLightRef.current.color.lerp(targetColors.key, damping);
+    }
+
+    if (rimLightRef.current) {
+      const targetIntensity = isDark ? 2.4 : 1.3;
+      rimLightRef.current.intensity = THREE.MathUtils.lerp(rimLightRef.current.intensity, targetIntensity, damping);
+      rimLightRef.current.color.lerp(targetColors.rim, damping);
+    }
+
+    if (pointLightRef.current) {
+      const targetIntensity = isDark ? 4.5 : 2.2;
+      pointLightRef.current.intensity = THREE.MathUtils.lerp(pointLightRef.current.intensity, targetIntensity, damping);
+      pointLightRef.current.color.lerp(targetColors.point, damping);
+    }
+  });
+
+  return (
+    <>
+      <ambientLight ref={ambientRef} intensity={isDark ? 0.35 : 0.95} />
+      <directionalLight
+        ref={keyLightRef}
+        position={[10, 15, 8]}
+        intensity={isDark ? 1.8 : 2.4}
+        color="#ffffff"
+      />
+      <directionalLight
+        ref={rimLightRef}
+        position={[-12, -8, -10]}
+        intensity={isDark ? 2.4 : 1.3}
+        color={isDark ? '#0055ff' : '#003eb8'}
+      />
+      <pointLight
+        ref={pointLightRef}
+        position={[0, 3, -15]}
+        intensity={isDark ? 4.5 : 2.2}
+        color={isDark ? '#00f0ff' : '#0047D4'}
+        distance={35}
+      />
+    </>
+  );
+};
+
 export const SceneGraph: React.FC = () => {
   const { isMobile, isWebGLAvailable, isReducedMotion } = useScrollEngine();
   const { isDark } = useTheme();
@@ -36,23 +140,16 @@ export const SceneGraph: React.FC = () => {
   // Graceful Fallback if WebGL is unsupported or disabled
   if (!isWebGLAvailable) {
     return (
-      <div className="fixed inset-0 z-0 pointer-events-none w-full h-full overflow-hidden bg-slate-100 dark:bg-graphite-950 flex items-center justify-center">
+      <div className="fixed inset-0 z-0 pointer-events-none w-full h-full overflow-hidden bg-theme-canvas flex items-center justify-center">
         <div className="absolute inset-0 tech-grid opacity-20" />
-        <div className="relative text-center p-6 max-w-md font-mono text-xs text-slate-600 dark:text-titanium space-y-2">
-          <AlertCircle className="w-8 h-8 text-blue-600 dark:text-cherenkov-glow mx-auto animate-pulse" />
-          <div className="font-bold text-slate-900 dark:text-offwhite">2D COMPATIBILITY FALLBACK ACTIVE</div>
+        <div className="relative text-center p-6 max-w-md font-mono text-xs text-theme-text-muted space-y-2">
+          <AlertCircle className="w-8 h-8 text-theme-accent mx-auto animate-pulse" />
+          <div className="font-bold text-theme-text-main">2D COMPATIBILITY FALLBACK ACTIVE</div>
           <p>WebGL hardware acceleration is unavailable. Displaying optimized editorial interface.</p>
         </div>
       </div>
     );
   }
-
-  // Theme-specific 3D scene parameters
-  const bgColor = isDark ? '#07080a' : '#eef2f8';
-  const ambientIntensity = isDark ? 0.35 : 0.85;
-  const keyLightIntensity = isDark ? 1.8 : 2.2;
-  const rimLightColor = isDark ? '#0055ff' : '#0044dd';
-  const pointLightColor = isDark ? '#00f0ff' : '#0066ff';
 
   // Cap DPR: max 1.5, or 1.0 on mobile devices
   const clampedDpr: [number, number] = [
@@ -61,7 +158,7 @@ export const SceneGraph: React.FC = () => {
   ];
 
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none w-full h-full overflow-hidden bg-slate-100 dark:bg-graphite-950 transition-colors duration-700">
+    <div className="fixed inset-0 z-0 pointer-events-none w-full h-full overflow-hidden bg-theme-canvas transition-colors duration-500">
       <Canvas
         camera={{ position: [0, 0, 16], fov: 48, near: 0.1, far: 150 }}
         dpr={clampedDpr}
@@ -72,29 +169,12 @@ export const SceneGraph: React.FC = () => {
           depth: true,
         }}
       >
-        <color attach="background" args={[bgColor]} />
-        <fog attach="fog" args={[bgColor, 25, 75]} />
+        <color attach="background" args={[isDark ? '#07080a' : '#F7F5F0']} />
+        <fog attach="fog" args={[isDark ? '#07080a' : '#F7F5F0', 25, 75]} />
 
-        <ambientLight intensity={ambientIntensity} />
-
-        <directionalLight
-          position={[10, 15, 8]}
-          intensity={keyLightIntensity}
-          color="#ffffff"
-        />
-
-        <directionalLight
-          position={[-12, -8, -10]}
-          intensity={isDark ? 2.4 : 1.8}
-          color={rimLightColor}
-        />
-
-        <pointLight
-          position={[0, 3, -15]}
-          intensity={isDark ? 4.5 : 2.8}
-          color={pointLightColor}
-          distance={35}
-        />
+        {/* Dynamic Frame-by-Frame Theme Synchronizers */}
+        <SceneThemeSynchronizer />
+        <SceneLights />
 
         <CameraRig />
         <AcceleratorCore />

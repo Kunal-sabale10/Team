@@ -3,11 +3,63 @@
 @tailwind utilities;
 
 :root {
-  --color-graphite-950: #060608;
-  --color-graphite-900: #0a0a0c;
-  --color-cherenkov: #0055ff;
-  --color-cyan: #00f0ff;
-  --color-isotope: #00ff88;
+  /* Warm Editorial Light Theme Base (WCAG AA Compliant) */
+  --bg-base: #F7F5F0;
+  --bg-canvas: #F7F5F0;
+  --bg-surface: rgba(255, 255, 255, 0.78);
+  --bg-surface-elevated: rgba(255, 255, 255, 0.92);
+  --bg-surface-subtle: rgba(240, 237, 230, 0.65);
+  
+  --text-main: #0E0E12;
+  --text-muted: #4A4A54;
+  --text-dim: #767682;
+  
+  --accent-primary: #0047D4;
+  --accent-hover: #0037A8;
+  --accent-secondary: #003299;
+  --accent-glow: #0284C7;
+  --accent-success: #057A44;
+  
+  --border-subtle: rgba(14, 14, 18, 0.09);
+  --border-medium: rgba(14, 14, 18, 0.16);
+  --border-accent: rgba(0, 71, 212, 0.28);
+  
+  --shadow-ambient: 0 10px 30px rgba(14, 14, 18, 0.06), 0 1px 3px rgba(14, 14, 18, 0.04);
+  --shadow-elevated: 0 18px 45px rgba(0, 71, 212, 0.08), 0 2px 6px rgba(14, 14, 18, 0.05);
+
+  --color-cherenkov: #0047D4;
+  --color-cyan: #0284C7;
+  --color-isotope: #057A44;
+}
+
+:root.dark, html.dark, html[data-theme="dark"] {
+  /* Obsidian Brutalist Dark Theme (Original design 100% preserved) */
+  --bg-base: #060608;
+  --bg-canvas: #07080A;
+  --bg-surface: rgba(10, 10, 12, 0.85);
+  --bg-surface-elevated: rgba(17, 18, 22, 0.90);
+  --bg-surface-subtle: rgba(24, 26, 32, 0.70);
+  
+  --text-main: #EDEDF0;
+  --text-muted: #8E94A0;
+  --text-dim: #5A606E;
+  
+  --accent-primary: #00F0FF;
+  --accent-hover: #33F5FF;
+  --accent-secondary: #0055FF;
+  --accent-glow: #00F0FF;
+  --accent-success: #00FF88;
+  
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.14);
+  --border-accent: rgba(0, 240, 255, 0.35);
+  
+  --shadow-ambient: 0 10px 30px rgba(0, 0, 0, 0.6);
+  --shadow-elevated: 0 18px 45px rgba(0, 85, 255, 0.25);
+
+  --color-cherenkov: #0055FF;
+  --color-cyan: #00F0FF;
+  --color-isotope: #00FF88;
 }
 
 /* Custom Scrollbar */
@@ -18,20 +70,23 @@
   background: #0a0a0c;
 }
 html:not(.dark) ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #F7F5F0;
 }
 ::-webkit-scrollbar-thumb {
   background: #232630;
   border-radius: 2px;
 }
 html:not(.dark) ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #D8D4CA;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #0055ff;
 }
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: #0047D4;
+}
 
-/* Subtle CRT / Telemetry Scanlines */
+/* Subtle CRT / Telemetry Scanlines (Silenced in Light Mode) */
 .scanlines {
   background: linear-gradient(
     rgba(18, 16, 16, 0) 50%, 
@@ -45,6 +100,9 @@ html:not(.dark) ::-webkit-scrollbar-thumb {
   background-size: 100% 3px, 6px 100%;
   pointer-events: none;
 }
+html:not(.dark) .scanlines {
+  display: none;
+}
 
 /* Engineering Technical Grid Background */
 .tech-grid {
@@ -55,8 +113,8 @@ html:not(.dark) ::-webkit-scrollbar-thumb {
 }
 html:not(.dark) .tech-grid {
   background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(14, 14, 18, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(14, 14, 18, 0.04) 1px, transparent 1px);
 }
 
 /* Subtle Noise Texture for Flat Backgrounds */
