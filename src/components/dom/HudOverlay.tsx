@@ -98,15 +98,18 @@ export const HudOverlay: React.FC = () => {
               toggleTheme();
             }}
             onMouseEnter={() => soundEngine.playHoverBlip(1800)}
-            className="flex items-center space-x-1.5 bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-3 py-2 rounded-lg border border-slate-200 dark:border-graphite-800 hover:border-blue-500 dark:hover:border-cherenkov-blue/60 text-slate-800 dark:text-offwhite transition-colors cursor-pointer shadow-sm"
-            title={`Toggle Theme (Shortcut: T) - Current: ${theme}`}
+            className="flex items-center space-x-2 bg-white/90 dark:bg-graphite-950/90 backdrop-blur-md px-3 py-2 rounded-lg border border-slate-300 dark:border-graphite-800 hover:border-blue-500 dark:hover:border-cherenkov-blue text-slate-800 dark:text-offwhite transition-all cursor-pointer shadow-sm group"
+            title={`Toggle Theme (Shortcut: T) - Currently ${theme.toUpperCase()}`}
           >
             {isDark ? (
-              <Sun className="w-4 h-4 text-amber-400 animate-pulse" />
+              <Sun className="w-4 h-4 text-amber-500 group-hover:rotate-45 transition-transform" />
             ) : (
-              <Moon className="w-4 h-4 text-indigo-600" />
+              <Moon className="w-4 h-4 text-indigo-600 group-hover:-rotate-12 transition-transform" />
             )}
-            <span className="text-[10px] text-slate-500 dark:text-titanium hidden sm:inline">[T]</span>
+            <span className="text-[11px] font-bold font-mono hidden sm:inline">
+              {isDark ? 'LIGHT' : 'DARK'}
+            </span>
+            <span className="text-[10px] text-slate-400 dark:text-titanium">[T]</span>
           </button>
 
           {/* Audio Toggle Button [M] */}

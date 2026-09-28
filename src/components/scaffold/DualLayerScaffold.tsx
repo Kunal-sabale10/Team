@@ -2,6 +2,7 @@ import React from 'react';
 import { SceneGraph } from '../canvas/SceneGraph';
 import { HudOverlay } from '../dom/HudOverlay';
 import { MagneticCursor } from '../dom/MagneticCursor';
+import { FloatingThemeToggle } from '../dom/FloatingThemeToggle';
 import { Beat0LockScreen } from '../dom/Beat0LockScreen';
 import { SectionHero } from '../dom/SectionHero';
 import { SectionAbout } from '../dom/SectionAbout';
@@ -20,8 +21,11 @@ export const DualLayerScaffold: React.FC = () => {
       {/* Layer 1: Fixed WebGL 3D Canvas (z-index: 0) */}
       <SceneGraph />
 
-      {/* Layer 2: Fixed HUD Telemetry, Navigation & Theme Toggle (z-index: 40) */}
+      {/* Layer 2: Fixed HUD Telemetry, Navigation & Top Bar (z-index: 40) */}
       <HudOverlay />
+
+      {/* Layer 2.5: Always Visible Floating Theme Toggle (z-index: 50) */}
+      <FloatingThemeToggle />
 
       {/* Layer 3: Magnetic Cursor (z-index: 50) */}
       <MagneticCursor />
