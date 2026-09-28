@@ -55,10 +55,10 @@ export const Beat0LockScreen: React.FC = () => {
       }`}
     >
       {/* Top Protocol Telemetry Header */}
-      <div className="flex items-center justify-between border-b border-theme-border-subtle pb-4 font-mono text-xs text-theme-text-muted">
+      <div className="flex items-center justify-between border-b border-theme-border-subtle dark:border-white/10 pb-4 font-mono text-xs text-theme-text-muted dark:text-[#B8BED0]">
         <div className="flex items-center space-x-3">
           <div className="w-2.5 h-2.5 rounded-full bg-theme-accent dark:bg-cherenkov-glow animate-ping" />
-          <span className="text-theme-text-main font-bold tracking-widest">HADRON TRIAD // COLLECTIVE PROTOCOL</span>
+          <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold tracking-widest">HADRON TRIAD // COLLECTIVE PROTOCOL</span>
         </div>
         
         <div className="flex items-center space-x-4">
@@ -77,12 +77,12 @@ export const Beat0LockScreen: React.FC = () => {
               toggleTheme();
             }}
             onMouseEnter={() => soundEngine.playHoverBlip(1800)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-theme-surface border border-theme-border-subtle text-theme-text-main hover:border-theme-accent text-xs cursor-pointer shadow-ambient transition-all"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-theme-surface border border-theme-border-subtle dark:border-white/10 text-theme-text-main dark:text-[#F2F4F8] hover:border-theme-accent text-xs cursor-pointer shadow-ambient transition-all"
             title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode (Shortcut: T)`}
           >
             {isDark ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-theme-accent" />}
             <span className="font-bold text-[11px]">{isDark ? 'LIGHT MODE' : 'DARK MODE'}</span>
-            <span className="text-[10px] text-theme-text-dim">[T]</span>
+            <span className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">[T]</span>
           </button>
         </div>
       </div>
@@ -95,51 +95,51 @@ export const Beat0LockScreen: React.FC = () => {
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-tight text-theme-text-main leading-none">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-tight text-theme-text-main dark:text-[#F2F4F8] leading-none">
             HADRON<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-sky-300 dark:via-white dark:to-blue-500">
               COLLECTIVE
             </span>
           </h1>
-          <p className="text-theme-text-muted text-sm sm:text-base max-w-md mx-auto font-mono leading-relaxed">
+          <p className="text-theme-text-muted dark:text-[#B8BED0] text-sm sm:text-base max-w-md mx-auto font-mono leading-relaxed">
             The collaborative creative engineering matrix of Kunal Sabale, Animesh Dabhade &amp; Rajani Mourya.
           </p>
         </div>
 
         {/* 3 Node Micro Matrix */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto text-left font-mono">
-          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle space-y-1 shadow-ambient">
+          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle dark:border-white/10 space-y-1 shadow-ambient">
             <div className="flex items-center space-x-1.5 text-theme-accent dark:text-cherenkov-glow text-[10px]">
               <Cpu className="w-3 h-3" />
               <span className="font-bold">KUNAL SABALE</span>
             </div>
-            <div className="text-[10px] text-theme-text-dim">THE BUILD // ARCHITECT</div>
+            <div className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">THE BUILD // ARCHITECT</div>
           </div>
 
-          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle space-y-1 shadow-ambient">
+          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle dark:border-white/10 space-y-1 shadow-ambient">
             <div className="flex items-center space-x-1.5 text-emerald-600 dark:text-isotope text-[10px]">
               <Sparkles className="w-3 h-3" />
               <span className="font-bold">ANIMESH DABHADE</span>
             </div>
-            <div className="text-[10px] text-theme-text-dim">THE IDEA // STRATEGY</div>
+            <div className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">THE IDEA // STRATEGY</div>
           </div>
 
-          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle space-y-1 shadow-ambient">
+          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle dark:border-white/10 space-y-1 shadow-ambient">
             <div className="flex items-center space-x-1.5 text-theme-accent dark:text-cherenkov-glow text-[10px]">
               <Palette className="w-3 h-3" />
               <span className="font-bold">RAJANI MOURYA</span>
             </div>
-            <div className="text-[10px] text-theme-text-dim">PRESENTATION &amp; DEV</div>
+            <div className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">PRESENTATION &amp; DEV</div>
           </div>
         </div>
 
         {/* Calibration Progress Bar */}
         <div className="w-full max-w-xs mx-auto space-y-2">
-          <div className="flex justify-between text-[11px] font-mono text-theme-text-dim">
+          <div className="flex justify-between text-[11px] font-mono text-theme-text-dim dark:text-[#8A91A6]">
             <span>TRIAD SYNCHRONIZATION</span>
             <span className="text-theme-accent dark:text-cherenkov-glow font-bold">{Math.min(100, calibrationProgress)}%</span>
           </div>
-          <div className="w-full h-1 bg-theme-border-subtle rounded overflow-hidden">
+          <div className="w-full h-1 bg-theme-border-subtle dark:bg-white/10 rounded overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-theme-accent via-indigo-600 to-sky-500 dark:from-cherenkov-blue dark:via-isotope dark:to-cherenkov-glow transition-all duration-200"
               style={{ width: `${Math.min(100, calibrationProgress)}%` }}
@@ -161,14 +161,14 @@ export const Beat0LockScreen: React.FC = () => {
           </button>
         </div>
 
-        <p className="text-[11px] font-mono text-theme-text-dim flex items-center justify-center gap-1.5">
+        <p className="text-[11px] font-mono text-theme-text-dim dark:text-[#8A91A6] flex items-center justify-center gap-1.5">
           <ShieldAlert className="w-3.5 h-3.5 text-theme-accent dark:text-cherenkov-glow" />
           Press [ENTER] or click to unlock collective 3D shader engine &amp; audio
         </p>
       </div>
 
       {/* Bottom Telemetry Footer */}
-      <div className="flex items-center justify-between border-t border-theme-border-subtle pt-4 font-mono text-xs text-theme-text-dim">
+      <div className="flex items-center justify-between border-t border-theme-border-subtle dark:border-white/10 pt-4 font-mono text-xs text-theme-text-dim dark:text-[#8A91A6]">
         <span>COLLECTIVE: KUNAL • ANIMESH • RAJANI</span>
         <span className="hidden sm:inline">60 / 120 FPS SYNCHRONIZED TIER</span>
         <span>LATENCY: 0.12MS</span>

@@ -9,7 +9,7 @@ interface ParticleStreamProps {
 }
 
 export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 2400 }) => {
-  const { scrollProgress, velocity, mousePos, fps } = useScrollEngine();
+  const { scrollProgress, velocity, mousePos, fps, currentSection } = useScrollEngine();
   const { isDark } = useTheme();
   const pointsRef = useRef<THREE.Points>(null);
 
@@ -102,10 +102,10 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
         />
       </bufferGeometry>
       <pointsMaterial
-        size={isDark ? 0.058 : 0.085}
+        size={isDark ? 0.046 : 0.085}
         vertexColors
         transparent
-        opacity={isDark ? 0.58 : 0.9}
+        opacity={isDark ? (currentSection <= 1 ? 0.45 : 0.22) : 0.9}
         blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
         depthWrite={false}
       />

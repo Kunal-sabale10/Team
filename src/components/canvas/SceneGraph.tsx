@@ -34,6 +34,7 @@ const WebGLTelemetryTracker: React.FC = () => {
 const SceneThemeSynchronizer: React.FC = () => {
   const { scene, gl } = useThree();
   const { isDark } = useTheme();
+  const { currentSection } = useScrollEngine();
 
   const targetBg = useMemo(
     () => new THREE.Color(isDark ? '#0C0D14' : '#F7F5F0'),
@@ -56,8 +57,10 @@ const SceneThemeSynchronizer: React.FC = () => {
       (scene.fog as THREE.Fog).color.lerp(targetBg, damping);
     }
 
-    // 3. Adjust tone mapping exposure so dark mode does not clip highlights
-    const targetExposure = isDark ? 0.95 : 0.88;
+    // 3. Dynamic Section-based 3D Dimming:
+    // Sections 2-6: dim to 55-65% (0.58), return to full (0.92) in Hero
+    const isHero = currentSection <= 1;
+    const targetExposure = isDark ? (isHero ? 0.92 : 0.58) : (isHero ? 0.88 : 0.72);
     gl.toneMappingExposure = THREE.MathUtils.lerp(gl.toneMappingExposure, targetExposure, damping);
   });
 
@@ -67,6 +70,7 @@ const SceneThemeSynchronizer: React.FC = () => {
 // Theme-Aware Daylight & Cyber Lights with smooth frame-by-frame interpolation
 const SceneLights: React.FC = () => {
   const { isDark } = useTheme();
+  const { currentSection } = useScrollEngine();
   const ambientRef = useRef<THREE.AmbientLight>(null);
   const keyLightRef = useRef<THREE.DirectionalLight>(null);
   const rimLightRef = useRef<THREE.DirectionalLight>(null);
@@ -81,27 +85,30 @@ const SceneLights: React.FC = () => {
 
   useFrame((_, delta) => {
     const damping = 1 - Math.exp(-5.5 * Math.min(delta, 0.1));
+    const isHero = currentSection <= 1;
 
     if (ambientRef.current) {
-      const targetIntensity = isDark ? 0.32 : 0.95;
+      const targetIntensity = isDark ? (isHero ? 0.28 : 0.18) : 0.95;
       ambientRef.current.intensity = THREE.MathUtils.lerp(ambientRef.current.intensity, targetIntensity, damping);
       ambientRef.current.color.lerp(targetColors.ambient, damping);
     }
 
     if (keyLightRef.current) {
-      const targetIntensity = isDark ? 1.6 : 2.4;
+      const targetIntensity = isDark ? (isHero ? 1.3 : 0.8) : 2.4;
       keyLightRef.current.intensity = THREE.MathUtils.lerp(keyLightRef.current.intensity, targetIntensity, damping);
       keyLightRef.current.color.lerp(targetColors.key, damping);
     }
 
     if (rimLightRef.current) {
-      const targetIntensity = isDark ? 1.8 : 1.3;
+      // Lowered rim light intensity to avoid washing out content cards
+      const targetIntensity = isDark ? (isHero ? 1.1 : 0.65) : 1.3;
       rimLightRef.current.intensity = THREE.MathUtils.lerp(rimLightRef.current.intensity, targetIntensity, damping);
       rimLightRef.current.color.lerp(targetColors.rim, damping);
     }
 
     if (pointLightRef.current) {
-      const targetIntensity = isDark ? 2.4 : 2.2;
+      // Lowered blue/cyan point light intensity in 3D scene
+      const targetIntensity = isDark ? (isHero ? 1.5 : 0.85) : 2.2;
       pointLightRef.current.intensity = THREE.MathUtils.lerp(pointLightRef.current.intensity, targetIntensity, damping);
       pointLightRef.current.color.lerp(targetColors.point, damping);
     }
@@ -109,23 +116,23 @@ const SceneLights: React.FC = () => {
 
   return (
     <>
-      <ambientLight ref={ambientRef} intensity={isDark ? 0.32 : 0.95} />
+      <ambientLight ref={ambientRef} intensity={isDark ? 0.28 : 0.95} />
       <directionalLight
         ref={keyLightRef}
         position={[10, 15, 8]}
-        intensity={isDark ? 1.6 : 2.4}
+        intensity={isDark ? 1.3 : 2.4}
         color="#ffffff"
       />
       <directionalLight
         ref={rimLightRef}
         position={[-12, -8, -10]}
-        intensity={isDark ? 1.8 : 1.3}
+        intensity={isDark ? 1.1 : 1.3}
         color={isDark ? '#2563EB' : '#003eb8'}
       />
       <pointLight
         ref={pointLightRef}
         position={[0, 3, -15]}
-        intensity={isDark ? 2.4 : 2.2}
+        intensity={isDark ? 1.5 : 2.2}
         color={isDark ? '#38BDF8' : '#0047D4'}
         distance={40}
       />
@@ -178,7 +185,7 @@ export const SceneGraph: React.FC = () => {
 
         <CameraRig />
         <AcceleratorCore />
-        <ParticleStream particleCount={isMobile ? 600 : 2000} />
+        <ParticleStream particleCount={isMobile ? 400 : 1200} />
         {!isReducedMotion && !isMobile && <PostProcessingPass />}
         <WebGLTelemetryTracker />
       </Canvas>

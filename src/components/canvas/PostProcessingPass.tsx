@@ -34,12 +34,12 @@ export const PostProcessingPass: React.FC = () => {
   );
 
   return (
-    <EffectComposer multisampling={2}>
-      {/* Selective Bloom: Tuned to eliminate white-blob overexposure */}
+    <EffectComposer multisampling={0}>
+      {/* Selective Bloom: Tuned to eliminate white-blob overexposure and maintain 50+ FPS */}
       <Bloom
-        luminanceThreshold={isDark ? 0.92 : 1.15}
+        luminanceThreshold={isDark ? 0.95 : 1.15}
         luminanceSmoothing={0.3}
-        intensity={isDark ? 0.75 : 0.35}
+        intensity={isDark ? 0.6 : 0.35}
         blendFunction={BlendFunction.SCREEN}
         mipmapBlur
       />

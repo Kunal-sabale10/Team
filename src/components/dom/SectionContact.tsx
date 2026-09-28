@@ -136,35 +136,35 @@ export const SectionContact: React.FC = () => {
     <section id="section-contact" className="relative min-h-screen w-full px-6 sm:px-12 md:px-20 py-20 sm:py-28 flex flex-col justify-center">
       {/* Header */}
       <div className="max-w-4xl space-y-4 mb-14">
-        <div className="flex items-center space-x-3 text-xs font-mono text-theme-text-dim">
+        <div className="flex items-center space-x-3 text-xs font-mono text-theme-text-dim dark:text-[#8A91A6]">
           <span className="w-2.5 h-2.5 rounded-full bg-theme-accent dark:bg-cherenkov-glow animate-ping" />
-          <span className="text-theme-text-main font-bold tracking-widest">06 // DIRECT CONTACT</span>
+          <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold tracking-widest">06 // DIRECT CONTACT</span>
           <span className="text-theme-accent dark:text-cherenkov-glow">| TRANSMISSION CONDUITS</span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-theme-text-main tracking-tight">
+        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-theme-text-main dark:text-[#F2F4F8] tracking-tight">
           CONNECT WITH<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-sky-300 dark:via-white dark:to-blue-500">
             THE TRIAD.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-mono text-theme-text-muted max-w-xl leading-relaxed">
+        <p className="text-base sm:text-lg font-mono text-theme-text-muted dark:text-[#B8BED0] max-w-xl leading-relaxed">
           Open for high-craft creative engineering, technical direction, 3D spatial web apps, and ambitious collaborations.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl font-mono">
         {/* Left: Interactive CLI Console */}
-        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle rounded-xl p-5 text-xs flex flex-col justify-between h-[450px] shadow-ambient backdrop-blur-md">
+        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle dark:border-white/10 rounded-xl p-5 text-xs flex flex-col justify-between h-[450px] shadow-ambient backdrop-blur-[14px]">
           {/* Terminal Title Bar */}
-          <div className="flex items-center justify-between border-b border-theme-border-subtle pb-3 text-theme-text-dim text-[11px]">
+          <div className="flex items-center justify-between border-b border-theme-border-subtle dark:border-white/10 pb-3 text-theme-text-dim dark:text-[#8A91A6] text-[11px]">
             <div className="flex items-center space-x-2">
               <Terminal className="w-3.5 h-3.5 text-theme-accent dark:text-cherenkov-glow" />
-              <span className="text-theme-text-main font-semibold">HADRON_TRIAD_CLI // TTY_0</span>
+              <span className="text-theme-text-main dark:text-[#F2F4F8] font-semibold">HADRON_TRIAD_CLI // TTY_0</span>
             </div>
             <div className="flex items-center space-x-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-theme-border-subtle" />
-              <div className="w-2.5 h-2.5 rounded-full bg-theme-border-subtle" />
+              <div className="w-2.5 h-2.5 rounded-full bg-theme-border-subtle dark:bg-white/10" />
+              <div className="w-2.5 h-2.5 rounded-full bg-theme-border-subtle dark:bg-white/10" />
               <div className="w-2.5 h-2.5 rounded-full bg-theme-accent dark:bg-cherenkov-blue animate-pulse" />
             </div>
           </div>
@@ -172,7 +172,7 @@ export const SectionContact: React.FC = () => {
           {/* Terminal Output Stream */}
           <div
             ref={terminalContainerRef}
-            className="flex-1 overflow-y-auto py-3 space-y-1.5 text-theme-text-main text-[11px]"
+            className="flex-1 overflow-y-auto py-3 space-y-1.5 text-theme-text-main dark:text-[#F2F4F8] text-[11px]"
           >
             {terminalHistory.map((line, idx) => (
               <div
@@ -185,7 +185,7 @@ export const SectionContact: React.FC = () => {
           </div>
 
           {/* Command Prompt Input */}
-          <form onSubmit={handleCommandSubmit} className="pt-3 border-t border-theme-border-subtle flex items-center gap-2">
+          <form onSubmit={handleCommandSubmit} className="pt-3 border-t border-theme-border-subtle dark:border-white/10 flex items-center gap-2">
             <span className="text-theme-accent dark:text-cherenkov-glow font-bold">{'>'}</span>
             <input
               type="text"
@@ -193,16 +193,16 @@ export const SectionContact: React.FC = () => {
               onChange={(e) => setCommandInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="type help, team, kunal, projects..."
-              className="flex-1 bg-transparent text-theme-text-main outline-none placeholder-theme-text-dim font-mono text-xs"
+              className="flex-1 bg-transparent text-theme-text-main dark:text-[#F2F4F8] outline-none placeholder-theme-text-dim dark:placeholder-[#8A91A6] font-mono text-xs"
             />
           </form>
         </div>
 
         {/* Right: Direct Transmission Form */}
-        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle rounded-xl p-6 sm:p-8 backdrop-blur-md space-y-5 shadow-ambient flex flex-col justify-between">
+        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle dark:border-white/10 rounded-xl p-6 sm:p-8 backdrop-blur-[14px] space-y-5 shadow-ambient flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between border-b border-theme-border-subtle pb-3 text-xs text-theme-text-dim">
-              <span className="font-bold text-theme-text-main uppercase">DIRECT TRANSMISSION DISPATCH</span>
+            <div className="flex items-center justify-between border-b border-theme-border-subtle dark:border-white/10 pb-3 text-xs text-theme-text-dim dark:text-[#8A91A6]">
+              <span className="font-bold text-theme-text-main dark:text-[#F2F4F8] uppercase">DIRECT TRANSMISSION DISPATCH</span>
               <span className="flex items-center gap-1.5 text-emerald-600 dark:text-isotope text-[11px] font-semibold">
                 <Radio className="w-3 h-3 animate-pulse" />
                 CONDUIT OPEN
@@ -221,39 +221,39 @@ export const SectionContact: React.FC = () => {
               <form onSubmit={handleTransmitMessage} className="space-y-3.5 pt-4 text-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[10px] text-theme-text-dim uppercase font-bold">NAME / CALLSIGN</label>
+                    <label className="text-[10px] text-theme-text-dim dark:text-[#8A91A6] uppercase font-bold">NAME / CALLSIGN</label>
                     <input
                       type="text"
                       required
                       value={senderName}
                       onChange={(e) => setSenderName(e.target.value)}
                       placeholder="Alex Mercer"
-                      className="w-full px-3 py-2 bg-theme-surface-subtle border border-theme-border-subtle rounded-md text-theme-text-main focus:border-theme-accent dark:focus:border-cherenkov-glow outline-none transition-colors"
+                      className="w-full px-3 py-2 bg-theme-surface-subtle border border-theme-border-subtle dark:border-white/10 rounded-md text-theme-text-main dark:text-[#F2F4F8] placeholder-theme-text-dim dark:placeholder-[#8A91A6] focus:border-theme-accent dark:focus:border-cherenkov-glow outline-none transition-colors"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-[10px] text-theme-text-dim uppercase font-bold">EMAIL ADDRESS</label>
+                    <label className="text-[10px] text-theme-text-dim dark:text-[#8A91A6] uppercase font-bold">EMAIL ADDRESS</label>
                     <input
                       type="email"
                       required
                       value={senderEmail}
                       onChange={(e) => setSenderEmail(e.target.value)}
                       placeholder="alex@studio.com"
-                      className="w-full px-3 py-2 bg-theme-surface-subtle border border-theme-border-subtle rounded-md text-theme-text-main focus:border-theme-accent dark:focus:border-cherenkov-glow outline-none transition-colors"
+                      className="w-full px-3 py-2 bg-theme-surface-subtle border border-theme-border-subtle dark:border-white/10 rounded-md text-theme-text-main dark:text-[#F2F4F8] placeholder-theme-text-dim dark:placeholder-[#8A91A6] focus:border-theme-accent dark:focus:border-cherenkov-glow outline-none transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] text-theme-text-dim uppercase font-bold">MESSAGE PAYLOAD</label>
+                  <label className="text-[10px] text-theme-text-dim dark:text-[#8A91A6] uppercase font-bold">MESSAGE PAYLOAD</label>
                   <textarea
                     required
                     rows={3}
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder="Describe your project, engineering inquiry, or creative vision..."
-                    className="w-full px-3 py-2 bg-theme-surface-subtle border border-theme-border-subtle rounded-md text-theme-text-main focus:border-theme-accent dark:focus:border-cherenkov-glow outline-none transition-colors resize-none"
+                    className="w-full px-3 py-2 bg-theme-surface-subtle border border-theme-border-subtle dark:border-white/10 rounded-md text-theme-text-main dark:text-[#F2F4F8] placeholder-theme-text-dim dark:placeholder-[#8A91A6] focus:border-theme-accent dark:focus:border-cherenkov-glow outline-none transition-colors resize-none"
                   />
                 </div>
 
@@ -277,12 +277,12 @@ export const SectionContact: React.FC = () => {
           </div>
 
           {/* Social Conduits, Direct Mailto & Email Copy */}
-          <div className="pt-3 border-t border-theme-border-subtle flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="pt-3 border-t border-theme-border-subtle dark:border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
             <div className="flex items-center space-x-2">
               <a
                 href="mailto:kunalsabale10@gmail.com?subject=Collaboration%20with%20Hadron%20Triad"
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-accent dark:text-cherenkov-glow hover:underline transition-colors border border-theme-border-subtle font-bold"
+                className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-accent dark:text-cherenkov-glow hover:underline transition-colors border border-theme-border-subtle dark:border-white/10 font-bold"
                 title="Send Email via Mail client"
               >
                 <Mail className="w-3.5 h-3.5" />
@@ -292,7 +292,7 @@ export const SectionContact: React.FC = () => {
               <button
                 onClick={handleCopyEmail}
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-text-muted hover:text-theme-text-main transition-colors cursor-pointer border border-theme-border-subtle text-[11px]"
+                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-text-muted dark:text-[#B8BED0] hover:text-theme-text-main dark:hover:text-[#F2F4F8] transition-colors cursor-pointer border border-theme-border-subtle dark:border-white/10 text-[11px]"
                 title="Copy email to clipboard"
               >
                 {isCopied ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
@@ -306,7 +306,7 @@ export const SectionContact: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="p-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-text-muted hover:text-theme-text-main transition-colors border border-theme-border-subtle flex items-center gap-1.5 text-[11px]"
+                className="p-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-text-muted dark:text-[#B8BED0] hover:text-theme-text-main dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 flex items-center gap-1.5 text-[11px]"
                 title="GitHub Repositories"
               >
                 <Github className="w-4 h-4 text-theme-accent dark:text-cherenkov-glow" />
@@ -317,7 +317,7 @@ export const SectionContact: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="p-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-text-muted hover:text-theme-text-main transition-colors border border-theme-border-subtle"
+                className="p-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-theme-text-muted dark:text-[#B8BED0] hover:text-theme-text-main dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10"
                 title="LinkedIn"
               >
                 <Linkedin className="w-4 h-4" />

@@ -67,9 +67,9 @@ const AcceleratorBeamShader = {
       vec3 finalColor = mix(uColorA, uColorB, fresnel + energyPulse * 0.6);
       
       if (uIsDark > 0.5) {
-        // Dark mode: Controlled emission, preserves deep color instead of clipping to white
-        float alpha = clamp(fresnel * 1.5 + grid * 0.9 + energyPulse * 0.35, 0.05, 0.85);
-        gl_FragColor = vec4(finalColor * (0.95 + fresnel * 1.1), alpha);
+        // Dark mode: Balanced controlled emission, prevents washing out content cards
+        float alpha = clamp(fresnel * 0.95 + grid * 0.5 + energyPulse * 0.2, 0.02, 0.45);
+        gl_FragColor = vec4(finalColor * (0.65 + fresnel * 0.65), alpha);
       } else {
         // Light mode: High contrast, rich saturated core, non-additive blend
         float alpha = clamp(fresnel * 1.2 + grid * 1.0 + energyPulse * 0.4, 0.15, 0.9);
@@ -81,7 +81,7 @@ const AcceleratorBeamShader = {
 };
 
 export const AcceleratorCore: React.FC = () => {
-  const { scrollProgress, velocity, currentBeat, mousePos } = useScrollEngine();
+  const { scrollProgress, velocity, currentBeat, mousePos, currentSection } = useScrollEngine();
   const { isDark } = useTheme();
   const beamMaterialRef = useRef<THREE.ShaderMaterial>(null);
   const coreGroupRef = useRef<THREE.Group>(null);
@@ -103,11 +103,18 @@ export const AcceleratorCore: React.FC = () => {
   useFrame((state, delta) => {
     const time = state.clock.getElapsedTime();
     const damping = 1 - Math.exp(-5.5 * Math.min(delta, 0.1));
+    const isHero = currentSection <= 1;
 
     // Update custom shader uniforms with smooth theme lerp
     if (beamMaterialRef.current) {
-      const targetColorA = isDark ? new THREE.Color('#1D4ED8') : new THREE.Color('#003299');
-      const targetColorB = isDark ? new THREE.Color('#38BDF8') : new THREE.Color('#0047D4');
+      // Modulate beam brightness: full in Hero, dimmed in content sections 2-6
+      const colorIntensity = isDark ? (isHero ? 1.0 : 0.6) : (isHero ? 1.0 : 0.75);
+      const targetColorA = isDark
+        ? new THREE.Color('#1D4ED8').multiplyScalar(colorIntensity)
+        : new THREE.Color('#003299');
+      const targetColorB = isDark
+        ? new THREE.Color('#38BDF8').multiplyScalar(colorIntensity)
+        : new THREE.Color('#0047D4');
       const targetBg = isDark ? new THREE.Color('#0C0D14') : new THREE.Color('#F7F5F0');
 
       beamMaterialRef.current.uniforms.uTime.value = time;
@@ -199,10 +206,10 @@ export const AcceleratorCore: React.FC = () => {
       >
         <torusGeometry args={[3.2, 0.08, 12, 8]} />
         <meshStandardMaterial
-          color={isDark ? '#161824' : '#1c222e'}
+          color={isDark ? '#141622' : '#1c222e'}
           emissive={isDark ? '#1D4ED8' : '#003ecb'}
-          emissiveIntensity={isDark ? 0.9 : 0.8}
-          roughness={0.25}
+          emissiveIntensity={isDark ? (currentSection <= 1 ? 0.6 : 0.32) : 0.8}
+          roughness={0.35}
           metalness={0.88}
         />
       </instancedMesh>
@@ -214,8 +221,8 @@ export const AcceleratorCore: React.FC = () => {
           <meshStandardMaterial
             color={isDark ? "#E2E8F0" : "#003299"}
             emissive={isDark ? "#38BDF8" : "#0047D4"}
-            emissiveIntensity={isDark ? 1.6 : 1.4}
-            roughness={0.15}
+            emissiveIntensity={isDark ? (currentSection <= 1 ? 1.0 : 0.5) : 1.4}
+            roughness={0.25}
             metalness={0.9}
             wireframe
           />
@@ -225,15 +232,15 @@ export const AcceleratorCore: React.FC = () => {
         <mesh>
           <sphereGeometry args={[0.7, 24, 24]} />
           <meshBasicMaterial
-            color={isDark ? "#1D4ED8" : "#0047D4"}
+            color={isDark ? "#1E3A8A" : "#0047D4"}
             wireframe={false}
           />
         </mesh>
 
         <pointLight
           color={isDark ? "#38BDF8" : "#0047D4"}
-          intensity={isDark ? 3.4 : 3.5}
-          distance={15}
+          intensity={isDark ? (currentSection <= 1 ? 1.8 : 0.9) : 3.5}
+          distance={14}
           decay={2}
         />
       </group>

@@ -21,11 +21,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (saved === 'dark' || saved === 'light') {
         return saved;
       }
-      // 2. Default to system preference
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
-      }
     }
+    // Default to dark theme (original visual design)
     return 'dark';
   });
 
@@ -46,19 +43,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       // Ignore storage errors in sandbox
     }
   }, [theme]);
-
-  // Listen to system preference changes if user hasn't explicitly set one
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) {
-        setThemeState(e.matches ? 'light' : 'dark');
-      }
-    };
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
 
   const toggleTheme = useCallback(() => {
     setThemeState((prev) => (prev === 'dark' ? 'light' : 'dark'));

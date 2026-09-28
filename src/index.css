@@ -3,7 +3,67 @@
 @tailwind utilities;
 
 :root {
-  /* Warm Editorial Light Theme Base (WCAG AA Compliant) */
+  /* Default: Obsidian Engineering Dark Theme (WCAG AA Compliant) */
+  --bg-base: #0C0D14;
+  --bg-canvas: #0C0D14;
+  --bg-surface: rgba(12, 14, 22, 0.88);
+  --bg-surface-elevated: rgba(20, 24, 38, 0.94);
+  --bg-surface-subtle: rgba(26, 30, 46, 0.75);
+  
+  --text-main: #F2F4F8;
+  --text-muted: #B8BED0;
+  --text-dim: #8A91A6;
+  
+  --accent-primary: #38BDF8;
+  --accent-hover: #60A5FA;
+  --accent-secondary: #2563EB;
+  --accent-glow: #38BDF8;
+  --accent-success: #00E599;
+  
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-medium: rgba(255, 255, 255, 0.18);
+  --border-accent: rgba(56, 189, 248, 0.35);
+  
+  --shadow-ambient: 0 12px 32px -4px rgba(0, 0, 0, 0.7), 0 0 20px -2px rgba(56, 189, 248, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-elevated: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 25px -2px rgba(56, 189, 248, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+  --color-cherenkov: #2563EB;
+  --color-cyan: #38BDF8;
+  --color-isotope: #00E599;
+}
+
+:root.dark, html.dark, html[data-theme="dark"], body.dark {
+  /* Explicit Dark Theme Scope */
+  --bg-base: #0C0D14;
+  --bg-canvas: #0C0D14;
+  --bg-surface: rgba(12, 14, 22, 0.88);
+  --bg-surface-elevated: rgba(20, 24, 38, 0.94);
+  --bg-surface-subtle: rgba(26, 30, 46, 0.75);
+  
+  --text-main: #F2F4F8;
+  --text-muted: #B8BED0;
+  --text-dim: #8A91A6;
+  
+  --accent-primary: #38BDF8;
+  --accent-hover: #60A5FA;
+  --accent-secondary: #2563EB;
+  --accent-glow: #38BDF8;
+  --accent-success: #00E599;
+  
+  --border-subtle: rgba(255, 255, 255, 0.10);
+  --border-medium: rgba(255, 255, 255, 0.18);
+  --border-accent: rgba(56, 189, 248, 0.35);
+  
+  --shadow-ambient: 0 12px 32px -4px rgba(0, 0, 0, 0.7), 0 0 20px -2px rgba(56, 189, 248, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --shadow-elevated: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 25px -2px rgba(56, 189, 248, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+  --color-cherenkov: #2563EB;
+  --color-cyan: #38BDF8;
+  --color-isotope: #00E599;
+}
+
+:root.light, html.light, html[data-theme="light"], body.light {
+  /* Warm Editorial Light Theme Base (WCAG AA Compliant - Untouched) */
   --bg-base: #F7F5F0;
   --bg-canvas: #F7F5F0;
   --bg-surface: rgba(255, 255, 255, 0.78);
@@ -30,36 +90,6 @@
   --color-cherenkov: #0047D4;
   --color-cyan: #0284C7;
   --color-isotope: #057A44;
-}
-
-:root.dark, html.dark, html[data-theme="dark"] {
-  /* Layered Editorial Dark Theme (Zero pure #000, WCAG AA Compliant) */
-  --bg-base: #0C0D14;
-  --bg-canvas: #0C0D14;
-  --bg-surface: rgba(18, 19, 28, 0.82);
-  --bg-surface-elevated: rgba(24, 26, 38, 0.92);
-  --bg-surface-subtle: rgba(32, 35, 50, 0.70);
-  
-  --text-main: #F2F2F5;
-  --text-muted: #A2A6B8;
-  --text-dim: #75798C;
-  
-  --accent-primary: #38BDF8;
-  --accent-hover: #60A5FA;
-  --accent-secondary: #2563EB;
-  --accent-glow: #38BDF8;
-  --accent-success: #00E599;
-  
-  --border-subtle: rgba(255, 255, 255, 0.09);
-  --border-medium: rgba(255, 255, 255, 0.16);
-  --border-accent: rgba(56, 189, 248, 0.35);
-  
-  --shadow-ambient: 0 12px 32px -4px rgba(0, 0, 0, 0.7), 0 0 20px -2px rgba(56, 189, 248, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  --shadow-elevated: 0 20px 48px -6px rgba(0, 0, 0, 0.85), 0 0 25px -2px rgba(56, 189, 248, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.10);
-
-  --color-cherenkov: #2563EB;
-  --color-cyan: #38BDF8;
-  --color-isotope: #00E599;
 }
 
 /* Custom Scrollbar */
@@ -147,4 +177,26 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* High-Contrast Frosted Card Glass in Dark Mode */
+html.dark .bg-theme-surface,
+html[data-theme="dark"] .bg-theme-surface {
+  background-color: rgba(12, 14, 22, 0.88) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+html.dark .bg-theme-surface:hover,
+html[data-theme="dark"] .bg-theme-surface:hover,
+html.dark .hover\:bg-theme-surface-elevated:hover,
+html[data-theme="dark"] .hover\:bg-theme-surface-elevated:hover {
+  background-color: rgba(20, 24, 38, 0.94) !important;
+}
+
+html.dark .bg-theme-surface-subtle,
+html[data-theme="dark"] .bg-theme-surface-subtle {
+  background-color: rgba(26, 30, 46, 0.75) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
