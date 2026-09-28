@@ -15,8 +15,8 @@ export const DualLayerScaffold: React.FC = () => {
   return (
     <div className="relative w-full min-h-screen bg-theme-base text-theme-text-main transition-colors duration-500 overflow-x-hidden selection:bg-theme-accent selection:text-white">
       {/* Visual Enhancers: Subtle Scanlines (dark only) and Tech Grid */}
-      <div className="fixed inset-0 z-30 scanlines opacity-0 dark:opacity-50 pointer-events-none" />
-      <div className="fixed inset-0 z-20 tech-grid opacity-15 dark:opacity-25 pointer-events-none" />
+      <div className="fixed inset-0 z-30 scanlines opacity-0 dark:opacity-30 pointer-events-none" />
+      <div className="fixed inset-0 z-20 tech-grid opacity-15 dark:opacity-20 pointer-events-none" />
 
       {/* Layer 1: Fixed WebGL 3D Canvas (z-index: 0) */}
       <SceneGraph />

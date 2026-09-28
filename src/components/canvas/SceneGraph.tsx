@@ -36,7 +36,7 @@ const SceneThemeSynchronizer: React.FC = () => {
   const { isDark } = useTheme();
 
   const targetBg = useMemo(
-    () => new THREE.Color(isDark ? '#07080a' : '#F7F5F0'),
+    () => new THREE.Color(isDark ? '#0C0D14' : '#F7F5F0'),
     [isDark]
   );
 
@@ -56,8 +56,8 @@ const SceneThemeSynchronizer: React.FC = () => {
       (scene.fog as THREE.Fog).color.lerp(targetBg, damping);
     }
 
-    // 3. Adjust tone mapping exposure so light mode is never blown out
-    const targetExposure = isDark ? 1.05 : 0.88;
+    // 3. Adjust tone mapping exposure so dark mode does not clip highlights
+    const targetExposure = isDark ? 0.95 : 0.88;
     gl.toneMappingExposure = THREE.MathUtils.lerp(gl.toneMappingExposure, targetExposure, damping);
   });
 
@@ -73,35 +73,35 @@ const SceneLights: React.FC = () => {
   const pointLightRef = useRef<THREE.PointLight>(null);
 
   const targetColors = useMemo(() => ({
-    ambient: new THREE.Color(isDark ? '#ffffff' : '#FAF7F2'),
+    ambient: new THREE.Color(isDark ? '#FAF9F6' : '#FAF7F2'),
     key: new THREE.Color(isDark ? '#ffffff' : '#FFFDF9'),
-    rim: new THREE.Color(isDark ? '#0055ff' : '#003eb8'),
-    point: new THREE.Color(isDark ? '#00f0ff' : '#0047D4'),
+    rim: new THREE.Color(isDark ? '#2563EB' : '#003eb8'),
+    point: new THREE.Color(isDark ? '#38BDF8' : '#0047D4'),
   }), [isDark]);
 
   useFrame((_, delta) => {
     const damping = 1 - Math.exp(-5.5 * Math.min(delta, 0.1));
 
     if (ambientRef.current) {
-      const targetIntensity = isDark ? 0.35 : 0.95;
+      const targetIntensity = isDark ? 0.32 : 0.95;
       ambientRef.current.intensity = THREE.MathUtils.lerp(ambientRef.current.intensity, targetIntensity, damping);
       ambientRef.current.color.lerp(targetColors.ambient, damping);
     }
 
     if (keyLightRef.current) {
-      const targetIntensity = isDark ? 1.8 : 2.4;
+      const targetIntensity = isDark ? 1.6 : 2.4;
       keyLightRef.current.intensity = THREE.MathUtils.lerp(keyLightRef.current.intensity, targetIntensity, damping);
       keyLightRef.current.color.lerp(targetColors.key, damping);
     }
 
     if (rimLightRef.current) {
-      const targetIntensity = isDark ? 2.4 : 1.3;
+      const targetIntensity = isDark ? 1.8 : 1.3;
       rimLightRef.current.intensity = THREE.MathUtils.lerp(rimLightRef.current.intensity, targetIntensity, damping);
       rimLightRef.current.color.lerp(targetColors.rim, damping);
     }
 
     if (pointLightRef.current) {
-      const targetIntensity = isDark ? 4.5 : 2.2;
+      const targetIntensity = isDark ? 2.4 : 2.2;
       pointLightRef.current.intensity = THREE.MathUtils.lerp(pointLightRef.current.intensity, targetIntensity, damping);
       pointLightRef.current.color.lerp(targetColors.point, damping);
     }
@@ -109,25 +109,25 @@ const SceneLights: React.FC = () => {
 
   return (
     <>
-      <ambientLight ref={ambientRef} intensity={isDark ? 0.35 : 0.95} />
+      <ambientLight ref={ambientRef} intensity={isDark ? 0.32 : 0.95} />
       <directionalLight
         ref={keyLightRef}
         position={[10, 15, 8]}
-        intensity={isDark ? 1.8 : 2.4}
+        intensity={isDark ? 1.6 : 2.4}
         color="#ffffff"
       />
       <directionalLight
         ref={rimLightRef}
         position={[-12, -8, -10]}
-        intensity={isDark ? 2.4 : 1.3}
-        color={isDark ? '#0055ff' : '#003eb8'}
+        intensity={isDark ? 1.8 : 1.3}
+        color={isDark ? '#2563EB' : '#003eb8'}
       />
       <pointLight
         ref={pointLightRef}
         position={[0, 3, -15]}
-        intensity={isDark ? 4.5 : 2.2}
-        color={isDark ? '#00f0ff' : '#0047D4'}
-        distance={35}
+        intensity={isDark ? 2.4 : 2.2}
+        color={isDark ? '#38BDF8' : '#0047D4'}
+        distance={40}
       />
     </>
   );
@@ -169,8 +169,8 @@ export const SceneGraph: React.FC = () => {
           depth: true,
         }}
       >
-        <color attach="background" args={[isDark ? '#07080a' : '#F7F5F0']} />
-        <fog attach="fog" args={[isDark ? '#07080a' : '#F7F5F0', 25, 75]} />
+        <color attach="background" args={[isDark ? '#0C0D14' : '#F7F5F0']} />
+        <fog attach="fog" args={[isDark ? '#0C0D14' : '#F7F5F0', 25, 75]} />
 
         {/* Dynamic Frame-by-Frame Theme Synchronizers */}
         <SceneThemeSynchronizer />

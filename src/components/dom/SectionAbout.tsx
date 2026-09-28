@@ -27,7 +27,7 @@ export const SectionAbout: React.FC = () => {
   return (
     <section id="section-about" className="relative min-h-screen w-full px-6 sm:px-12 md:px-20 py-20 sm:py-28 flex flex-col justify-center">
       {/* Header */}
-      <div className="max-w-4xl space-y-4 mb-16">
+      <div className="max-w-4xl space-y-4 mb-16 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl dark:bg-gradient-to-r dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent dark:backdrop-blur-[2px]">
         <div className="flex items-center space-x-3 text-xs font-mono text-theme-text-dim">
           <span className="w-2.5 h-2.5 rounded-full bg-theme-accent dark:bg-cherenkov-glow animate-ping" />
           <span className="text-theme-text-main font-bold tracking-widest">02 // ABOUT THE TRIAD</span>
@@ -36,7 +36,7 @@ export const SectionAbout: React.FC = () => {
 
         <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-theme-text-main tracking-tight">
           WHAT WE DO &amp;<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cherenkov-glow dark:via-white dark:to-cherenkov-blue">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-sky-300 dark:via-white dark:to-blue-500">
             OUR COLLECTIVE VIBE.
           </span>
         </h2>

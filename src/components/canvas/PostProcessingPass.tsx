@@ -22,24 +22,24 @@ export const PostProcessingPass: React.FC = () => {
   if (isPerformanceDegraded) {
     return (
       <EffectComposer multisampling={0}>
-        <Vignette eskil={false} offset={0.15} darkness={isDark ? 0.75 : 0.06} />
+        <Vignette eskil={false} offset={0.15} darkness={isDark ? 0.35 : 0.06} />
       </EffectComposer>
     );
   }
 
-  // Modulate chromatic aberration offset slightly with scroll velocity
+  // Modulate chromatic aberration offset slightly with scroll velocity (subtle edge-only on dark)
   const aberrationOffset = new THREE.Vector2(
-    0.0015 + Math.min(Math.abs(velocity) * 0.0001, 0.003),
-    0.0015 + Math.min(Math.abs(velocity) * 0.0001, 0.003)
+    (isDark ? 0.0007 : 0.0015) + Math.min(Math.abs(velocity) * 0.00008, 0.0015),
+    (isDark ? 0.0007 : 0.0015) + Math.min(Math.abs(velocity) * 0.00008, 0.0015)
   );
 
   return (
     <EffectComposer multisampling={2}>
-      {/* Selective Bloom: Tuned for Dark/Light contrast */}
+      {/* Selective Bloom: Tuned to eliminate white-blob overexposure */}
       <Bloom
-        luminanceThreshold={isDark ? 0.82 : 1.15}
+        luminanceThreshold={isDark ? 0.92 : 1.15}
         luminanceSmoothing={0.3}
-        intensity={isDark ? 1.25 : 0.35}
+        intensity={isDark ? 0.75 : 0.35}
         blendFunction={BlendFunction.SCREEN}
         mipmapBlur
       />
@@ -48,21 +48,21 @@ export const PostProcessingPass: React.FC = () => {
       <Noise
         premultiply
         blendFunction={BlendFunction.OVERLAY}
-        opacity={isDark ? 0.055 : 0.02}
+        opacity={isDark ? 0.028 : 0.02}
       />
 
-      {/* Anamorphic Lens Chromatic Dispersion */}
+      {/* Anamorphic Lens Chromatic Dispersion (Subtle on dark) */}
       <ChromaticAberration
         offset={aberrationOffset}
         radialModulation={true}
-        modulationOffset={0.5}
+        modulationOffset={0.65}
       />
 
-      {/* Edge Vignette */}
+      {/* Gentle Edge Vignette (Non-pinching, avoids heavy dark borders) */}
       <Vignette
         eskil={false}
-        offset={0.2}
-        darkness={isDark ? 0.92 : 0.06}
+        offset={0.25}
+        darkness={isDark ? 0.40 : 0.06}
         blendFunction={BlendFunction.NORMAL}
       />
     </EffectComposer>

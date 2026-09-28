@@ -28,7 +28,7 @@ export const SectionTeam: React.FC = () => {
 
         <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-theme-text-main tracking-tight">
           CORE TEAM &amp;<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cherenkov-glow dark:via-white dark:to-cherenkov-blue">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-sky-300 dark:via-white dark:to-blue-500">
             SPECIALISTS.
           </span>
         </h2>

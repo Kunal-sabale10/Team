@@ -34,10 +34,10 @@ export const SectionHero: React.FC = () => {
           <span>TRIAD COLLECTIVE // KUNAL • ANIMESH • RAJANI</span>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl dark:bg-gradient-to-r dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent dark:backdrop-blur-[2px]">
           <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-extrabold tracking-tighter text-theme-text-main leading-[0.9]">
             IDEA. BUILD.<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500 dark:from-cherenkov-glow dark:via-white dark:to-cherenkov-blue">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500 dark:from-sky-300 dark:via-white dark:to-blue-500">
               PRESENT.
             </span>
           </h1>
