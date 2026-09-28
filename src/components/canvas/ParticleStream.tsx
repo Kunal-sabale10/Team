@@ -22,9 +22,9 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
     const sc = new Float32Array(count);
     const initZ = new Float32Array(count);
 
-    const color1 = isDark ? new THREE.Color('#1E40AF') : new THREE.Color('#003ecb');
-    const color2 = isDark ? new THREE.Color('#38BDF8') : new THREE.Color('#0284c7');
-    const color3 = isDark ? new THREE.Color('#BAE6FD') : new THREE.Color('#1e1b4b');
+    const color1 = isDark ? new THREE.Color('#1E40AF') : new THREE.Color('#1E3A8A');
+    const color2 = isDark ? new THREE.Color('#38BDF8') : new THREE.Color('#1D4ED8');
+    const color3 = isDark ? new THREE.Color('#BAE6FD') : new THREE.Color('#2563EB');
 
     for (let i = 0; i < count; i++) {
       // Cylinder distribution along beam axis
@@ -44,7 +44,7 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
       col[i * 3 + 1] = chosenColor.g;
       col[i * 3 + 2] = chosenColor.b;
 
-      sc[i] = isDark ? (0.8 + Math.random() * 1.2) : (1.0 + Math.random() * 2.5);
+      sc[i] = isDark ? (0.8 + Math.random() * 1.2) : (0.7 + Math.random() * 0.8);
     }
 
     return [pos, col, sc, initZ];
@@ -102,10 +102,10 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
         />
       </bufferGeometry>
       <pointsMaterial
-        size={isDark ? 0.046 : 0.085}
+        size={isDark ? 0.046 : 0.036}
         vertexColors
         transparent
-        opacity={isDark ? (currentSection <= 1 ? 0.45 : 0.22) : 0.9}
+        opacity={isDark ? (currentSection <= 1 ? 0.45 : 0.22) : (currentSection <= 1 ? 0.32 : 0.16)}
         blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
         depthWrite={false}
       />

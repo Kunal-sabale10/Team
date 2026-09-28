@@ -117,7 +117,7 @@ export const SKILLS_DATA: SkillItem[] = [
     level: 'Advanced',
     icon: 'GitBranch',
     badgeColor: 'bg-slate-500/15 text-slate-400 border-slate-500/30',
-    description: 'Collaborative triad branch workflows, continuous integration, and clean commit history.',
+    description: 'Collaborative team branch workflows, continuous integration, and clean commit history.',
   },
   {
     name: 'Performance Profiling',

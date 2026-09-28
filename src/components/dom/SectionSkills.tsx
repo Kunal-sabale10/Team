@@ -53,21 +53,21 @@ export const SectionSkills: React.FC = () => {
   return (
     <section id="section-skills" className="relative min-h-screen w-full px-6 sm:px-12 md:px-20 py-20 sm:py-28 flex flex-col justify-center">
       {/* Header */}
-      <div className="max-w-4xl space-y-4 mb-12">
-        <div className="flex items-center space-x-3 text-xs font-mono text-theme-text-dim dark:text-[#8A91A6]">
+      <div className="max-w-4xl space-y-4 mb-12 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
+        <div className="flex items-center space-x-3 text-xs font-mono text-[#3A4258] dark:text-[#8A91A6]">
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 dark:bg-isotope animate-pulse" />
-          <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold tracking-widest">05 // TECHNICAL MATRIX</span>
-          <span className="text-emerald-600 dark:text-isotope">| VISUAL SKILL TAGS</span>
+          <span className="text-[#0E1220] dark:text-[#F2F4F8] font-bold tracking-widest">05 // TECHNICAL MATRIX</span>
+          <span className="text-[#057A44] dark:text-isotope font-bold">| VISUAL SKILL TAGS</span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-theme-text-main dark:text-[#F2F4F8] tracking-tight">
+        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] tracking-tight">
           STACK &amp;<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-sky-300 dark:via-white dark:to-blue-500">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0E1220] via-[#003299] to-[#0B4DFF] dark:from-sky-300 dark:via-white dark:to-blue-500">
             CAPABILITIES.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-mono text-theme-text-muted dark:text-[#B8BED0] max-w-2xl leading-relaxed">
-          Visual tech stack nodes utilized across our spatial simulations, GPU shader pipelines, Web Audio DSP engines, and production applications.
+        <p className="text-base sm:text-lg font-mono text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
+          Technologies, frameworks, and tools used by our team across full-stack engineering, interactive 3D graphics, and modern UI/UX design.
         </p>
       </div>
 
@@ -82,8 +82,8 @@ export const SectionSkills: React.FC = () => {
             }}
             className={`px-3.5 py-1.5 rounded-lg border transition-all duration-200 cursor-pointer ${
               activeCategory === cat
-                ? 'bg-theme-accent dark:bg-cherenkov-blue text-white border-theme-accent dark:border-cherenkov-blue shadow-md shadow-blue-500/20 font-bold'
-                : 'bg-theme-surface text-theme-text-muted dark:text-[#B8BED0] border-theme-border-subtle dark:border-white/10 hover:border-theme-accent hover:text-theme-text-main dark:hover:text-[#F2F4F8]'
+                ? 'bg-[#0B4DFF] dark:bg-cherenkov-blue text-white border-[#0B4DFF] dark:border-cherenkov-blue shadow-md shadow-blue-500/25 font-bold'
+                : 'bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] font-medium'
             }`}
           >
             {cat}
@@ -97,29 +97,29 @@ export const SectionSkills: React.FC = () => {
           <div
             key={idx}
             onMouseEnter={() => soundEngine.playHoverBlip(1400 + (idx % 5) * 80)}
-            className="group p-4 sm:p-5 rounded-xl bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle dark:border-white/10 hover:border-theme-accent dark:hover:border-cherenkov-glow/50 transition-all duration-300 shadow-ambient backdrop-blur-[14px] space-y-3"
+            className="group p-4 sm:p-5 rounded-xl bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF] dark:hover:border-cherenkov-glow/50 transition-all duration-300 shadow-ambient space-y-3"
           >
             <div className="flex items-center justify-between">
               {/* Visual Icon Badge */}
-              <div className="p-2 rounded-lg bg-theme-surface-subtle border border-theme-border-subtle dark:border-white/10 text-theme-accent dark:text-cherenkov-glow group-hover:scale-110 transition-transform">
+              <div className="p-2 rounded-lg bg-theme-surface-subtle border border-theme-border-subtle dark:border-white/10 text-[#007C8C] dark:text-cherenkov-glow group-hover:scale-110 transition-transform">
                 {getSkillIcon(skill.icon)}
               </div>
 
-              <span className={`text-[10px] px-2 py-0.5 rounded font-bold border ${skill.badgeColor}`}>
+              <span className={`text-[10px] px-2 py-0.5 rounded font-bold border border-theme-border-subtle bg-theme-surface-subtle text-[#007C8C] dark:${skill.badgeColor}`}>
                 {skill.level}
               </span>
             </div>
 
             <div>
-              <h3 className="text-base font-bold text-theme-text-main dark:text-[#F2F4F8] group-hover:text-theme-accent dark:group-hover:text-cherenkov-glow transition-colors">
+              <h3 className="text-base font-bold text-[#0E1220] dark:text-[#F2F4F8] group-hover:text-[#0B4DFF] dark:group-hover:text-cherenkov-glow transition-colors">
                 {skill.name}
               </h3>
-              <div className="text-[10px] text-theme-text-dim dark:text-[#8A91A6] uppercase mt-0.5">
+              <div className="text-[10px] text-[#5B6478] dark:text-[#8A91A6] uppercase mt-0.5 font-bold">
                 {skill.category}
               </div>
             </div>
 
-            <p className="text-xs text-theme-text-muted dark:text-[#B8BED0] leading-relaxed">
+            <p className="text-xs text-[#3A4258] dark:text-[#B8BED0] leading-relaxed">
               {skill.description}
             </p>
           </div>

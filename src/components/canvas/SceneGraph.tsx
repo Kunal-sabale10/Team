@@ -37,7 +37,7 @@ const SceneThemeSynchronizer: React.FC = () => {
   const { currentSection } = useScrollEngine();
 
   const targetBg = useMemo(
-    () => new THREE.Color(isDark ? '#0C0D14' : '#F7F5F0'),
+    () => new THREE.Color(isDark ? '#0C0D14' : '#F4F1EA'),
     [isDark]
   );
 
@@ -58,9 +58,9 @@ const SceneThemeSynchronizer: React.FC = () => {
     }
 
     // 3. Dynamic Section-based 3D Dimming:
-    // Sections 2-6: dim to 55-65% (0.58), return to full (0.92) in Hero
+    // Sections 2-6: dim to 50-55% (0.52) in light mode, return to full in Hero
     const isHero = currentSection <= 1;
-    const targetExposure = isDark ? (isHero ? 0.92 : 0.58) : (isHero ? 0.88 : 0.72);
+    const targetExposure = isDark ? (isHero ? 0.92 : 0.58) : (isHero ? 0.85 : 0.52);
     gl.toneMappingExposure = THREE.MathUtils.lerp(gl.toneMappingExposure, targetExposure, damping);
   });
 
@@ -176,8 +176,8 @@ export const SceneGraph: React.FC = () => {
           depth: true,
         }}
       >
-        <color attach="background" args={[isDark ? '#0C0D14' : '#F7F5F0']} />
-        <fog attach="fog" args={[isDark ? '#0C0D14' : '#F7F5F0', 25, 75]} />
+        <color attach="background" args={[isDark ? '#0C0D14' : '#F4F1EA']} />
+        <fog attach="fog" args={[isDark ? '#0C0D14' : '#F4F1EA', 25, 75]} />
 
         {/* Dynamic Frame-by-Frame Theme Synchronizers */}
         <SceneThemeSynchronizer />

@@ -74,10 +74,10 @@ export const HudOverlay: React.FC = () => {
         {/* Brand / Role */}
         <div className="pointer-events-auto flex items-center space-x-2.5 bg-theme-surface backdrop-blur-md px-3.5 py-2 rounded-lg border border-theme-border-subtle shadow-ambient">
           <div className="w-2.5 h-2.5 rounded-full bg-theme-accent dark:bg-cherenkov-glow animate-pulse" />
-          <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold tracking-widest text-[11px] sm:text-xs">
-            HADRON TRIAD
+          <span className="text-[#0E1220] dark:text-[#F2F4F8] font-bold tracking-widest text-[11px] sm:text-xs">
+            404 REBELS
           </span>
-          <span className="hidden xl:inline text-theme-text-dim dark:text-[#8A91A6] text-[10px]">
+          <span className="hidden xl:inline text-theme-text-dim dark:text-[#8A91A6] text-[10px] font-medium">
             [KUNAL • ANIMESH • RAJANI]
           </span>
         </div>
@@ -93,8 +93,8 @@ export const HudOverlay: React.FC = () => {
                 onMouseEnter={() => soundEngine.playHoverBlip(1600)}
                 className={`px-3 py-1.5 rounded-md text-[11px] tracking-wider transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-theme-accent dark:bg-cherenkov-blue text-white font-bold shadow-md shadow-blue-500/20 dark:shadow-cherenkov-blue/40'
-                    : 'text-theme-text-muted dark:text-[#B8BED0] hover:text-theme-text-main dark:hover:text-[#F2F4F8] hover:bg-theme-surface-subtle'
+                    ? 'bg-[#0B4DFF] dark:bg-cherenkov-blue text-white font-bold shadow-md shadow-blue-500/25 dark:shadow-cherenkov-blue/40'
+                    : 'text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] hover:bg-theme-surface-subtle font-medium'
                 }`}
               >
                 {wp.label}
@@ -124,33 +124,33 @@ export const HudOverlay: React.FC = () => {
               toggleTheme();
             }}
             onMouseEnter={() => soundEngine.playHoverBlip(1800)}
-            className="flex items-center space-x-2 bg-theme-surface-elevated backdrop-blur-md px-3 py-1.5 rounded-lg border border-theme-border-subtle hover:border-theme-accent text-theme-text-main dark:text-[#F2F4F8] transition-all cursor-pointer shadow-ambient group"
-            title={`Click or press [T] to switch to ${isDark ? 'Light' : 'Dark'} Mode (Press [D] for Debug HUD)`}
+            className="flex items-center space-x-2 bg-theme-surface-elevated backdrop-blur-md px-3 py-1.5 rounded-lg border border-theme-border-subtle hover:border-theme-accent text-[#0E1220] dark:text-[#F2F4F8] transition-all cursor-pointer shadow-ambient group"
+            title={`Switch to ${isDark ? 'Light' : 'Dark'} Mode (Shortcut: T)`}
           >
             {isDark ? (
               <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform" />
             ) : (
-              <Moon className="w-4 h-4 text-theme-accent group-hover:-rotate-12 transition-transform" />
+              <Moon className="w-4 h-4 text-[#0B4DFF] group-hover:-rotate-12 transition-transform" />
             )}
-            <span className="text-[11px] font-bold font-mono hidden sm:inline">
+            <span className="text-[11px] font-bold font-mono hidden sm:inline text-[#0E1220] dark:text-[#F2F4F8]">
               {isDark ? 'DARK MODE' : 'LIGHT MODE'}
             </span>
-            <span className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">[T]</span>
+            <span className="text-[10px] text-theme-text-dim dark:text-[#8A91A6] font-semibold">[T]</span>
           </button>
 
           {/* Audio Toggle Button [M] */}
           <button
             onClick={toggleAudio}
             onMouseEnter={() => soundEngine.playHoverBlip(1800)}
-            className="flex items-center space-x-1.5 bg-theme-surface backdrop-blur-md px-3 py-2 rounded-lg border border-theme-border-subtle hover:border-theme-accent text-theme-text-main dark:text-[#F2F4F8] transition-colors cursor-pointer shadow-ambient"
+            className="flex items-center space-x-1.5 bg-theme-surface backdrop-blur-md px-3 py-2 rounded-lg border border-theme-border-subtle hover:border-theme-accent text-[#0E1220] dark:text-[#F2F4F8] transition-colors cursor-pointer shadow-ambient"
             title={`Toggle Audio DSP (Shortcut: M) - ${isAudioMuted ? 'Muted' : 'Active'}`}
           >
             {isAudioMuted ? (
-              <VolumeX className="w-4 h-4 text-theme-text-dim dark:text-[#8A91A6]" />
+              <VolumeX className="w-4 h-4 text-[#5B6478] dark:text-[#8A91A6]" />
             ) : (
-              <Volume2 className="w-4 h-4 text-theme-accent dark:text-cherenkov-glow animate-pulse" />
+              <Volume2 className="w-4 h-4 text-[#0B4DFF] dark:text-cherenkov-glow animate-pulse" />
             )}
-            <span className="text-[10px] text-theme-text-dim dark:text-[#8A91A6] hidden sm:inline">[M]</span>
+            <span className="text-[10px] text-[#5B6478] dark:text-[#8A91A6] font-semibold hidden sm:inline">[M]</span>
           </button>
 
           {/* Mobile Hamburger Menu Toggle */}
@@ -177,7 +177,7 @@ export const HudOverlay: React.FC = () => {
       {isMobileMenuOpen && (
         <div className="pointer-events-auto md:hidden absolute top-16 left-3 right-3 z-50 bg-theme-surface-elevated backdrop-blur-xl border border-theme-border-subtle rounded-2xl p-5 shadow-2xl space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-theme-border-subtle text-[11px] text-theme-text-dim">
-            <span className="font-bold text-theme-text-main">HADRON TRIAD // WAYPOINTS</span>
+            <span className="font-bold text-theme-text-main">404 REBELS // WAYPOINTS</span>
             <span className="text-[10px] bg-theme-surface-subtle px-2 py-0.5 rounded text-theme-accent dark:text-cherenkov-glow font-bold">6 SECTIONS</span>
           </div>
           
@@ -248,9 +248,9 @@ export const HudOverlay: React.FC = () => {
           className="pointer-events-auto flex-1 max-w-lg mx-auto mb-2 hidden md:block cursor-pointer group py-2"
           title="Click to scrub virtual scroll timeline"
         >
-          <div className="w-full h-1 group-hover:h-2 bg-theme-border-subtle dark:bg-white/10 rounded-full overflow-hidden transition-all duration-200 shadow-inner">
+          <div className="w-full h-1 group-hover:h-2 bg-slate-300 dark:bg-white/10 rounded-full overflow-hidden transition-all duration-200 shadow-inner">
             <div
-              className="h-full bg-gradient-to-r from-theme-accent via-indigo-600 to-sky-500 dark:from-cherenkov-blue dark:via-isotope dark:to-cherenkov-glow transition-all duration-100"
+              className="h-full bg-gradient-to-r from-[#0B4DFF] via-indigo-600 to-blue-500 dark:from-cherenkov-blue dark:via-isotope dark:to-cherenkov-glow transition-all duration-100"
               style={{ width: `${Math.max(2, scrollProgress * 100)}%` }}
             />
           </div>
@@ -260,7 +260,7 @@ export const HudOverlay: React.FC = () => {
         {isDebug ? (
           <div className="pointer-events-auto bg-theme-surface backdrop-blur-md px-3.5 py-2 rounded-lg border border-theme-border-subtle text-[10px] sm:text-[11px] text-theme-text-muted flex items-center space-x-2 shadow-ambient">
             <Disc3 className="w-3.5 h-3.5 text-theme-accent dark:text-cherenkov-glow animate-spin-slow" />
-            <span className="text-theme-text-main dark:text-[#F2F4F8]">TRIAD COLLECTIVE</span>
+            <span className="text-theme-text-main dark:text-[#F2F4F8]">404 REBELS COLLECTIVE</span>
           </div>
         ) : (
           <div className="w-12 hidden md:block" />

@@ -27,19 +27,24 @@ export const PostProcessingPass: React.FC = () => {
     );
   }
 
-  // Modulate chromatic aberration offset slightly with scroll velocity (subtle edge-only on dark)
+  // Modulate chromatic aberration offset slightly with scroll velocity (near zero in light mode)
+  const baseOffset = isDark ? 0.0007 : 0.00008;
+  const velOffset = isDark
+    ? Math.min(Math.abs(velocity) * 0.00008, 0.0015)
+    : Math.min(Math.abs(velocity) * 0.00002, 0.0002);
+
   const aberrationOffset = new THREE.Vector2(
-    (isDark ? 0.0007 : 0.0015) + Math.min(Math.abs(velocity) * 0.00008, 0.0015),
-    (isDark ? 0.0007 : 0.0015) + Math.min(Math.abs(velocity) * 0.00008, 0.0015)
+    baseOffset + velOffset,
+    baseOffset + velOffset
   );
 
   return (
     <EffectComposer multisampling={0}>
       {/* Selective Bloom: Tuned to eliminate white-blob overexposure and maintain 50+ FPS */}
       <Bloom
-        luminanceThreshold={isDark ? 0.95 : 1.15}
+        luminanceThreshold={isDark ? 0.95 : 1.25}
         luminanceSmoothing={0.3}
-        intensity={isDark ? 0.6 : 0.35}
+        intensity={isDark ? 0.6 : 0.15}
         blendFunction={BlendFunction.SCREEN}
         mipmapBlur
       />
@@ -48,10 +53,10 @@ export const PostProcessingPass: React.FC = () => {
       <Noise
         premultiply
         blendFunction={BlendFunction.OVERLAY}
-        opacity={isDark ? 0.028 : 0.02}
+        opacity={isDark ? 0.028 : 0.006}
       />
 
-      {/* Anamorphic Lens Chromatic Dispersion (Subtle on dark) */}
+      {/* Anamorphic Lens Chromatic Dispersion (Subtle on dark, near zero on light) */}
       <ChromaticAberration
         offset={aberrationOffset}
         radialModulation={true}
@@ -62,7 +67,7 @@ export const PostProcessingPass: React.FC = () => {
       <Vignette
         eskil={false}
         offset={0.25}
-        darkness={isDark ? 0.40 : 0.06}
+        darkness={isDark ? 0.40 : 0.04}
         blendFunction={BlendFunction.NORMAL}
       />
     </EffectComposer>

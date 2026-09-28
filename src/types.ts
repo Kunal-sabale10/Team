@@ -6,6 +6,7 @@ export interface TeamMember {
   tagline: string;
   bio: string;
   avatarIcon: string;
+  imageUrl?: string;
   disciplines: string[];
   metrics: {
     label: string;
@@ -20,6 +21,9 @@ export interface CaseStudy {
   index: string;
   title: string;
   subtitle: string;
+  creator: string;
+  creatorId: 'kunal-sabale' | 'animesh-dabhade' | 'rajani-mourya';
+  featuredRole?: string;
   category: string;
   year: string;
   description: string;

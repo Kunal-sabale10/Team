@@ -72,8 +72,8 @@ const AcceleratorBeamShader = {
         gl_FragColor = vec4(finalColor * (0.65 + fresnel * 0.65), alpha);
       } else {
         // Light mode: High contrast, rich saturated core, non-additive blend
-        float alpha = clamp(fresnel * 1.2 + grid * 1.0 + energyPulse * 0.4, 0.15, 0.9);
-        vec3 surfaceColor = mix(finalColor, uColorB * 0.8, grid * 0.4);
+        float alpha = clamp(fresnel * 0.55 + grid * 0.35 + energyPulse * 0.2, 0.06, 0.42);
+        vec3 surfaceColor = mix(finalColor, uColorB * 0.75, grid * 0.3);
         gl_FragColor = vec4(surfaceColor, alpha);
       }
     }
@@ -108,14 +108,14 @@ export const AcceleratorCore: React.FC = () => {
     // Update custom shader uniforms with smooth theme lerp
     if (beamMaterialRef.current) {
       // Modulate beam brightness: full in Hero, dimmed in content sections 2-6
-      const colorIntensity = isDark ? (isHero ? 1.0 : 0.6) : (isHero ? 1.0 : 0.75);
+      const colorIntensity = isDark ? (isHero ? 1.0 : 0.6) : (isHero ? 0.9 : 0.6);
       const targetColorA = isDark
         ? new THREE.Color('#1D4ED8').multiplyScalar(colorIntensity)
-        : new THREE.Color('#003299');
+        : new THREE.Color('#1D4ED8').multiplyScalar(colorIntensity);
       const targetColorB = isDark
         ? new THREE.Color('#38BDF8').multiplyScalar(colorIntensity)
-        : new THREE.Color('#0047D4');
-      const targetBg = isDark ? new THREE.Color('#0C0D14') : new THREE.Color('#F7F5F0');
+        : new THREE.Color('#60A5FA').multiplyScalar(colorIntensity);
+      const targetBg = isDark ? new THREE.Color('#0C0D14') : new THREE.Color('#F4F1EA');
 
       beamMaterialRef.current.uniforms.uTime.value = time;
       beamMaterialRef.current.uniforms.uProgress.value = scrollProgress;
@@ -204,13 +204,15 @@ export const AcceleratorCore: React.FC = () => {
         ref={instancedRingsRef}
         args={[undefined, undefined, ringCount]}
       >
-        <torusGeometry args={[3.2, 0.08, 12, 8]} />
+        <torusGeometry args={[3.2, isDark ? 0.08 : 0.048, 12, 8]} />
         <meshStandardMaterial
-          color={isDark ? '#141622' : '#1c222e'}
-          emissive={isDark ? '#1D4ED8' : '#003ecb'}
-          emissiveIntensity={isDark ? (currentSection <= 1 ? 0.6 : 0.32) : 0.8}
-          roughness={0.35}
-          metalness={0.88}
+          color={isDark ? '#141622' : '#94A3B8'}
+          emissive={isDark ? '#1D4ED8' : '#3B82F6'}
+          emissiveIntensity={isDark ? (currentSection <= 1 ? 0.6 : 0.32) : (currentSection <= 1 ? 0.35 : 0.18)}
+          roughness={isDark ? 0.35 : 0.5}
+          metalness={isDark ? 0.88 : 0.6}
+          transparent={!isDark}
+          opacity={isDark ? 1.0 : 0.45}
         />
       </instancedMesh>
 
@@ -221,8 +223,8 @@ export const AcceleratorCore: React.FC = () => {
           <meshStandardMaterial
             color={isDark ? "#E2E8F0" : "#003299"}
             emissive={isDark ? "#38BDF8" : "#0047D4"}
-            emissiveIntensity={isDark ? (currentSection <= 1 ? 1.0 : 0.5) : 1.4}
-            roughness={0.25}
+            emissiveIntensity={isDark ? (currentSection <= 1 ? 1.0 : 0.5) : (currentSection <= 1 ? 0.55 : 0.28)}
+            roughness={isDark ? 0.25 : 0.4}
             metalness={0.9}
             wireframe
           />
@@ -239,18 +241,18 @@ export const AcceleratorCore: React.FC = () => {
 
         <pointLight
           color={isDark ? "#38BDF8" : "#0047D4"}
-          intensity={isDark ? (currentSection <= 1 ? 1.8 : 0.9) : 3.5}
+          intensity={isDark ? (currentSection <= 1 ? 1.8 : 0.9) : (currentSection <= 1 ? 1.4 : 0.7)}
           distance={14}
           decay={2}
         />
       </group>
 
-      {/* Auxiliary Structural Trusses (Left & Right Rails) */}
-      <mesh position={[-4.5, 0, -20]}>
+      {/* Auxiliary Structural Trusses (Left & Right Rails) - Visible in Dark Mode only to eliminate horizontal black slab in Light Mode */}
+      <mesh position={[-4.5, 0, -20]} visible={isDark}>
         <boxGeometry args={[0.15, 0.4, 85]} />
         <meshStandardMaterial color={isDark ? "#181A26" : "#2a313d"} metalness={0.8} roughness={0.3} />
       </mesh>
-      <mesh position={[4.5, 0, -20]}>
+      <mesh position={[4.5, 0, -20]} visible={isDark}>
         <boxGeometry args={[0.15, 0.4, 85]} />
         <meshStandardMaterial color={isDark ? "#181A26" : "#2a313d"} metalness={0.8} roughness={0.3} />
       </mesh>

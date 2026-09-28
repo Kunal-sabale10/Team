@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useScrollEngine } from '../../context/ScrollContext';
 import { useTheme } from '../../context/ThemeContext';
-import { ShieldAlert, Zap, Radio, Volume2, ArrowRight, Users, Cpu, Sparkles, Palette, Sun, Moon } from 'lucide-react';
+import { ShieldAlert, Radio, Volume2, ArrowRight, Users, Cpu, Sparkles, Palette, Sun, Moon } from 'lucide-react';
 import { soundEngine } from '../../audio/SoundEngine';
 
 export const Beat0LockScreen: React.FC = () => {
   const { isUnlocked, unlockExperience } = useScrollEngine();
-  const { isDark, toggleTheme, theme } = useTheme();
+  const { isDark, toggleTheme } = useTheme();
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isMounted, setIsMounted] = useState(true);
   const [calibrationProgress, setCalibrationProgress] = useState(15);
@@ -58,15 +58,15 @@ export const Beat0LockScreen: React.FC = () => {
       <div className="flex items-center justify-between border-b border-theme-border-subtle dark:border-white/10 pb-4 font-mono text-xs text-theme-text-muted dark:text-[#B8BED0]">
         <div className="flex items-center space-x-3">
           <div className="w-2.5 h-2.5 rounded-full bg-theme-accent dark:bg-cherenkov-glow animate-ping" />
-          <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold tracking-widest">HADRON TRIAD // COLLECTIVE PROTOCOL</span>
+          <span className="text-theme-text-main dark:text-[#F2F4F8] font-bold tracking-widest">404 REBELS // TEAM PROTOCOL</span>
         </div>
         
         <div className="flex items-center space-x-4">
           <div className="hidden sm:flex items-center space-x-6 text-[11px] tracking-wider">
-            <span>TRIAD NODES: 3 SYNCHRONIZED</span>
+            <span>TEAM: 3 MEMBERS ACTIVE</span>
             <span className="text-emerald-600 dark:text-isotope flex items-center gap-1.5 font-semibold">
               <Radio className="w-3.5 h-3.5 animate-pulse" />
-              READY
+              ONLINE
             </span>
           </div>
 
@@ -91,52 +91,61 @@ export const Beat0LockScreen: React.FC = () => {
       <div className="max-w-2xl mx-auto my-auto w-full text-center space-y-8 py-8">
         <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded border border-theme-accent/30 bg-theme-surface-subtle text-theme-accent dark:border-cherenkov-blue/40 dark:bg-cherenkov-blue/10 dark:text-cherenkov-glow text-xs font-mono tracking-widest uppercase">
           <Users className="w-3.5 h-3.5" />
-          <span>Triad Collective Engineering Standby</span>
+          <span>404 Rebels Web Development &amp; Design Standby</span>
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-extrabold tracking-tight text-theme-text-main dark:text-[#F2F4F8] leading-none">
-            HADRON<br />
+          <h1 className="text-5xl sm:text-7xl md:text-8xl font-display font-extrabold tracking-tight text-theme-text-main dark:text-[#F2F4F8] leading-none">
+            404<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-sky-300 dark:via-white dark:to-blue-500">
-              COLLECTIVE
+              REBELS
             </span>
           </h1>
           <p className="text-theme-text-muted dark:text-[#B8BED0] text-sm sm:text-base max-w-md mx-auto font-mono leading-relaxed">
-            The collaborative creative engineering matrix of Kunal Sabale, Animesh Dabhade &amp; Rajani Mourya.
+            The collaborative web engineering and UI/UX design collective of Kunal Sabale, Animesh Dabhade, and Rajani Mourya.
           </p>
         </div>
 
         {/* 3 Node Micro Matrix */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg mx-auto text-left font-mono">
-          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle dark:border-white/10 space-y-1 shadow-ambient">
-            <div className="flex items-center space-x-1.5 text-theme-accent dark:text-cherenkov-glow text-[10px]">
-              <Cpu className="w-3 h-3" />
-              <span className="font-bold">KUNAL SABALE</span>
+          <div className="p-2.5 rounded-lg bg-theme-surface border border-theme-border-subtle dark:border-white/10 flex items-center space-x-2.5 shadow-ambient">
+            <img src="/images/team/kunal.jpg" alt="Kunal Sabale" className="w-9 h-9 rounded-md object-cover object-top border border-theme-border-subtle dark:border-white/10 shrink-0" />
+            <div className="space-y-0.5 min-w-0">
+              <div className="flex items-center space-x-1 text-theme-accent dark:text-cherenkov-glow text-[10px]">
+                <Cpu className="w-3 h-3 shrink-0" />
+                <span className="font-bold truncate">KUNAL</span>
+              </div>
+              <div className="text-[9px] text-theme-text-dim dark:text-[#8A91A6] truncate">FULL-STACK LEAD</div>
             </div>
-            <div className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">THE BUILD // ARCHITECT</div>
           </div>
 
-          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle dark:border-white/10 space-y-1 shadow-ambient">
-            <div className="flex items-center space-x-1.5 text-emerald-600 dark:text-isotope text-[10px]">
-              <Sparkles className="w-3 h-3" />
-              <span className="font-bold">ANIMESH DABHADE</span>
+          <div className="p-2.5 rounded-lg bg-theme-surface border border-theme-border-subtle dark:border-white/10 flex items-center space-x-2.5 shadow-ambient">
+            <img src="/images/team/animesh.jpg" alt="Animesh Dabhade" className="w-9 h-9 rounded-md object-cover object-top border border-theme-border-subtle dark:border-white/10 shrink-0" />
+            <div className="space-y-0.5 min-w-0">
+              <div className="flex items-center space-x-1 text-emerald-600 dark:text-isotope text-[10px]">
+                <Sparkles className="w-3 h-3 shrink-0" />
+                <span className="font-bold truncate">ANIMESH</span>
+              </div>
+              <div className="text-[9px] text-theme-text-dim dark:text-[#8A91A6] truncate">PRODUCT LEAD</div>
             </div>
-            <div className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">THE IDEA // STRATEGY</div>
           </div>
 
-          <div className="p-2.5 rounded bg-theme-surface border border-theme-border-subtle dark:border-white/10 space-y-1 shadow-ambient">
-            <div className="flex items-center space-x-1.5 text-theme-accent dark:text-cherenkov-glow text-[10px]">
-              <Palette className="w-3 h-3" />
-              <span className="font-bold">RAJANI MOURYA</span>
+          <div className="p-2.5 rounded-lg bg-theme-surface border border-theme-border-subtle dark:border-white/10 flex items-center space-x-2.5 shadow-ambient">
+            <img src="/images/team/rajani.jpg" alt="Rajani Mourya" className="w-9 h-9 rounded-md object-cover object-top border border-theme-border-subtle dark:border-white/10 shrink-0" />
+            <div className="space-y-0.5 min-w-0">
+              <div className="flex items-center space-x-1 text-theme-accent dark:text-cherenkov-glow text-[10px]">
+                <Palette className="w-3 h-3 shrink-0" />
+                <span className="font-bold truncate">RAJANI</span>
+              </div>
+              <div className="text-[9px] text-theme-text-dim dark:text-[#8A91A6] truncate">FRONTEND &amp; UI</div>
             </div>
-            <div className="text-[10px] text-theme-text-dim dark:text-[#8A91A6]">PRESENTATION &amp; DEV</div>
           </div>
         </div>
 
         {/* Calibration Progress Bar */}
         <div className="w-full max-w-xs mx-auto space-y-2">
           <div className="flex justify-between text-[11px] font-mono text-theme-text-dim dark:text-[#8A91A6]">
-            <span>TRIAD SYNCHRONIZATION</span>
+            <span>SYSTEM CALIBRATION</span>
             <span className="text-theme-accent dark:text-cherenkov-glow font-bold">{Math.min(100, calibrationProgress)}%</span>
           </div>
           <div className="w-full h-1 bg-theme-border-subtle dark:bg-white/10 rounded overflow-hidden">
@@ -156,21 +165,21 @@ export const Beat0LockScreen: React.FC = () => {
           >
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
             <Volume2 className="w-4 h-4" />
-            <span className="relative z-10">INITIALIZE TRIAD &amp; AUDIO</span>
+            <span className="relative z-10">ENTER EXPERIENCE</span>
             <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
 
         <p className="text-[11px] font-mono text-theme-text-dim dark:text-[#8A91A6] flex items-center justify-center gap-1.5">
           <ShieldAlert className="w-3.5 h-3.5 text-theme-accent dark:text-cherenkov-glow" />
-          Press [ENTER] or click to unlock collective 3D shader engine &amp; audio
+          Press [ENTER] or click to explore the 404 Rebels portfolio
         </p>
       </div>
 
       {/* Bottom Telemetry Footer */}
       <div className="flex items-center justify-between border-t border-theme-border-subtle dark:border-white/10 pt-4 font-mono text-xs text-theme-text-dim dark:text-[#8A91A6]">
-        <span>COLLECTIVE: KUNAL • ANIMESH • RAJANI</span>
-        <span className="hidden sm:inline">60 / 120 FPS SYNCHRONIZED TIER</span>
+        <span>404 REBELS: KUNAL • ANIMESH • RAJANI</span>
+        <span className="hidden sm:inline">60 / 120 FPS LOCK</span>
         <span>LATENCY: 0.12MS</span>
       </div>
     </div>

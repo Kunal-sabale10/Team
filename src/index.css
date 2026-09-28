@@ -63,32 +63,33 @@
 }
 
 :root.light, html.light, html[data-theme="light"], body.light {
-  /* Warm Editorial Light Theme Base (WCAG AA Compliant - Untouched) */
-  --bg-base: #F7F5F0;
-  --bg-canvas: #F7F5F0;
-  --bg-surface: rgba(255, 255, 255, 0.78);
-  --bg-surface-elevated: rgba(255, 255, 255, 0.92);
-  --bg-surface-subtle: rgba(240, 237, 230, 0.65);
+  /* High-Contrast Editorial Light Theme Base (WCAG AA Compliant) */
+  --bg-base: #F4F1EA;
+  --bg-canvas: #F4F1EA;
+  --bg-surface: rgba(255, 255, 255, 0.94);
+  --bg-surface-elevated: #FFFFFF;
+  --bg-surface-subtle: rgba(244, 241, 234, 0.92);
   
-  --text-main: #0E0E12;
-  --text-muted: #4A4A54;
-  --text-dim: #767682;
+  --text-main: #0E1220;
+  --text-muted: #3A4258;
+  --text-dim: #5B6478;
   
-  --accent-primary: #0047D4;
+  --accent-primary: #0B4DFF;
   --accent-hover: #0037A8;
   --accent-secondary: #003299;
-  --accent-glow: #0284C7;
+  --accent-teal: #007C8C;
+  --accent-glow: #0B4DFF;
   --accent-success: #057A44;
   
-  --border-subtle: rgba(14, 14, 18, 0.09);
-  --border-medium: rgba(14, 14, 18, 0.16);
-  --border-accent: rgba(0, 71, 212, 0.28);
+  --border-subtle: rgba(14, 18, 32, 0.12);
+  --border-medium: rgba(14, 18, 32, 0.18);
+  --border-accent: rgba(11, 77, 255, 0.35);
   
-  --shadow-ambient: 0 10px 30px rgba(14, 14, 18, 0.06), 0 1px 3px rgba(14, 14, 18, 0.04);
-  --shadow-elevated: 0 18px 45px rgba(0, 71, 212, 0.08), 0 2px 6px rgba(14, 14, 18, 0.05);
+  --shadow-ambient: 0 8px 30px rgba(20, 30, 80, 0.10);
+  --shadow-elevated: 0 14px 40px rgba(20, 30, 80, 0.14);
 
-  --color-cherenkov: #0047D4;
-  --color-cyan: #0284C7;
+  --color-cherenkov: #003299;
+  --color-cyan: #007C8C;
   --color-isotope: #057A44;
 }
 
@@ -200,3 +201,36 @@ html[data-theme="dark"] .bg-theme-surface-subtle {
   background-color: rgba(26, 30, 46, 0.75) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
+
+/* Solid High-Contrast Opaque Surfaces in Light Mode (Prevents 3D Ghosting) */
+html.light .bg-theme-surface,
+html[data-theme="light"] .bg-theme-surface {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(14, 18, 32, 0.12) !important;
+  box-shadow: 0 8px 30px rgba(20, 30, 80, 0.10) !important;
+}
+
+html.light .bg-theme-surface:hover,
+html[data-theme="light"] .bg-theme-surface:hover,
+html.light .hover\:bg-theme-surface-elevated:hover,
+html[data-theme="light"] .hover\:bg-theme-surface-elevated:hover {
+  background-color: #FFFFFF !important;
+  border-color: rgba(11, 77, 255, 0.35) !important;
+  box-shadow: 0 14px 40px rgba(20, 30, 80, 0.14) !important;
+}
+
+html.light .bg-theme-surface-subtle,
+html[data-theme="light"] .bg-theme-surface-subtle {
+  background-color: rgba(244, 241, 234, 0.92) !important;
+  border-color: rgba(14, 18, 32, 0.09) !important;
+}
+
+html.light .bg-theme-surface-elevated,
+html[data-theme="light"] .bg-theme-surface-elevated {
+  background-color: #FFFFFF !important;
+  border-color: rgba(14, 18, 32, 0.14) !important;
+  box-shadow: 0 12px 36px rgba(20, 30, 80, 0.12) !important;
+}
+
