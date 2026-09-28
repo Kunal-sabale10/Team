@@ -167,7 +167,7 @@ export const SceneGraph: React.FC = () => {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none w-full h-full overflow-hidden bg-theme-canvas transition-colors duration-500">
       <Canvas
-        camera={{ position: [0, 0, 16], fov: 48, near: 0.1, far: 150 }}
+        camera={{ position: [0, 0, 16], fov: isMobile ? 56 : 48, near: 0.1, far: 150 }}
         dpr={clampedDpr}
         gl={{
           antialias: false,

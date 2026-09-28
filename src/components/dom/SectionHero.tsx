@@ -8,7 +8,7 @@ export const SectionHero: React.FC = () => {
   const { scrollToSection } = useScroll();
 
   return (
-    <section id="section-hero" className="relative min-h-screen w-full flex flex-col justify-between px-6 sm:px-12 md:px-20 py-20 sm:py-24">
+    <section id="section-hero" className="relative min-h-screen w-full flex flex-col justify-between px-4 sm:px-12 md:px-20 py-16 sm:py-24">
       {/* Top Telemetry Row */}
       <div className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-[#3A4258] dark:text-[#8A91A6]">
         <div className="flex items-center space-x-2">
@@ -35,13 +35,13 @@ export const SectionHero: React.FC = () => {
         </div>
 
         <div className="space-y-3 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-extrabold tracking-tighter text-[#0E1220] dark:text-[#F2F4F8] leading-[0.9]">
+          <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-extrabold tracking-tighter text-[#0E1220] dark:text-[#F2F4F8] leading-[0.9]">
             IDEA. BUILD.<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0E1220] via-[#003299] to-[#0B4DFF] dark:from-sky-300 dark:via-white dark:to-blue-500">
               DELIVER.
             </span>
           </h1>
-          <p className="text-base sm:text-xl md:text-2xl font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-3xl pt-2 leading-relaxed">
+          <p className="text-sm sm:text-lg md:text-xl font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-3xl pt-2 leading-relaxed">
             We are 404 Rebels — a focused web development and design team. We combine full-stack engineering, clean UI/UX design, and modern interactive technologies to build fast, reliable, and user-centric web applications.
           </p>
         </div>
@@ -80,11 +80,11 @@ export const SectionHero: React.FC = () => {
         </div>
 
         {/* Action Conduit Buttons */}
-        <div className="pt-2 flex flex-wrap items-center gap-3">
+        <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
           <button
             onClick={() => scrollToSection(4)}
             onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-            className="inline-flex items-center space-x-2.5 px-6 py-3.5 bg-theme-accent hover:opacity-95 dark:bg-cherenkov-blue dark:hover:bg-cherenkov-glow text-white dark:hover:text-graphite-950 font-mono text-xs tracking-widest uppercase font-semibold transition-all duration-300 rounded shadow-lg shadow-blue-500/25 dark:shadow-cherenkov-blue/30 cursor-pointer"
+            className="inline-flex items-center justify-center space-x-2.5 px-6 py-3.5 bg-theme-accent hover:opacity-95 dark:bg-cherenkov-blue dark:hover:bg-cherenkov-glow text-white dark:hover:text-graphite-950 font-mono text-xs tracking-widest uppercase font-semibold transition-all duration-300 rounded shadow-lg shadow-blue-500/25 dark:shadow-cherenkov-blue/30 cursor-pointer w-full sm:w-auto min-h-[44px]"
           >
             <span>VIEW OUR PROJECTS</span>
             <ArrowDown className="w-4 h-4 animate-bounce" />
@@ -93,7 +93,7 @@ export const SectionHero: React.FC = () => {
           <button
             onClick={() => scrollToSection(2)}
             onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-            className="inline-flex items-center space-x-2.5 px-6 py-3.5 bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] font-mono text-xs tracking-widest uppercase font-semibold transition-all duration-300 rounded cursor-pointer backdrop-blur-md shadow-ambient"
+            className="inline-flex items-center justify-center space-x-2.5 px-6 py-3.5 bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] font-mono text-xs tracking-widest uppercase font-semibold transition-all duration-300 rounded cursor-pointer backdrop-blur-md shadow-ambient w-full sm:w-auto min-h-[44px]"
           >
             <span>ABOUT OUR TEAM</span>
           </button>
@@ -103,7 +103,7 @@ export const SectionHero: React.FC = () => {
             target="_blank"
             rel="noreferrer"
             onMouseEnter={() => soundEngine.playHoverBlip(1600)}
-            className="inline-flex items-center space-x-2 px-5 py-3.5 bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] font-mono text-xs tracking-widest uppercase font-semibold transition-all duration-300 rounded cursor-pointer backdrop-blur-md shadow-ambient"
+            className="inline-flex items-center justify-center space-x-2 px-5 py-3.5 bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] font-mono text-xs tracking-widest uppercase font-semibold transition-all duration-300 rounded cursor-pointer backdrop-blur-md shadow-ambient w-full sm:w-auto min-h-[44px]"
           >
             <Github className="w-4 h-4 text-[#007C8C] dark:text-cherenkov-glow" />
             <span>GITHUB REPOSITORIES</span>
@@ -119,7 +119,8 @@ export const SectionHero: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-3 text-[#5B6478] dark:text-[#8A91A6]">
-          <span className="text-[11px] tracking-widest uppercase font-medium">Scroll or press [1-6] to navigate</span>
+          <span className="hidden sm:inline text-[11px] tracking-widest uppercase font-medium">Scroll or press [1-6] to navigate</span>
+          <span className="sm:hidden text-[11px] tracking-widest uppercase font-medium">Scroll to explore</span>
           <div className="w-5 h-8 rounded-full border border-theme-border-subtle flex items-start justify-center p-1">
             <div className="w-1 h-2 rounded-full bg-[#0B4DFF] dark:bg-cherenkov-glow animate-pulse" />
           </div>

@@ -133,29 +133,29 @@ export const SectionContact: React.FC = () => {
   };
 
   return (
-    <section id="section-contact" className="relative min-h-screen w-full px-6 sm:px-12 md:px-20 py-20 sm:py-28 flex flex-col justify-center">
+    <section id="section-contact" className="relative min-h-screen w-full px-4 sm:px-12 md:px-20 py-16 sm:py-28 flex flex-col justify-center">
       {/* Header */}
-      <div className="max-w-4xl space-y-4 mb-14 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
+      <div className="max-w-4xl space-y-4 mb-10 sm:mb-14 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
         <div className="flex items-center space-x-3 text-xs font-mono text-[#3A4258] dark:text-[#8A91A6]">
           <span className="w-2.5 h-2.5 rounded-full bg-[#0B4DFF] dark:bg-cherenkov-glow animate-ping" />
           <span className="text-[#0E1220] dark:text-[#F2F4F8] font-bold tracking-widest">06 // DIRECT CONTACT</span>
           <span className="text-[#007C8C] dark:text-cherenkov-glow font-bold">| TRANSMISSION CONDUITS</span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] tracking-tight">
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] tracking-tight">
           CONNECT WITH<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0E1220] via-[#003299] to-[#0B4DFF] dark:from-sky-300 dark:via-white dark:to-blue-500">
             404 REBELS.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-xl leading-relaxed">
+        <p className="text-sm sm:text-base md:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-xl leading-relaxed">
           Open for full-stack engineering, web applications, UI/UX design, and ambitious collaborative projects.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl font-mono">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 max-w-6xl font-mono">
         {/* Left: Interactive CLI Console */}
-        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle dark:border-white/10 rounded-xl p-5 text-xs flex flex-col justify-between h-[450px] shadow-ambient">
+        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle dark:border-white/10 rounded-xl p-5 text-xs flex flex-col justify-between h-[260px] sm:h-[400px] lg:h-[450px] shadow-ambient">
           {/* Terminal Title Bar */}
           <div className="flex items-center justify-between border-b border-theme-border-subtle dark:border-white/10 pb-3 text-[#5B6478] dark:text-[#8A91A6] text-[11px]">
             <div className="flex items-center space-x-2">
@@ -199,7 +199,7 @@ export const SectionContact: React.FC = () => {
         </div>
 
         {/* Right: Direct Transmission Form */}
-        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle dark:border-white/10 rounded-xl p-6 sm:p-8 space-y-5 shadow-ambient flex flex-col justify-between">
+        <div className="lg:col-span-6 bg-theme-surface border border-theme-border-subtle dark:border-white/10 rounded-xl p-5 sm:p-8 space-y-5 shadow-ambient flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between border-b border-theme-border-subtle dark:border-white/10 pb-3 text-xs text-[#5B6478] dark:text-[#8A91A6]">
               <span className="font-bold text-[#0E1220] dark:text-[#F2F4F8] uppercase">DIRECT TRANSMISSION DISPATCH</span>
@@ -261,7 +261,7 @@ export const SectionContact: React.FC = () => {
                   type="submit"
                   disabled={isTransmitting}
                   onMouseEnter={() => soundEngine.playHoverBlip(1500)}
-                  className="w-full py-3 bg-[#0B4DFF] hover:bg-[#0037A8] dark:bg-cherenkov-blue dark:hover:bg-cherenkov-glow text-white dark:hover:text-graphite-950 font-bold uppercase tracking-wider rounded-md transition-all shadow-md shadow-blue-500/25 cursor-pointer flex items-center justify-center space-x-2"
+                  className="w-full py-3 bg-[#0B4DFF] hover:bg-[#0037A8] dark:bg-cherenkov-blue dark:hover:bg-cherenkov-glow text-white dark:hover:text-graphite-950 font-bold uppercase tracking-wider rounded-md transition-all shadow-md shadow-blue-500/25 cursor-pointer flex items-center justify-center space-x-2 min-h-[44px]"
                 >
                   {isTransmitting ? (
                     <span>DISPATCHING...</span>
@@ -277,22 +277,22 @@ export const SectionContact: React.FC = () => {
           </div>
 
           {/* Social Conduits, Direct Mailto & Email Copy */}
-          <div className="pt-3 border-t border-theme-border-subtle dark:border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div className="flex items-center space-x-2">
+          <div className="pt-3 border-t border-theme-border-subtle dark:border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+            <div className="flex items-center space-x-2 w-full sm:w-auto">
               <a
                 href="mailto:kunalsabale10@gmail.com?subject=Collaboration%20with%20404%20Rebels"
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0B4DFF] dark:text-cherenkov-glow hover:underline transition-colors border border-theme-border-subtle dark:border-white/10 font-bold"
+                className="inline-flex items-center space-x-2 px-3 py-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0B4DFF] dark:text-cherenkov-glow hover:underline transition-colors border border-theme-border-subtle dark:border-white/10 font-bold flex-1 sm:flex-none justify-center min-h-[40px]"
                 title="Send Email via Mail client"
               >
                 <Mail className="w-3.5 h-3.5" />
-                <span>kunalsabale10@gmail.com</span>
+                <span className="truncate">kunalsabale10@gmail.com</span>
               </a>
 
               <button
                 onClick={handleCopyEmail}
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors cursor-pointer border border-theme-border-subtle dark:border-white/10 text-[11px] font-semibold"
+                className="inline-flex items-center justify-center space-x-1.5 px-3 py-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors cursor-pointer border border-theme-border-subtle dark:border-white/10 text-[11px] font-semibold min-h-[40px] shrink-0"
                 title="Copy email to clipboard"
               >
                 {isCopied ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
@@ -300,13 +300,13 @@ export const SectionContact: React.FC = () => {
               </button>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 justify-end">
               <a
                 href="https://github.com/Kunal-sabale10?tab=repositories"
                 target="_blank"
                 rel="noreferrer"
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="p-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 flex items-center gap-1.5 text-[11px] font-semibold"
+                className="p-2.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 flex items-center gap-1.5 text-[11px] font-semibold min-h-[40px]"
                 title="GitHub Repositories"
               >
                 <Github className="w-4 h-4 text-[#007C8C] dark:text-cherenkov-glow" />
@@ -317,7 +317,7 @@ export const SectionContact: React.FC = () => {
                 target="_blank"
                 rel="noreferrer"
                 onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-                className="p-2 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10"
+                className="p-2.5 rounded-md bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 min-w-[40px] min-h-[40px] flex items-center justify-center"
                 title="LinkedIn"
               >
                 <Linkedin className="w-4 h-4 text-[#007C8C] dark:text-cherenkov-glow" />

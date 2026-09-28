@@ -29,27 +29,27 @@ export const SectionProjects: React.FC = () => {
   ];
 
   return (
-    <section id="section-projects" className="relative min-h-screen w-full px-6 sm:px-12 md:px-20 py-20 sm:py-28 flex flex-col justify-center">
+    <section id="section-projects" className="relative min-h-screen w-full px-4 sm:px-12 md:px-20 py-16 sm:py-28 flex flex-col justify-center">
       {/* Section Header */}
-      <div className="max-w-4xl space-y-4 mb-10 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
+      <div className="max-w-4xl space-y-4 mb-8 sm:mb-10 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
         <div className="flex items-center space-x-3 text-xs font-mono text-[#3A4258] dark:text-[#8A91A6]">
           <span className="w-2.5 h-2.5 rounded-full bg-[#0B4DFF] dark:bg-cherenkov-glow animate-ping" />
           <span className="text-[#0E1220] dark:text-[#F2F4F8] font-bold tracking-widest">04 // PRODUCTION PORTFOLIO</span>
           <span className="text-[#007C8C] dark:text-cherenkov-glow font-bold">| PROJECT-WISE BREAKDOWN</span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] tracking-tight">
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] tracking-tight">
           CURATED<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0E1220] via-[#003299] to-[#0B4DFF] dark:from-sky-300 dark:via-white dark:to-blue-500">
             PROJECTS.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
+        <p className="text-sm sm:text-base md:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
           Production web applications engineered and delivered by the 404 Rebels team — organized project-wise by lead developer and designer.
         </p>
 
         {/* Member-Wise Filter Tabs */}
-        <div className="flex flex-wrap gap-2 pt-4 font-mono text-xs">
+        <div className="flex items-center gap-2 pt-4 font-mono text-xs overflow-x-auto pb-1 no-scrollbar sm:flex-wrap">
           {filterTabs.map((tab) => {
             const isActive = activeFilter === tab.id;
             return (
@@ -59,7 +59,7 @@ export const SectionProjects: React.FC = () => {
                   soundEngine.playClickBeep();
                   setActiveFilter(tab.id);
                 }}
-                className={`px-3.5 py-1.5 rounded-lg border transition-all duration-200 cursor-pointer flex items-center space-x-2 ${
+                className={`px-3.5 py-1.5 rounded-lg border transition-all duration-200 cursor-pointer flex items-center space-x-2 shrink-0 whitespace-nowrap min-h-[36px] ${
                   isActive
                     ? 'bg-[#0B4DFF] dark:bg-cherenkov-blue text-white font-bold border-[#0B4DFF] dark:border-cherenkov-blue shadow-md'
                     : 'bg-theme-surface text-[#3A4258] dark:text-[#B8BED0] border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF] dark:hover:border-cherenkov-glow hover:text-[#0E1220] dark:hover:text-white'
@@ -78,13 +78,13 @@ export const SectionProjects: React.FC = () => {
       </div>
 
       {/* Grid of 4 Projects (2x2) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl font-mono">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-6xl font-mono">
         {filteredProjects.map((specimen) => (
           <div
             key={specimen.id}
             onClick={() => handleOpenSpecimen(specimen)}
             onMouseEnter={() => soundEngine.playHoverBlip(1200)}
-            className="group relative rounded-2xl bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF] dark:hover:border-cherenkov-glow/50 p-6 sm:p-8 transition-all duration-300 shadow-ambient hover:shadow-xl cursor-pointer overflow-hidden flex flex-col justify-between"
+            className="group relative rounded-2xl bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF] dark:hover:border-cherenkov-glow/50 p-5 sm:p-8 transition-all duration-300 shadow-ambient hover:shadow-xl cursor-pointer overflow-hidden flex flex-col justify-between"
           >
             {/* Ambient Background Glow */}
             <div className="absolute top-0 right-0 w-44 h-44 bg-blue-500/5 dark:bg-cherenkov-blue/10 rounded-full blur-2xl group-hover:bg-blue-500/10 dark:group-hover:bg-cherenkov-blue/20 transition-all duration-500" />
@@ -110,7 +110,7 @@ export const SectionProjects: React.FC = () => {
                 <div className="text-[11px] font-mono text-[#007C8C] dark:text-cherenkov-glow uppercase tracking-wider font-bold">
                   {specimen.category}
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] group-hover:text-[#0B4DFF] dark:group-hover:text-cherenkov-glow transition-colors">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] group-hover:text-[#0B4DFF] dark:group-hover:text-cherenkov-glow transition-colors">
                   {specimen.title}
                 </h3>
                 <p className="text-xs sm:text-sm font-sans text-[#3A4258] dark:text-[#B8BED0] line-clamp-3 leading-relaxed pt-1">

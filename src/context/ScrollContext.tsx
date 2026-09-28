@@ -194,13 +194,14 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   // Initialize Lenis & synchronize with GSAP ScrollTrigger
   useEffect(() => {
     const lenis = new Lenis({
-      duration: isReducedMotion ? 0.2 : 1.15,
+      duration: isReducedMotion ? 0.2 : (isMobile ? 0.65 : 1.15),
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: !isReducedMotion,
       wheelMultiplier: 0.85,
-      touchMultiplier: 1.4,
+      touchMultiplier: 1.0,
+      syncTouch: true,
     });
 
     lenisRef.current = lenis;
@@ -259,7 +260,7 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     if (sectionIndex === 1) {
       lenisRef.current.scrollTo(0, {
-        duration: isReducedMotion ? 0.2 : 1.4,
+        duration: isReducedMotion ? 0.2 : (isMobile ? 0.75 : 1.4),
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     } else {
@@ -267,13 +268,13 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       const target = document.getElementById(targetId);
       if (target) {
         lenisRef.current.scrollTo(target, {
-          offset: -40,
-          duration: isReducedMotion ? 0.2 : 1.4,
+          offset: isMobile ? -20 : -40,
+          duration: isReducedMotion ? 0.2 : (isMobile ? 0.75 : 1.4),
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         });
       }
     }
-  }, [isReducedMotion]);
+  }, [isMobile, isReducedMotion]);
 
   const toggleAudio = useCallback(() => {
     const muted = soundEngine.toggleMute();

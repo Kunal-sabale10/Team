@@ -158,73 +158,85 @@ export const HudOverlay: React.FC = () => {
               setIsMobileMenuOpen(!isMobileMenuOpen);
             }}
             onMouseEnter={() => soundEngine.playHoverBlip(1600)}
-            className="md:hidden flex items-center justify-center p-2 rounded-lg bg-theme-surface backdrop-blur-md px-2.5 py-2 border border-theme-border-subtle text-theme-text-main dark:text-[#F2F4F8] cursor-pointer shadow-ambient"
+            className="md:hidden flex items-center justify-center min-w-[40px] min-h-[40px] rounded-lg bg-theme-surface backdrop-blur-md px-2.5 py-2 border border-theme-border-subtle text-theme-text-main dark:text-[#F2F4F8] cursor-pointer shadow-ambient"
             aria-label="Toggle Navigation Menu"
             title="Menu"
           >
             {isMobileMenuOpen ? (
-              <X className="w-4 h-4 text-theme-accent dark:text-cherenkov-glow" />
+              <X className="w-5 h-5 text-theme-accent dark:text-cherenkov-glow" />
             ) : (
-              <Menu className="w-4 h-4" />
+              <Menu className="w-5 h-5" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu Modal */}
+      {/* Mobile Drawer Backdrop & Modal */}
       {isMobileMenuOpen && (
-        <div className="pointer-events-auto md:hidden absolute top-16 left-3 right-3 z-50 bg-theme-surface-elevated backdrop-blur-xl border border-theme-border-subtle rounded-2xl p-5 shadow-2xl space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-theme-border-subtle text-[11px] text-theme-text-dim">
-            <span className="font-bold text-theme-text-main">404 REBELS // WAYPOINTS</span>
-            <span className="text-[10px] bg-theme-surface-subtle px-2 py-0.5 rounded text-theme-accent dark:text-cherenkov-glow font-bold">6 SECTIONS</span>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-2">
-            {waypoints.map((wp) => {
-              const isActive = currentSection === wp.index;
-              return (
-                <button
-                  key={wp.index}
-                  onClick={() => {
-                    soundEngine.playClickBeep();
-                    scrollToSection(wp.index);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`p-3 rounded-xl text-left text-xs tracking-wider transition-all cursor-pointer flex flex-col justify-between ${
-                    isActive
-                      ? 'bg-theme-accent dark:bg-cherenkov-blue text-white font-bold shadow-md shadow-blue-500/20'
-                      : 'bg-theme-surface-subtle text-theme-text-muted hover:bg-theme-surface hover:text-theme-text-main'
-                  }`}
-                >
-                  <span className="text-[10px] opacity-75 font-mono">0{wp.index} //</span>
-                  <span className="font-bold font-mono text-[12px]">{wp.label}</span>
-                </button>
-              );
-            })}
-          </div>
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm pointer-events-auto md:hidden animate-fade-in"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="pointer-events-auto md:hidden absolute top-16 left-3 right-3 z-50 bg-theme-surface-elevated backdrop-blur-xl border border-theme-border-subtle rounded-2xl p-5 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-theme-border-subtle text-[11px] text-theme-text-dim">
+              <span className="font-bold text-theme-text-main">404 REBELS // WAYPOINTS</span>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="p-1 rounded text-theme-text-dim hover:text-theme-text-main"
+                title="Close Menu"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-2">
+              {waypoints.map((wp) => {
+                const isActive = currentSection === wp.index;
+                return (
+                  <button
+                    key={wp.index}
+                    onClick={() => {
+                      soundEngine.playClickBeep();
+                      scrollToSection(wp.index);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`p-3.5 rounded-xl text-left text-xs tracking-wider transition-all cursor-pointer flex flex-col justify-between min-h-[54px] ${
+                      isActive
+                        ? 'bg-theme-accent dark:bg-cherenkov-blue text-white font-bold shadow-md shadow-blue-500/20'
+                        : 'bg-theme-surface-subtle text-theme-text-muted hover:bg-theme-surface hover:text-theme-text-main'
+                    }`}
+                  >
+                    <span className="text-[10px] opacity-75 font-mono">0{wp.index} //</span>
+                    <span className="font-bold font-mono text-[12px]">{wp.label}</span>
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* Quick Mobile Controls */}
-          <div className="pt-3 border-t border-theme-border-subtle flex items-center justify-between text-xs">
-            <button
-              onClick={() => {
-                soundEngine.playClickBeep();
-                toggleTheme();
-              }}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-theme-surface-subtle text-theme-text-main cursor-pointer"
-            >
-              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-theme-accent" />}
-              <span className="text-[11px] font-mono">{isDark ? 'LIGHT MODE' : 'DARK MODE'}</span>
-            </button>
+            {/* Quick Mobile Controls */}
+            <div className="pt-3 border-t border-theme-border-subtle flex items-center justify-between text-xs">
+              <button
+                onClick={() => {
+                  soundEngine.playClickBeep();
+                  toggleTheme();
+                }}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-theme-surface-subtle text-theme-text-main cursor-pointer min-h-[44px]"
+              >
+                {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-theme-accent" />}
+                <span className="text-[11px] font-mono">{isDark ? 'LIGHT MODE' : 'DARK MODE'}</span>
+              </button>
 
-            <button
-              onClick={toggleAudio}
-              className="flex items-center gap-2 px-3 py-2 rounded-lg bg-theme-surface-subtle text-theme-text-main cursor-pointer"
-            >
-              {isAudioMuted ? <VolumeX className="w-4 h-4 text-theme-text-dim" /> : <Volume2 className="w-4 h-4 text-theme-accent dark:text-cherenkov-glow" />}
-              <span className="text-[11px] font-mono">{isAudioMuted ? 'MUTED' : 'AUDIO ON'}</span>
-            </button>
+              <button
+                onClick={toggleAudio}
+                className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-theme-surface-subtle text-theme-text-main cursor-pointer min-h-[44px]"
+              >
+                {isAudioMuted ? <VolumeX className="w-4 h-4 text-theme-text-dim" /> : <Volume2 className="w-4 h-4 text-theme-accent dark:text-cherenkov-glow" />}
+                <span className="text-[11px] font-mono">{isAudioMuted ? 'MUTED' : 'AUDIO ON'}</span>
+              </button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Bottom Telemetry & Interactive Progress Gauge */}

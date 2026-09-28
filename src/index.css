@@ -234,3 +234,28 @@ html[data-theme="light"] .bg-theme-surface-elevated {
   box-shadow: 0 12px 36px rgba(20, 30, 80, 0.12) !important;
 }
 
+/* Mobile & Touch Ergonomics */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  overscroll-behavior-y: none;
+}
+
+/* Prevent iOS Safari auto-zoom when focusing form inputs */
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+/* Horizontal swipeable pill container utility without scrollbar clutter */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

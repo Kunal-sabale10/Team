@@ -15,33 +15,33 @@ export const SectionTeam: React.FC = () => {
   };
 
   return (
-    <section id="section-team" className="relative min-h-screen w-full px-6 sm:px-12 md:px-20 py-20 sm:py-28 flex flex-col justify-center">
+    <section id="section-team" className="relative min-h-screen w-full px-4 sm:px-12 md:px-20 py-16 sm:py-28 flex flex-col justify-center">
       {/* Header */}
-      <div className="max-w-4xl space-y-4 mb-14 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
+      <div className="max-w-4xl space-y-4 mb-10 sm:mb-14 relative p-4 sm:p-6 -m-4 sm:-m-6 rounded-3xl bg-gradient-to-r from-[#F4F1EA]/92 via-[#F4F1EA]/65 to-transparent dark:from-theme-base/80 dark:via-theme-base/40 dark:to-transparent">
         <div className="flex items-center space-x-3 text-xs font-mono text-[#3A4258] dark:text-[#8A91A6]">
           <span className="w-2.5 h-2.5 rounded-full bg-[#0B4DFF] dark:bg-cherenkov-glow animate-ping" />
           <span className="text-[#0E1220] dark:text-[#F2F4F8] font-bold tracking-widest">03 // 404 REBELS ROSTER</span>
           <span className="text-[#007C8C] dark:text-cherenkov-glow font-bold">| 3 MEMBERS</span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] tracking-tight">
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-extrabold text-[#0E1220] dark:text-[#F2F4F8] tracking-tight">
           CORE TEAM &amp;<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0E1220] via-[#003299] to-[#0B4DFF] dark:from-sky-300 dark:via-white dark:to-blue-500">
             SPECIALISTS.
           </span>
         </h2>
-        <p className="text-base sm:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
+        <p className="text-sm sm:text-base md:text-lg font-sans text-[#3A4258] dark:text-[#B8BED0] max-w-2xl leading-relaxed">
           Three dedicated developers and designers collaborating across full-stack engineering, product strategy, and modern frontend user experiences.
         </p>
       </div>
 
       {/* 3 Members Full Cards Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-7xl font-mono">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl font-mono">
         {TEAM_MEMBERS.map((member) => (
           <div
             key={member.id}
             onMouseEnter={() => soundEngine.playHoverBlip(1400)}
-            className="group rounded-xl bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF] dark:hover:border-cherenkov-glow/50 p-6 sm:p-7 transition-all duration-300 shadow-ambient flex flex-col justify-between"
+            className="group rounded-xl bg-theme-surface hover:bg-theme-surface-elevated border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF] dark:hover:border-cherenkov-glow/50 p-5 sm:p-7 transition-all duration-300 shadow-ambient flex flex-col justify-between"
           >
             <div className="space-y-5">
               {/* Member Avatar & Role Badge */}
@@ -105,14 +105,14 @@ export const SectionTeam: React.FC = () => {
 
             {/* Bottom Metrics & Links */}
             <div className="pt-5 mt-5 border-t border-theme-border-subtle dark:border-white/10 flex items-center justify-between">
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
                 {member.githubUrl && (
                   <a
                     href={member.githubUrl}
                     target="_blank"
                     rel="noreferrer"
                     onMouseEnter={() => soundEngine.playHoverBlip(1600)}
-                    className="p-2 rounded bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF]"
+                    className="p-2.5 rounded-lg min-w-[40px] min-h-[40px] flex items-center justify-center bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF]"
                     title="GitHub"
                   >
                     <Github className="w-4 h-4 text-[#007C8C] dark:text-cherenkov-glow" />
@@ -124,7 +124,7 @@ export const SectionTeam: React.FC = () => {
                     target="_blank"
                     rel="noreferrer"
                     onMouseEnter={() => soundEngine.playHoverBlip(1600)}
-                    className="p-2 rounded bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF]"
+                    className="p-2.5 rounded-lg min-w-[40px] min-h-[40px] flex items-center justify-center bg-theme-surface-subtle hover:bg-theme-surface text-[#0E1220] dark:text-[#B8BED0] hover:text-[#0B4DFF] dark:hover:text-[#F2F4F8] transition-colors border border-theme-border-subtle dark:border-white/10 hover:border-[#0B4DFF]"
                     title="LinkedIn"
                   >
                     <Linkedin className="w-4 h-4 text-[#007C8C] dark:text-cherenkov-glow" />
