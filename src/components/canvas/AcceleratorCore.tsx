@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useScrollEngine } from '../../context/ScrollContext';
+import { useTheme } from '../../context/ThemeContext';
 
 // Custom Shader for the Accelerator Beam / Vacuum Chamber Tube
 const AcceleratorBeamShader = {
@@ -71,6 +72,7 @@ const AcceleratorBeamShader = {
 
 export const AcceleratorCore: React.FC = () => {
   const { scrollProgress, velocity, currentBeat, mousePos } = useScrollEngine();
+  const { isDark } = useTheme();
   const beamMaterialRef = useRef<THREE.ShaderMaterial>(null);
   const coreGroupRef = useRef<THREE.Group>(null);
   const instancedRingsRef = useRef<THREE.InstancedMesh>(null);
@@ -173,11 +175,11 @@ export const AcceleratorCore: React.FC = () => {
       >
         <torusGeometry args={[3.2, 0.08, 12, 8]} />
         <meshStandardMaterial
-          color="#181a20"
-          emissive="#0055ff"
-          emissiveIntensity={1.8}
+          color={isDark ? '#181a20' : '#cdd3df'}
+          emissive={isDark ? '#0055ff' : '#0044dd'}
+          emissiveIntensity={isDark ? 1.8 : 1.2}
           roughness={0.25}
-          metalness={0.9}
+          metalness={0.85}
           toneMapped={false}
         />
       </instancedMesh>

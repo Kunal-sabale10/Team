@@ -1,13 +1,14 @@
 import React from 'react';
 import { useScrollEngine } from '../../context/ScrollContext';
-import { Volume2, VolumeX, Activity, Disc3, Users } from 'lucide-react';
+import { useTheme } from '../../context/ThemeContext';
+import { Volume2, VolumeX, Activity, Sun, Moon, Disc3 } from 'lucide-react';
 import { soundEngine } from '../../audio/SoundEngine';
 
 export const HudOverlay: React.FC = () => {
   const {
     scrollProgress,
-    currentBeat,
-    scrollToBeat,
+    currentSection,
+    scrollToSection,
     lenisInstance,
     fps,
     drawCalls,
@@ -16,13 +17,17 @@ export const HudOverlay: React.FC = () => {
     isUnlocked,
   } = useScrollEngine();
 
+  const { theme, toggleTheme, isDark } = useTheme();
+
   if (!isUnlocked) return null;
 
   const waypoints = [
-    { beat: 1, label: '01 IGNITION' },
-    { beat: 2, label: '02 SPECIMENS' },
-    { beat: 3, label: '03 TRIAD ARCH' },
-    { beat: 4, label: '04 CONTACT' },
+    { index: 1, label: 'HERO' },
+    { index: 2, label: 'ABOUT' },
+    { index: 3, label: 'TEAM' },
+    { index: 4, label: 'PROJECTS' },
+    { index: 5, label: 'SKILLS' },
+    { index: 6, label: 'CONTACT' },
   ];
 
   const handleProgressTrackClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -38,66 +43,84 @@ export const HudOverlay: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-40 pointer-events-none flex flex-col justify-between p-4 sm:p-8 font-mono text-xs select-none">
+    <header className="fixed inset-0 z-40 pointer-events-none flex flex-col justify-between p-3 sm:p-6 font-mono text-xs select-none">
       {/* Top Telemetry Header Bar */}
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between w-full gap-2">
         {/* Brand / Role */}
-        <div className="pointer-events-auto flex items-center space-x-3 bg-graphite-950/80 backdrop-blur-md px-3.5 py-2 rounded border border-graphite-800">
-          <div className="w-2.5 h-2.5 rounded-full bg-cherenkov-glow animate-pulse" />
-          <span className="text-offwhite font-bold tracking-widest text-[11px] sm:text-xs">
-            HADRON // TRIAD
+        <div className="pointer-events-auto flex items-center space-x-2.5 bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-3 py-2 rounded-lg border border-slate-200 dark:border-graphite-800 shadow-sm">
+          <div className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cherenkov-glow animate-pulse" />
+          <span className="text-slate-900 dark:text-offwhite font-bold tracking-widest text-[11px] sm:text-xs">
+            HADRON TRIAD
           </span>
-          <span className="hidden lg:inline text-titanium text-[10px]">
+          <span className="hidden xl:inline text-slate-400 dark:text-titanium text-[10px]">
             [KUNAL • ANIMESH • RAJANI]
           </span>
         </div>
 
-        {/* Waypoints Navigation Dock */}
-        <div className="hidden sm:flex pointer-events-auto items-center space-x-1 bg-graphite-950/80 backdrop-blur-md p-1 rounded border border-graphite-800">
+        {/* 6 Waypoints Navigation Dock */}
+        <nav aria-label="Section Navigation" className="hidden md:flex pointer-events-auto items-center space-x-1 bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md p-1 rounded-lg border border-slate-200 dark:border-graphite-800 shadow-sm">
           {waypoints.map((wp) => {
-            const isActive = currentBeat === wp.beat;
+            const isActive = currentSection === wp.index;
             return (
               <button
-                key={wp.beat}
-                onClick={() => scrollToBeat(wp.beat)}
+                key={wp.index}
+                onClick={() => scrollToSection(wp.index)}
                 onMouseEnter={() => soundEngine.playHoverBlip(1600)}
-                className={`px-3 py-1.5 rounded text-[11px] tracking-wider transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-md text-[11px] tracking-wider transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-cherenkov-blue text-white font-bold shadow-md shadow-cherenkov-blue/40'
-                    : 'text-titanium hover:text-offwhite hover:bg-graphite-850'
+                    ? 'bg-blue-600 dark:bg-cherenkov-blue text-white font-bold shadow-md shadow-blue-500/30 dark:shadow-cherenkov-blue/40'
+                    : 'text-slate-600 dark:text-titanium hover:text-slate-900 dark:hover:text-offwhite hover:bg-slate-100 dark:hover:bg-graphite-850'
                 }`}
               >
                 {wp.label}
               </button>
             );
           })}
-        </div>
+        </nav>
 
-        {/* Right Tools: Audio Engine Toggle & FPS Telemetry */}
-        <div className="pointer-events-auto flex items-center space-x-3">
-          <div className="hidden md:flex items-center space-x-3 bg-graphite-950/80 backdrop-blur-md px-3 py-2 rounded border border-graphite-800 text-[11px] text-titanium">
-            <span className="flex items-center gap-1.5 text-isotope">
+        {/* Right Tools: Theme Toggle, Audio Toggle & FPS Telemetry */}
+        <div className="pointer-events-auto flex items-center space-x-2">
+          {/* Real-time FPS / Draw Calls */}
+          <div className="hidden lg:flex items-center space-x-2.5 bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-3 py-2 rounded-lg border border-slate-200 dark:border-graphite-800 text-[11px] text-slate-600 dark:text-titanium shadow-sm">
+            <span className="flex items-center gap-1.5 text-emerald-600 dark:text-isotope font-semibold">
               <Activity className="w-3.5 h-3.5" />
               {fps} FPS
             </span>
-            <span className="text-graphite-700">|</span>
-            <span className="text-cherenkov-glow">{drawCalls} DC</span>
+            <span className="text-slate-300 dark:text-graphite-700">|</span>
+            <span className="text-blue-600 dark:text-cherenkov-glow font-bold">{drawCalls} DC</span>
           </div>
 
+          {/* Theme Toggle Button [T] */}
+          <button
+            onClick={() => {
+              soundEngine.playClickBeep();
+              toggleTheme();
+            }}
+            onMouseEnter={() => soundEngine.playHoverBlip(1800)}
+            className="flex items-center space-x-1.5 bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-3 py-2 rounded-lg border border-slate-200 dark:border-graphite-800 hover:border-blue-500 dark:hover:border-cherenkov-blue/60 text-slate-800 dark:text-offwhite transition-colors cursor-pointer shadow-sm"
+            title={`Toggle Theme (Shortcut: T) - Current: ${theme}`}
+          >
+            {isDark ? (
+              <Sun className="w-4 h-4 text-amber-400 animate-pulse" />
+            ) : (
+              <Moon className="w-4 h-4 text-indigo-600" />
+            )}
+            <span className="text-[10px] text-slate-500 dark:text-titanium hidden sm:inline">[T]</span>
+          </button>
+
+          {/* Audio Toggle Button [M] */}
           <button
             onClick={toggleAudio}
             onMouseEnter={() => soundEngine.playHoverBlip(1800)}
-            className="flex items-center space-x-2 bg-graphite-950/80 backdrop-blur-md px-3 py-2 rounded border border-graphite-800 hover:border-cherenkov-blue/60 text-offwhite transition-colors cursor-pointer"
-            title={isAudioMuted ? 'Unmute Audio Engine' : 'Mute Audio Engine'}
+            className="flex items-center space-x-1.5 bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-3 py-2 rounded-lg border border-slate-200 dark:border-graphite-800 hover:border-blue-500 dark:hover:border-cherenkov-blue/60 text-slate-800 dark:text-offwhite transition-colors cursor-pointer shadow-sm"
+            title={`Toggle Audio DSP (Shortcut: M) - ${isAudioMuted ? 'Muted' : 'Active'}`}
           >
             {isAudioMuted ? (
-              <VolumeX className="w-4 h-4 text-titanium" />
+              <VolumeX className="w-4 h-4 text-slate-400 dark:text-titanium" />
             ) : (
-              <>
-                <Volume2 className="w-4 h-4 text-cherenkov-glow animate-pulse" />
-                <span className="text-[10px] text-cherenkov-glow hidden sm:inline">DSP 48Hz</span>
-              </>
+              <Volume2 className="w-4 h-4 text-blue-600 dark:text-cherenkov-glow animate-pulse" />
             )}
+            <span className="text-[10px] text-slate-500 dark:text-titanium hidden sm:inline">[M]</span>
           </button>
         </div>
       </div>
@@ -105,32 +128,32 @@ export const HudOverlay: React.FC = () => {
       {/* Bottom Telemetry & Interactive Progress Gauge */}
       <div className="flex items-end justify-between w-full">
         {/* Telemetry Readout */}
-        <div className="bg-graphite-950/80 backdrop-blur-md px-3.5 py-2 rounded border border-graphite-800 text-[10px] sm:text-[11px] text-titanium space-y-0.5">
-          <div>PROGRESS: <span className="text-offwhite font-bold">{(scrollProgress * 100).toFixed(1)}%</span></div>
-          <div className="hidden sm:block">COLLECTIVE: <span className="text-isotope font-semibold">3 SPECIALISTS</span></div>
+        <div className="bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-3.5 py-2 rounded-lg border border-slate-200 dark:border-graphite-800 text-[10px] sm:text-[11px] text-slate-600 dark:text-titanium space-y-0.5 shadow-sm">
+          <div>PROGRESS: <span className="text-slate-900 dark:text-offwhite font-bold">{(scrollProgress * 100).toFixed(1)}%</span></div>
+          <div className="hidden sm:block">DEMO SHORTCUTS: <span className="text-blue-600 dark:text-cherenkov-glow font-semibold">[1-6] JUMP • [T] THEME • [M] AUDIO</span></div>
         </div>
 
         {/* Interactive Scrubbable Progress Bar Line */}
         <div
           onClick={handleProgressTrackClick}
           onMouseEnter={() => soundEngine.playHoverBlip(1600)}
-          className="pointer-events-auto flex-1 max-w-md mx-6 mb-2 hidden sm:block cursor-pointer group py-2"
+          className="pointer-events-auto flex-1 max-w-md mx-6 mb-2 hidden md:block cursor-pointer group py-2"
           title="Click to scrub virtual scroll timeline"
         >
-          <div className="w-full h-1 group-hover:h-2 bg-graphite-800 rounded-full overflow-hidden transition-all duration-200">
+          <div className="w-full h-1 group-hover:h-2 bg-slate-200 dark:bg-graphite-800 rounded-full overflow-hidden transition-all duration-200 shadow-inner">
             <div
-              className="h-full bg-gradient-to-r from-cherenkov-blue via-isotope to-cherenkov-glow transition-all duration-100"
+              className="h-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500 dark:from-cherenkov-blue dark:via-isotope dark:to-cherenkov-glow transition-all duration-100"
               style={{ width: `${Math.max(2, scrollProgress * 100)}%` }}
             />
           </div>
         </div>
 
         {/* System Timecode & Status */}
-        <div className="bg-graphite-950/80 backdrop-blur-md px-3.5 py-2 rounded border border-graphite-800 text-[10px] sm:text-[11px] text-titanium flex items-center space-x-2">
-          <Disc3 className="w-3.5 h-3.5 text-cherenkov-glow animate-spin-slow" />
-          <span>TRIAD ACCELERATOR</span>
+        <div className="bg-white/85 dark:bg-graphite-950/85 backdrop-blur-md px-3.5 py-2 rounded-lg border border-slate-200 dark:border-graphite-800 text-[10px] sm:text-[11px] text-slate-600 dark:text-titanium flex items-center space-x-2 shadow-sm">
+          <Disc3 className="w-3.5 h-3.5 text-blue-600 dark:text-cherenkov-glow animate-spin-slow" />
+          <span>TRIAD COLLECTIVE</span>
         </div>
       </div>
-    </div>
+    </header>
   );
 };

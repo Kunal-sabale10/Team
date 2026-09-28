@@ -1,12 +1,15 @@
 import React from 'react';
+import { ThemeProvider } from './context/ThemeContext';
 import { ScrollProvider } from './context/ScrollContext';
 import { DualLayerScaffold } from './components/scaffold/DualLayerScaffold';
 
 export const App: React.FC = () => {
   return (
-    <ScrollProvider>
-      <DualLayerScaffold />
-    </ScrollProvider>
+    <ThemeProvider>
+      <ScrollProvider>
+        <DualLayerScaffold />
+      </ScrollProvider>
+    </ThemeProvider>
   );
 };
 

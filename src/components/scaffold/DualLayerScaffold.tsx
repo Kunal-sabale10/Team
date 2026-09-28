@@ -3,25 +3,24 @@ import { SceneGraph } from '../canvas/SceneGraph';
 import { HudOverlay } from '../dom/HudOverlay';
 import { MagneticCursor } from '../dom/MagneticCursor';
 import { Beat0LockScreen } from '../dom/Beat0LockScreen';
-import { Beat1Hero } from '../dom/Beat1Hero';
-import { Beat2CaseStudies } from '../dom/Beat2CaseStudies';
-import { Beat3Architecture } from '../dom/Beat3Architecture';
-import { Beat4Terminal } from '../dom/Beat4Terminal';
-import { useScrollEngine } from '../../context/ScrollContext';
+import { SectionHero } from '../dom/SectionHero';
+import { SectionAbout } from '../dom/SectionAbout';
+import { SectionTeam } from '../dom/SectionTeam';
+import { SectionProjects } from '../dom/SectionProjects';
+import { SectionSkills } from '../dom/SectionSkills';
+import { SectionContact } from '../dom/SectionContact';
 
 export const DualLayerScaffold: React.FC = () => {
-  const { isUnlocked } = useScrollEngine();
-
   return (
-    <div className="relative w-full min-h-screen bg-graphite-950 text-offwhite overflow-x-hidden">
+    <div className="relative w-full min-h-screen bg-slate-100 dark:bg-graphite-950 text-slate-900 dark:text-offwhite transition-colors duration-500 overflow-x-hidden selection:bg-blue-600 dark:selection:bg-cherenkov-blue selection:text-white">
       {/* Visual Enhancers: Subtle Scanlines and Tech Grid */}
-      <div className="fixed inset-0 z-30 scanlines opacity-50 pointer-events-none" />
-      <div className="fixed inset-0 z-20 tech-grid opacity-25 pointer-events-none" />
+      <div className="fixed inset-0 z-30 scanlines opacity-30 dark:opacity-50 pointer-events-none" />
+      <div className="fixed inset-0 z-20 tech-grid opacity-15 dark:opacity-25 pointer-events-none" />
 
       {/* Layer 1: Fixed WebGL 3D Canvas (z-index: 0) */}
       <SceneGraph />
 
-      {/* Layer 2: Fixed HUD Telemetry & Navigation (z-index: 40) */}
+      {/* Layer 2: Fixed HUD Telemetry, Navigation & Theme Toggle (z-index: 40) */}
       <HudOverlay />
 
       {/* Layer 3: Magnetic Cursor (z-index: 50) */}
@@ -32,28 +31,26 @@ export const DualLayerScaffold: React.FC = () => {
 
       {/* Layer 5: Accessible DOM Scroll Timeline (z-index: 10) */}
       <main className="relative z-10 w-full">
-        {/* Beat 1: Entry & Accelerator Ignition */}
-        <section id="beat-1" className="min-h-screen w-full flex items-center">
-          <Beat1Hero />
-        </section>
+        {/* 1. Hero */}
+        <SectionHero />
 
-        {/* Beat 2: Case Studies / Collision Events */}
-        <section id="beat-2" className="min-h-screen w-full flex items-center py-24 sm:py-32">
-          <Beat2CaseStudies />
-        </section>
+        {/* 2. About */}
+        <SectionAbout />
 
-        {/* Beat 3: System Architecture & Telemetry Specs */}
-        <section id="beat-3" className="min-h-screen w-full flex items-center py-24 sm:py-32">
-          <Beat3Architecture />
-        </section>
+        {/* 3. Team */}
+        <SectionTeam />
 
-        {/* Beat 4: Terminal Contact & System Cooldown */}
-        <section id="beat-4" className="min-h-screen w-full flex items-center py-24 sm:py-32">
-          <Beat4Terminal />
-        </section>
+        {/* 4. Projects */}
+        <SectionProjects />
 
-        {/* Trailing Virtual Buffer for Cooldown */}
-        <div className="h-[25vh] w-full" />
+        {/* 5. Skills */}
+        <SectionSkills />
+
+        {/* 6. Contact */}
+        <SectionContact />
+
+        {/* Trailing Virtual Buffer */}
+        <div className="h-[20vh] w-full" />
       </main>
     </div>
   );

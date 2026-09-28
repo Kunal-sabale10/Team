@@ -1,0 +1,318 @@
+import React, { useState, useRef } from 'react';
+import { Terminal, Send, CheckCircle2, Mail, Github, Linkedin, Radio, Copy, Check } from 'lucide-react';
+import { soundEngine } from '../../audio/SoundEngine';
+
+export const SectionContact: React.FC = () => {
+  const [terminalHistory, setTerminalHistory] = useState<string[]>([
+    'HADRON TRIAD TERMINAL v5.0.0 [ONLINE]',
+    'SECTIONS: 1 HERO • 2 ABOUT • 3 TEAM • 4 PROJECTS • 5 SKILLS • 6 CONTACT',
+    'TYPE "help" OR "team" FOR PROTOCOL COMMANDS.',
+  ]);
+  const [commandInput, setCommandInput] = useState('');
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
+  const [pastCommands, setPastCommands] = useState<string[]>([]);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isTransmitting, setIsTransmitting] = useState(false);
+  const [transmitSuccess, setTransmitSuccess] = useState(false);
+
+  // Form states
+  const [senderName, setSenderName] = useState('');
+  const [senderEmail, setSenderEmail] = useState('');
+  const [messageSubject, setMessageSubject] = useState('New Project Collaboration');
+  const [messageText, setMessageText] = useState('');
+
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleCommandSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const rawCmd = commandInput.trim();
+    if (!rawCmd) return;
+
+    soundEngine.playClickBeep();
+    const cmd = rawCmd.toLowerCase();
+    setPastCommands((prev) => [...prev, rawCmd]);
+    setHistoryIndex(-1);
+
+    const newLogs = [...terminalHistory, `> ${rawCmd}`];
+
+    if (cmd === 'help') {
+      newLogs.push(
+        'AVAILABLE COMMANDS:',
+        '  team       - Overview of the 3 collective members',
+        '  kunal      - Dossier on Kunal Sabale (Chief Systems Builder)',
+        '  animesh    - Dossier on Animesh Dabhade (Creative Ideation Lead)',
+        '  rajani     - Dossier on Rajani Mourya (Presentation & Developer)',
+        '  projects   - Summary of all 6 live GitHub projects',
+        '  skills     - List of 3D, WebGL, and frontend technologies',
+        '  status     - Query current telemetry and frame rates',
+        '  contact    - Display direct contact channels',
+        '  ping       - Test network transmission latency',
+        '  clear/cls  - Clear terminal stream'
+      );
+    } else if (cmd === 'team') {
+      newLogs.push(
+        'THE HADRON TRIAD:',
+        '  [1] KUNAL SABALE    - Chief Builder (Systems, WebGL, Full-Stack)',
+        '  [2] ANIMESH DABHADE - The Idea (Concept, Worldbuilding, UX)',
+        '  [3] RAJANI MOURYA   - Presentation & Dev (Motion, UI Design)'
+      );
+    } else if (cmd === 'kunal') {
+      newLogs.push('KUNAL SABALE // Systems Architecture & 3D WebGL Builder. GitHub: github.com/Kunal-sabale10');
+    } else if (cmd === 'animesh') {
+      newLogs.push('ANIMESH DABHADE // Creative Strategist & Narrative Worldbuilding Lead.');
+    } else if (cmd === 'rajani') {
+      newLogs.push('RAJANI MOURYA // Presentation Director & High-Craft Frontend UI Developer.');
+    } else if (cmd === 'projects' || cmd === 'repos') {
+      newLogs.push('PROJECTS: maison-rk, Portfolio, genchat, consultancy, urban-bites, anti-tweet');
+    } else if (cmd === 'skills') {
+      newLogs.push('TECH STACK: Three.js, R3F, GLSL Shaders, GSAP, Lenis, Web Audio API, React 18, TypeScript, Tailwind');
+    } else if (cmd === 'contact') {
+      newLogs.push('CONTACT: kunal.sabale@gmail.com | github.com/Kunal-sabale10');
+    } else if (cmd === 'ping') {
+      newLogs.push('PING: 0.12 ms [QUIC stream open, zero packet loss]');
+    } else if (cmd === 'clear' || cmd === 'cls') {
+      setTerminalHistory([]);
+      setCommandInput('');
+      return;
+    } else {
+      newLogs.push(`COMMAND NOT RECOGNIZED: "${rawCmd}". TYPE "help".`);
+    }
+
+    setTerminalHistory(newLogs);
+    setCommandInput('');
+    setTimeout(() => {
+      if (terminalContainerRef.current) {
+        terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
+      }
+    }, 50);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (pastCommands.length === 0) return;
+      const nextIdx = historyIndex === -1 ? pastCommands.length - 1 : Math.max(0, historyIndex - 1);
+      setHistoryIndex(nextIdx);
+      setCommandInput(pastCommands[nextIdx]);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex === -1) return;
+      const nextIdx = historyIndex + 1;
+      if (nextIdx >= pastCommands.length) {
+        setHistoryIndex(-1);
+        setCommandInput('');
+      } else {
+        setHistoryIndex(nextIdx);
+        setCommandInput(pastCommands[nextIdx]);
+      }
+    }
+  };
+
+  const handleCopyEmail = () => {
+    soundEngine.playClickBeep();
+    navigator.clipboard.writeText('kunal.sabale@gmail.com');
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2500);
+  };
+
+  const handleTransmitMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!messageText.trim() || !senderEmail.trim()) return;
+
+    soundEngine.playSubImpact();
+    setIsTransmitting(true);
+
+    setTimeout(() => {
+      setIsTransmitting(false);
+      setTransmitSuccess(true);
+      setSenderName('');
+      setSenderEmail('');
+      setMessageText('');
+      setTimeout(() => setTransmitSuccess(false), 6000);
+    }, 1000);
+  };
+
+  return (
+    <section id="section-contact" className="relative min-h-screen w-full px-6 sm:px-12 md:px-20 py-20 sm:py-28 flex flex-col justify-center">
+      {/* Header */}
+      <div className="max-w-4xl space-y-4 mb-14">
+        <div className="flex items-center space-x-3 text-xs font-mono text-slate-500 dark:text-titanium">
+          <span className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cherenkov-glow animate-ping" />
+          <span className="text-slate-900 dark:text-offwhite font-bold tracking-widest">06 // DIRECT CONTACT</span>
+          <span className="text-blue-600 dark:text-cherenkov-glow">| TRANSMISSION CONDUITS</span>
+        </div>
+
+        <h2 className="text-4xl sm:text-6xl font-display font-extrabold text-slate-900 dark:text-offwhite tracking-tight">
+          CONNECT WITH<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 dark:from-cherenkov-glow dark:to-cherenkov-blue">
+            THE TRIAD.
+          </span>
+        </h2>
+        <p className="text-base sm:text-lg font-mono text-slate-600 dark:text-titanium max-w-xl leading-relaxed">
+          Open for high-craft creative engineering, technical direction, 3D spatial web apps, and ambitious collaborations.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl font-mono">
+        {/* Left: Interactive CLI Console */}
+        <div className="lg:col-span-6 bg-white/85 dark:bg-graphite-900/90 border border-slate-200 dark:border-graphite-800 rounded-xl p-5 text-xs flex flex-col justify-between h-[450px] shadow-xl backdrop-blur-md">
+          {/* Terminal Title Bar */}
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-graphite-800 pb-3 text-slate-500 dark:text-titanium text-[11px]">
+            <div className="flex items-center space-x-2">
+              <Terminal className="w-3.5 h-3.5 text-blue-600 dark:text-cherenkov-glow" />
+              <span className="text-slate-900 dark:text-offwhite font-semibold">HADRON_TRIAD_CLI // TTY_0</span>
+            </div>
+            <div className="flex items-center space-x-1.5">
+              <div className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-graphite-700" />
+              <div className="w-2.5 h-2.5 rounded-full bg-slate-300 dark:bg-graphite-700" />
+              <div className="w-2.5 h-2.5 rounded-full bg-blue-600 dark:bg-cherenkov-blue animate-pulse" />
+            </div>
+          </div>
+
+          {/* Terminal Output Stream */}
+          <div
+            ref={terminalContainerRef}
+            className="flex-1 overflow-y-auto py-3 space-y-1.5 text-slate-700 dark:text-titanium text-[11px]"
+          >
+            {terminalHistory.map((line, idx) => (
+              <div
+                key={idx}
+                className={line.startsWith('>') ? 'text-blue-600 dark:text-cherenkov-glow font-bold' : ''}
+              >
+                {line}
+              </div>
+            ))}
+          </div>
+
+          {/* Command Prompt Input */}
+          <form onSubmit={handleCommandSubmit} className="pt-3 border-t border-slate-200 dark:border-graphite-800 flex items-center gap-2">
+            <span className="text-blue-600 dark:text-cherenkov-glow font-bold">{'>'}</span>
+            <input
+              type="text"
+              value={commandInput}
+              onChange={(e) => setCommandInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="type help, team, kunal, projects..."
+              className="flex-1 bg-transparent text-slate-900 dark:text-offwhite outline-none placeholder-slate-400 dark:placeholder-titanium/50 font-mono text-xs"
+            />
+          </form>
+        </div>
+
+        {/* Right: Direct Transmission Form */}
+        <div className="lg:col-span-6 bg-white/85 dark:bg-graphite-900/80 border border-slate-200 dark:border-graphite-800 rounded-xl p-6 sm:p-8 backdrop-blur-md space-y-5 shadow-xl flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-graphite-800 pb-3 text-xs text-slate-500 dark:text-titanium">
+              <span className="font-bold text-slate-900 dark:text-offwhite uppercase">DIRECT TRANSMISSION DISPATCH</span>
+              <span className="flex items-center gap-1.5 text-emerald-600 dark:text-isotope text-[11px] font-semibold">
+                <Radio className="w-3 h-3 animate-pulse" />
+                CONDUIT OPEN
+              </span>
+            </div>
+
+            {transmitSuccess ? (
+              <div className="my-6 p-6 rounded-lg bg-emerald-50 dark:bg-graphite-950 border border-emerald-300 dark:border-isotope/40 space-y-2 text-center">
+                <CheckCircle2 className="w-8 h-8 text-emerald-600 dark:text-isotope mx-auto animate-bounce" />
+                <div className="text-sm font-bold text-slate-900 dark:text-offwhite">TRANSMISSION RECEIVED</div>
+                <p className="text-xs text-slate-600 dark:text-titanium">
+                  Packet queued for Kunal, Animesh, and Rajani. Response within 24 hours.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleTransmitMessage} className="space-y-3.5 pt-4 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-slate-500 dark:text-titanium uppercase font-bold">NAME / CALLSIGN</label>
+                    <input
+                      type="text"
+                      required
+                      value={senderName}
+                      onChange={(e) => setSenderName(e.target.value)}
+                      placeholder="Alex Mercer"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-graphite-950 border border-slate-200 dark:border-graphite-800 rounded-md text-slate-900 dark:text-offwhite focus:border-blue-500 dark:focus:border-cherenkov-glow outline-none transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-slate-500 dark:text-titanium uppercase font-bold">EMAIL ADDRESS</label>
+                    <input
+                      type="email"
+                      required
+                      value={senderEmail}
+                      onChange={(e) => setSenderEmail(e.target.value)}
+                      placeholder="alex@studio.com"
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-graphite-950 border border-slate-200 dark:border-graphite-800 rounded-md text-slate-900 dark:text-offwhite focus:border-blue-500 dark:focus:border-cherenkov-glow outline-none transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[10px] text-slate-500 dark:text-titanium uppercase font-bold">MESSAGE PAYLOAD</label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={messageText}
+                    onChange={(e) => setMessageText(e.target.value)}
+                    placeholder="Describe your project, engineering inquiry, or creative vision..."
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-graphite-950 border border-slate-200 dark:border-graphite-800 rounded-md text-slate-900 dark:text-offwhite focus:border-blue-500 dark:focus:border-cherenkov-glow outline-none transition-colors resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isTransmitting}
+                  onMouseEnter={() => soundEngine.playHoverBlip(1500)}
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 dark:bg-cherenkov-blue dark:hover:bg-cherenkov-glow text-white dark:hover:text-graphite-950 font-bold uppercase tracking-wider rounded-md transition-all shadow-md shadow-blue-500/20 cursor-pointer flex items-center justify-center space-x-2"
+                >
+                  {isTransmitting ? (
+                    <span>DISPATCHING...</span>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      <span>TRANSMIT MESSAGE</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+
+          {/* Social Conduits & Email Copy */}
+          <div className="pt-3 border-t border-slate-200 dark:border-graphite-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <button
+              onClick={handleCopyEmail}
+              onMouseEnter={() => soundEngine.playHoverBlip(1400)}
+              className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-md bg-slate-100 dark:bg-graphite-950 hover:bg-slate-200 dark:hover:bg-graphite-800 text-slate-700 dark:text-titanium hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer border border-slate-200 dark:border-graphite-800"
+            >
+              {isCopied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Mail className="w-3.5 h-3.5 text-blue-600 dark:text-cherenkov-glow" />}
+              <span>{isCopied ? 'EMAIL COPIED!' : 'kunal.sabale@gmail.com'}</span>
+            </button>
+
+            <div className="flex items-center space-x-2">
+              <a
+                href="https://github.com/Kunal-sabale10?tab=repositories"
+                target="_blank"
+                rel="noreferrer"
+                onMouseEnter={() => soundEngine.playHoverBlip(1400)}
+                className="p-2 rounded-md bg-slate-100 dark:bg-graphite-950 hover:bg-slate-200 dark:hover:bg-graphite-800 text-slate-700 dark:text-titanium hover:text-slate-900 dark:hover:text-white transition-colors border border-slate-200 dark:border-graphite-800 flex items-center gap-1.5 text-[11px]"
+                title="GitHub Repositories"
+              >
+                <Github className="w-4 h-4 text-blue-600 dark:text-cherenkov-glow" />
+                <span>GITHUB</span>
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noreferrer"
+                onMouseEnter={() => soundEngine.playHoverBlip(1400)}
+                className="p-2 rounded-md bg-slate-100 dark:bg-graphite-950 hover:bg-slate-200 dark:hover:bg-graphite-800 text-slate-700 dark:text-titanium hover:text-slate-900 dark:hover:text-white transition-colors border border-slate-200 dark:border-graphite-800"
+                title="LinkedIn"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
