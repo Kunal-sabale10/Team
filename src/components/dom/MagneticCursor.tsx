@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { useTheme } from '../../context/ThemeContext';
 
 export const MagneticCursor: React.FC = () => {
+  const { isDark } = useTheme();
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorRingRef = useRef<HTMLDivElement>(null);
   const [isHoveringInteractive, setIsHoveringInteractive] = useState(false);
@@ -59,8 +61,10 @@ export const MagneticCursor: React.FC = () => {
         ref={cursorDotRef}
         className={`fixed top-0 left-0 -ml-1 -mt-1 w-2 h-2 rounded-full transition-transform duration-150 ${
           isHoveringInteractive
-            ? 'bg-cherenkov-glow scale-150'
-            : 'bg-white scale-100'
+            ? 'bg-blue-600 dark:bg-cherenkov-glow scale-150 shadow-md shadow-blue-500/50'
+            : isDark
+            ? 'bg-white scale-100'
+            : 'bg-blue-600 scale-100'
         }`}
         style={{ transform: 'translate(-100px, -100px)' }}
       />
@@ -68,10 +72,12 @@ export const MagneticCursor: React.FC = () => {
       {/* Trailing Physics Ring */}
       <div
         ref={cursorRingRef}
-        className={`fixed top-0 left-0 -ml-4 -mt-4 w-8 h-8 rounded-full border border-cherenkov-glow/60 transition-all duration-300 pointer-events-none ${
+        className={`fixed top-0 left-0 -ml-4 -mt-4 w-8 h-8 rounded-full border transition-all duration-300 pointer-events-none ${
           isHoveringInteractive
-            ? 'scale-150 bg-cherenkov-blue/15 border-cherenkov-glow'
-            : 'scale-100 bg-transparent'
+            ? 'scale-150 bg-blue-500/15 dark:bg-cherenkov-blue/15 border-blue-600 dark:border-cherenkov-glow'
+            : isDark
+            ? 'scale-100 bg-transparent border-cherenkov-glow/60'
+            : 'scale-100 bg-transparent border-blue-500/60'
         }`}
         style={{ transform: 'translate(-100px, -100px)' }}
       />

@@ -22,7 +22,7 @@ export const PostProcessingPass: React.FC = () => {
   if (isPerformanceDegraded) {
     return (
       <EffectComposer multisampling={0}>
-        <Vignette eskil={false} offset={0.15} darkness={isDark ? 0.75 : 0.4} />
+        <Vignette eskil={false} offset={0.15} darkness={isDark ? 0.75 : 0.06} />
       </EffectComposer>
     );
   }
@@ -37,9 +37,9 @@ export const PostProcessingPass: React.FC = () => {
     <EffectComposer multisampling={2}>
       {/* Selective Bloom: Tuned for Dark/Light contrast */}
       <Bloom
-        luminanceThreshold={isDark ? 0.82 : 0.88}
+        luminanceThreshold={isDark ? 0.82 : 1.15}
         luminanceSmoothing={0.3}
-        intensity={isDark ? 1.25 : 0.7}
+        intensity={isDark ? 1.25 : 0.35}
         blendFunction={BlendFunction.SCREEN}
         mipmapBlur
       />
@@ -48,7 +48,7 @@ export const PostProcessingPass: React.FC = () => {
       <Noise
         premultiply
         blendFunction={BlendFunction.OVERLAY}
-        opacity={isDark ? 0.055 : 0.03}
+        opacity={isDark ? 0.055 : 0.02}
       />
 
       {/* Anamorphic Lens Chromatic Dispersion */}
@@ -62,7 +62,7 @@ export const PostProcessingPass: React.FC = () => {
       <Vignette
         eskil={false}
         offset={0.2}
-        darkness={isDark ? 0.92 : 0.55}
+        darkness={isDark ? 0.92 : 0.06}
         blendFunction={BlendFunction.NORMAL}
       />
     </EffectComposer>

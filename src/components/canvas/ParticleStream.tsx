@@ -2,6 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useScrollEngine } from '../../context/ScrollContext';
+import { useTheme } from '../../context/ThemeContext';
 
 interface ParticleStreamProps {
   particleCount?: number;
@@ -9,6 +10,7 @@ interface ParticleStreamProps {
 
 export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 2400 }) => {
   const { scrollProgress, velocity, mousePos, fps } = useScrollEngine();
+  const { isDark } = useTheme();
   const pointsRef = useRef<THREE.Points>(null);
 
   // Generate particle coordinate buffers
@@ -20,9 +22,9 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
     const sc = new Float32Array(count);
     const initZ = new Float32Array(count);
 
-    const color1 = new THREE.Color('#0055ff'); // Electric Cherenkov
-    const color2 = new THREE.Color('#00f0ff'); // Cyan
-    const color3 = new THREE.Color('#ffffff'); // Hot electron white
+    const color1 = isDark ? new THREE.Color('#0055ff') : new THREE.Color('#0044cc');
+    const color2 = isDark ? new THREE.Color('#00f0ff') : new THREE.Color('#0284c7');
+    const color3 = isDark ? new THREE.Color('#ffffff') : new THREE.Color('#4338ca');
 
     for (let i = 0; i < count; i++) {
       // Cylinder distribution along beam axis
@@ -100,11 +102,11 @@ export const ParticleStream: React.FC<ParticleStreamProps> = ({ particleCount = 
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.075}
+        size={isDark ? 0.075 : 0.085}
         vertexColors
         transparent
-        opacity={0.85}
-        blending={THREE.AdditiveBlending}
+        opacity={isDark ? 0.85 : 0.9}
+        blending={isDark ? THREE.AdditiveBlending : THREE.NormalBlending}
         depthWrite={false}
       />
     </points>
