@@ -38,6 +38,15 @@ interface ScrollContextType {
   isMobile: boolean;
   isWebGLAvailable: boolean;
 
+  // 404 Rebels 3D Talwar Duel State
+  isDueling: boolean;
+  duelPhase: 'IDLE' | 'CLASH_1' | 'CLASH_2' | 'FINAL_LOCK' | 'DETONATION' | 'GENESIS';
+  isGenesisRevealed: boolean;
+  startDuel: () => void;
+  closeDuel: () => void;
+  setDuelPhase: (phase: 'IDLE' | 'CLASH_1' | 'CLASH_2' | 'FINAL_LOCK' | 'DETONATION' | 'GENESIS') => void;
+  setIsGenesisRevealed: (revealed: boolean) => void;
+
   // Compatibility getters/setters for legacy callers
   scrollProgress: number;
   velocity: number;
@@ -98,6 +107,21 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [activeSpecimenId, setActiveSpecimenId] = useState<string | null>(null);
   const [isAudioMuted, setIsAudioMuted] = useState(false);
+
+  // 404 Rebels 3D Talwar Duel State
+  const [isDueling, setIsDueling] = useState(false);
+  const [duelPhase, setDuelPhase] = useState<'IDLE' | 'CLASH_1' | 'CLASH_2' | 'FINAL_LOCK' | 'DETONATION' | 'GENESIS'>('IDLE');
+  const [isGenesisRevealed, setIsGenesisRevealed] = useState(false);
+
+  const startDuel = useCallback(() => {
+    soundEngine.init();
+    setIsDueling(true);
+    setDuelPhase('IDLE');
+  }, []);
+
+  const closeDuel = useCallback(() => {
+    setIsDueling(false);
+  }, []);
 
   const [isReducedMotion, setIsReducedMotion] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -344,6 +368,15 @@ export const ScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         isReducedMotion,
         isMobile,
         isWebGLAvailable,
+
+        // 404 Rebels 3D Talwar Duel Actions & State
+        isDueling,
+        duelPhase,
+        isGenesisRevealed,
+        startDuel,
+        closeDuel,
+        setDuelPhase,
+        setIsGenesisRevealed,
 
         // Backwards compatibility properties (read directly from store ref)
         get scrollProgress() {

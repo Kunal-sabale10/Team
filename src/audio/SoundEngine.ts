@@ -259,6 +259,187 @@ class SoundEngine {
     }, 1000);
   }
 
+  // --- 404 REBELS 3D TALWAR DUEL SOUND EFFECTS ---
+
+  /**
+   * Synthesizes a rapid aerodynamic sword swing / whoosh
+   */
+  public playSwordSwing(pitchOffset: number = 0): void {
+    if (!this.ctx || !this.masterGain || this.isMuted) return;
+    const now = this.ctx.currentTime;
+
+    // Buffer noise generation for whoosh air turbulence
+    const bufferSize = this.ctx.sampleRate * 0.25;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.8;
+    }
+
+    const noiseSource = this.ctx.createBufferSource();
+    noiseSource.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.Q.setValueAtTime(4.0, now);
+    const startFreq = 1400 + pitchOffset * 200;
+    filter.frequency.setValueAtTime(startFreq, now);
+    filter.frequency.exponentialRampToValueAtTime(280, now + 0.22);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.35, now + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.23);
+
+    noiseSource.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.24);
+  }
+
+  /**
+   * Synthesizes a sharp, metallic blade clash with inharmonic ringing overtones
+   */
+  public playSwordClash(intensity: number = 1.0): void {
+    if (!this.ctx || !this.masterGain || this.isMuted) return;
+    const now = this.ctx.currentTime;
+
+    // Metallic Inharmonic Ringing Components (Talwar high-tensile steel)
+    const freqs = [1980, 2640, 4200];
+    freqs.forEach((freq, idx) => {
+      const osc = this.ctx!.createOscillator();
+      const oscGain = this.ctx!.createGain();
+      osc.type = idx === 0 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(freq + (Math.random() * 40 - 20), now);
+
+      const amp = (0.28 / (idx + 1)) * intensity;
+      oscGain.gain.setValueAtTime(amp, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35 + idx * 0.08);
+
+      osc.connect(oscGain);
+      oscGain.connect(this.masterGain!);
+
+      osc.start(now);
+      osc.stop(now + 0.45);
+    });
+
+    // Sharp impact noise transient
+    const bufferSize = this.ctx.sampleRate * 0.04;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1);
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const noiseFilter = this.ctx.createBiquadFilter();
+    noiseFilter.type = 'highpass';
+    noiseFilter.frequency.setValueAtTime(3200, now);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.4 * intensity, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.038);
+
+    noise.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(this.masterGain);
+
+    noise.start(now);
+    noise.stop(now + 0.04);
+  }
+
+  /**
+   * Synthesizes the plasma energy buildup as talwars lock together
+   */
+  public playEnergyCharge(): void {
+    if (!this.ctx || !this.masterGain || this.isMuted) return;
+    const now = this.ctx.currentTime;
+
+    const osc = this.ctx.createOscillator();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(140, now);
+    osc.frequency.exponentialRampToValueAtTime(750, now + 1.2);
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.Q.setValueAtTime(5, now);
+    filter.frequency.setValueAtTime(300, now);
+    filter.frequency.exponentialRampToValueAtTime(1800, now + 1.2);
+
+    // Tremolo LFO for crackling plasma effect
+    const lfo = this.ctx.createOscillator();
+    lfo.frequency.setValueAtTime(28, now);
+    const lfoGain = this.ctx.createGain();
+    lfoGain.gain.setValueAtTime(0.12, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.01, now);
+    gain.gain.linearRampToValueAtTime(0.25, now + 1.0);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 1.25);
+
+    lfo.connect(gain.gain);
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.masterGain);
+
+    lfo.start(now);
+    osc.start(now);
+    lfo.stop(now + 1.25);
+    osc.stop(now + 1.25);
+  }
+
+  /**
+   * Synthesizes the climactic 404 Rebels genesis shockwave detonation
+   */
+  public playGenesisShockwave(): void {
+    if (!this.ctx || !this.masterGain || this.isMuted) return;
+    const now = this.ctx.currentTime;
+
+    // Sub-harmonic concussion boom
+    const subOsc = this.ctx.createOscillator();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(160, now);
+    subOsc.frequency.exponentialRampToValueAtTime(32, now + 0.85);
+
+    const subGain = this.ctx.createGain();
+    subGain.gain.setValueAtTime(0.75, now);
+    subGain.gain.exponentialRampToValueAtTime(0.001, now + 1.1);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.masterGain);
+    subOsc.start(now);
+    subOsc.stop(now + 1.15);
+
+    // Explosive sonic burst
+    const bufferSize = this.ctx.sampleRate * 0.9;
+    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.2));
+    }
+    const noise = this.ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(2400, now);
+    filter.frequency.exponentialRampToValueAtTime(120, now + 0.8);
+
+    const noiseGain = this.ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.5, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(this.masterGain);
+
+    noise.start(now);
+    noise.stop(now + 0.95);
+  }
+
   public toggleMute(): boolean {
     if (!this.ctx || !this.masterGain) return false;
 

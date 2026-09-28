@@ -5,6 +5,7 @@ import { AcceleratorCore } from './AcceleratorCore';
 import { ParticleStream } from './ParticleStream';
 import { CameraRig } from './CameraRig';
 import { PostProcessingPass } from './PostProcessingPass';
+import { DuelScene } from './duel/DuelScene';
 import { useScrollEngine } from '../../context/ScrollContext';
 import { useTheme } from '../../context/ThemeContext';
 import { AlertCircle } from 'lucide-react';
@@ -141,7 +142,15 @@ const SceneLights: React.FC = () => {
 };
 
 export const SceneGraph: React.FC = () => {
-  const { isMobile, isWebGLAvailable, isReducedMotion } = useScrollEngine();
+  const {
+    isMobile,
+    isWebGLAvailable,
+    isReducedMotion,
+    isUnlocked,
+    isDueling,
+    setDuelPhase,
+    setIsGenesisRevealed,
+  } = useScrollEngine();
   const { isDark } = useTheme();
 
   // Graceful Fallback if WebGL is unsupported or disabled
@@ -183,9 +192,19 @@ export const SceneGraph: React.FC = () => {
         <SceneThemeSynchronizer />
         <SceneLights />
 
+        {/* 404 Rebels 3D Talwar Duel Scene */}
+        {(!isUnlocked || isDueling) ? (
+          <DuelScene
+            isActive={true}
+            onPhaseChange={setDuelPhase}
+            onGenesisComplete={() => setIsGenesisRevealed(true)}
+          />
+        ) : (
+          <AcceleratorCore />
+        )}
+
         <CameraRig />
-        <AcceleratorCore />
-        <ParticleStream particleCount={isMobile ? 400 : 1200} />
+        <ParticleStream particleCount={isMobile ? 300 : 700} />
         {!isReducedMotion && !isMobile && <PostProcessingPass />}
         <WebGLTelemetryTracker />
       </Canvas>

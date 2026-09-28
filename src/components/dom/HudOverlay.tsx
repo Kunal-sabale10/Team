@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useScrollEngine, useScrollTelemetry } from '../../context/ScrollContext';
 import { useTheme } from '../../context/ThemeContext';
-import { Volume2, VolumeX, Activity, Sun, Moon, Disc3, Menu, X } from 'lucide-react';
+import { Volume2, VolumeX, Activity, Sun, Moon, Disc3, Menu, X, Swords } from 'lucide-react';
 import { soundEngine } from '../../audio/SoundEngine';
 
 export const HudOverlay: React.FC = () => {
@@ -21,6 +21,7 @@ export const HudOverlay: React.FC = () => {
     isAudioMuted,
     toggleAudio,
     isUnlocked,
+    startDuel,
   } = useScrollEngine();
 
   const { theme, toggleTheme, isDark } = useTheme();
@@ -114,6 +115,20 @@ export const HudOverlay: React.FC = () => {
               <span className="text-theme-accent dark:text-cherenkov-glow font-bold">{telemetry.drawCalls} DC</span>
             </div>
           )}
+
+          {/* 3D Talwar Duel Replay Button */}
+          <button
+            onClick={() => {
+              soundEngine.playClickBeep();
+              startDuel();
+            }}
+            onMouseEnter={() => soundEngine.playHoverBlip(1800)}
+            className="flex items-center space-x-1.5 bg-gradient-to-r from-blue-600/15 via-cyan-500/15 to-transparent hover:from-blue-600/25 hover:to-cyan-500/25 backdrop-blur-md px-3 py-1.5 rounded-lg border border-cyan-500/40 hover:border-cyan-400 text-cyan-600 dark:text-cyan-300 font-bold transition-all cursor-pointer shadow-ambient"
+            title="Watch 3D Talwar Duel & 404 Rebels Genesis"
+          >
+            <Swords className="w-3.5 h-3.5 text-cyan-500 animate-pulse" />
+            <span className="text-[11px] font-mono hidden md:inline">3D DUEL</span>
+          </button>
 
           {/* Theme Toggle Button [T] */}
           <button
@@ -212,6 +227,21 @@ export const HudOverlay: React.FC = () => {
                   </button>
                 );
               })}
+            </div>
+
+            {/* Mobile 3D Duel Launcher */}
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  soundEngine.playClickBeep();
+                  setIsMobileMenuOpen(false);
+                  startDuel();
+                }}
+                className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-gradient-to-r from-blue-600/20 via-cyan-500/20 to-transparent border border-cyan-500/40 text-cyan-600 dark:text-cyan-300 font-bold font-mono text-xs cursor-pointer min-h-[44px]"
+              >
+                <Swords className="w-4 h-4 animate-bounce text-cyan-500" />
+                <span>WATCH 3D TALWAR DUEL</span>
+              </button>
             </div>
 
             {/* Quick Mobile Controls */}
